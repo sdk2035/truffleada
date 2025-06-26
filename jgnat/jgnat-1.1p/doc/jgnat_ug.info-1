@@ -1,0 +1,1306 @@
+This is jgnat_ug.info, produced by Makeinfo version 3.12d from
+jgnat_ug.texi.
+
+
+File: jgnat_ug.info,  Node: Top,  Next: About This Guide,  Prev: (dir),  Up: (dir)
+
+JGNAT User's Guide
+******************
+
+   JGNAT User's Guide
+
+   JGNAT, The GNU Ada 95 Environment for the Java Virtual Machine
+
+   JGNAT Version 1.1p
+
+   Ada Core Technologies, Inc. & ACT Europe
+
+   (C) Copyright 1998-2000, Ada Core Technologies, Inc. & ACT Europe
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Java is a trademark of Sun Microsystems, Inc.
+
+* Menu:
+
+* About This Guide::
+* Getting Started with JGNAT::
+* Ada & Java Interoperability::
+* Viewing Class Files with jvmlist::
+* Stripping Debug Info with jvmstrip::
+* Building Archives with jarmake::
+* Using the Java API with jvm2ada::
+* Java-Specific Pragmas::
+* Mapping Java into Ada::
+* Creating Gnapplets with JGNAT::
+* Debugging Ada Programs::
+* Index::
+
+ --- The Detailed Node Listing ---
+
+About This Guide
+
+* What This Guide Contains::
+* What you should know before reading this guide::
+* Related Information::
+* Conventions::
+
+Getting Started with JGNAT
+
+* Overview::
+* JGNAT Tools::
+* Java Development Kits that you can use with JGNAT::
+* Compiling Your First Application with JGNAT::
+
+Ada & Java Interoperability
+
+* Importing Java Services to Ada::
+* Exporting Ada Services to Java::
+
+Viewing Class Files with jvmlist
+
+* Running jvmlist::
+* Switches for jvmlist::
+
+Stripping Debug Info with jvmstrip
+
+* Running jvmstrip::
+* Switches for jvmstrip::
+
+Building Archives with jarmake
+
+* Running jarmake::
+* Switches for jarmake::
+
+Using the Java API with jvm2ada
+
+* Running jvm2ada::
+* Switches for jvm2ada::
+* Running jvm2ada on the Java API::
+* Parameter Names and Source Search Paths::
+* Class File Search Paths::
+* Identifier Mangling::
+
+Java-Specific Pragmas
+
+* Handling Circularities using With-Type Clauses::
+* Creating Java Interfaces with Pragma Java_Interface::
+* Using Java Interfaces::
+* The Java_Constructor Pragma::
+* Pragma Import Java::
+* Pragma Export Java::
+
+Mapping Java into Ada
+
+* Identifiers::
+* Scalar Types::
+* Java References and java.lang.Object::
+* Array Types::
+* The Ada Package Java::
+* Use of With-Type Clauses by jvm2ada::
+* Java Packages::
+* Java Classes::
+* Abstract Classes::
+* Final Classes and Final Methods::
+* Nested Classes::
+* Java Interface::
+* Java Class Implementing Interfaces::
+* Java Exceptions::
+* Static Fields::
+* Final Static Fields::
+* Instance Fields::
+* Volatile and Transient Fields::
+* Static Methods::
+* Instance Methods::
+* Abstract Methods::
+* Native Methods::
+* Visibility Issues::
+* Java Implicit Upcasting in Ada::
+* Mixing Ada Strings and Java Strings::
+* An Example::
+
+Creating Gnapplets with JGNAT
+
+* Extending java.applet.Applet.Typ::
+* Initializing and Finalizing the JGNAT Runtime::
+* Compiling the Gnapplet::
+* Creating the HTML file::
+
+Debugging Ada Programs
+
+* Ada Compilation Units and JVM Class Files::
+* Lexical Elements::
+* Enumeration Types::
+* Integer Types::
+* Floating Point Types::
+
+
+File: jgnat_ug.info,  Node: About This Guide,  Next: Getting Started with JGNAT,  Prev: Top,  Up: (dir)
+
+About This Guide
+****************
+
+This guide describes the features and the use of JGNAT, the Ada 95
+development environment for the Java platform. This guide also explains
+how to use the Java API from Ada and how to interface Ada and the Java
+programming language.
+
+   Please note that, unless you are using GLIDE (the GNAT IDE), all
+JGNAT tools are command-line tools. This means that they must be
+invoked from the shell (UNIX) or DOS window (Microsoft Windows).
+
+   Please consult file `jgnat-1.1p-README.txt' for JGNAT installation
+information. The section "Problem Reports" in that file explains how to
+report problems that you may find in JGNAT.
+
+   Before reading this manual you should be familiar with the `GNAT
+User Guide' as a thorough understanding of the concepts and notions
+explained there is needed to use JGNAT effectively.
+
+* Menu:
+
+* What This Guide Contains::
+* What you should know before reading this guide::
+* Related Information::
+* Conventions::
+
+
+File: jgnat_ug.info,  Node: What This Guide Contains,  Next: What you should know before reading this guide,  Prev: About This Guide,  Up: About This Guide
+
+What This Guide Contains
+========================
+
+This guide contains the following chapters:
+
+   * *Note Getting Started with JGNAT::, gives an overview of JGNAT and
+     its tools and explains how to compile and run your first Ada
+     program for the Java platform.
+
+   * *Note Ada & Java Interoperability:: explains how the Java API and
+     the services of any JVM class can be used from Ada. This section
+     also explains how Ada services can be exported to Java programmers.
+
+   * *Note Viewing Class Files with jvmlist::, describes `jvmlist', a
+     utility to disassemble a JVM `.class' file to view its contents:
+     bytecode, contant pool (i.e. symbol table), debugging info, etc.
+     This utility can also embed the original source code into the
+     assembly listing.
+
+   * *Note Stripping Debug Info with jvmstrip::, describes `jvmstrip' a
+     utility that strips a `.class' file, removing all of its debugging
+     info to reduce the file size.
+
+   * *Note Building Archives with jarmake::, describes the `jarmake'
+     tool to make a single `.jar' file for an application built with
+     JGNAT. This is useful when you want to ship a self-contained
+     application built with JGNAT to someone who does not have JGNAT
+     installed. This tool is very useful useful when creating
+     "gnapplets" (GNAT applets, *note Creating Gnapplets with JGNAT::.).
+
+   * *Note Using the Java API with jvm2ada::, describes the `jvm2ada'
+     interfacing tool that takes any JVM `.class', `.zip' or `.jar'
+     files as input and generates Ada package specs as output. The
+     resulting Ada specs can be used by Ada programs to interface to
+     Java.
+
+   * *Note Java-Specific Pragmas:: explains some special pragmas that
+     have been introduced to support certain aspects of interfacing
+     between Ada and Java.
+
+   * *Note Mapping Java into Ada:: gives details on how the Java API
+     and, in general, any Java class spec is mapped into an Ada package
+     specification by the `jvm2ada' tool.
+
+   * *Note Creating Gnapplets with JGNAT::, explains how you can create
+     "gnapplets" (GNAT applets).
+
+   * *Note Debugging Ada Programs::, describes how to run and debug Ada
+     programs.
+
+
+File: jgnat_ug.info,  Node: What you should know before reading this guide,  Next: Related Information,  Prev: What This Guide Contains,  Up: About This Guide
+
+What You Should Know Before Reading This Guide
+==============================================
+
+Before reading this document readers should be familiar with the `GNAT
+User Guide' and have a conceptual understanding of the Java technology.
+
+
+File: jgnat_ug.info,  Node: Related Information,  Next: Conventions,  Prev: What you should know before reading this guide,  Up: About This Guide
+
+Related Information
+===================
+
+For further information about GNAT, Ada 95, and the Java technology, we
+recommend consulting the following documents:
+
+   * `GNAT User Guide', contains introductory and reference material
+     for the GNAT development environemnt.
+
+   * `Ada 95 Language Reference Manual', contains all reference material
+     for the Ada 95 programming language.
+
+   * `The Java Tutorial: Object-Oriented Programming for the Internet',
+     2nd edition, by Mary Campione and Kathy Walrath, published by
+     Addison Wesley.
+
+   * `The Java Virtual Machine Specification', by Tim Lindholm and Frank
+     Yellin, published by Addison Wesley.
+
+
+File: jgnat_ug.info,  Node: Conventions,  Prev: Related Information,  Up: About This Guide
+
+Conventions
+===========
+
+Following are examples of the typographical and graphic conventions used
+in this guide:
+
+   * `source code', and `utility program names'.
+
+   * `Option flags'.
+
+   * `File Names'.
+
+   * VARIABLES.
+
+   * _Emphasis_.
+
+   * [optional information or parameters]
+
+   * Examples are described by text
+          and then shown this way.
+
+Commands that are entered by the user are preceded in this manual by the
+"`$ '" characters (dollar sign followed by space). If your system uses
+this sequence as a prompt, then the commands will appear exactly as you
+see them in the manual. If your system uses some other prompt, then the
+command will appear with the `$' replaced by whatever prompt character
+you are using.
+
+
+File: jgnat_ug.info,  Node: Getting Started with JGNAT,  Next: Ada & Java Interoperability,  Prev: About This Guide,  Up: (dir)
+
+Getting Started with JGNAT
+**************************
+
+* Menu:
+
+* Overview::
+* JGNAT Tools::
+* Java Development Kits that you can use with JGNAT::
+* Compiling Your First Application with JGNAT::
+
+
+File: jgnat_ug.info,  Node: Overview,  Next: JGNAT Tools,  Prev: Getting Started with JGNAT,  Up: Getting Started with JGNAT
+
+Overview
+========
+
+The Java(TM) technology, introduced by Sun Microsystems, is a paradigm
+whose goal is to add platform-independent programming flexibility to
+Internet, Intranet and Extranet applications, embedded devices such as
+Internet appliances, consumer electronics, smart cards, etc.
+
+   The Java technology comprises, a simple object-oriented programming
+language (Java), a comprehensive set of libraries (Java API), and a
+virtual machine (JVM) offering the same object code interface on all
+platforms (bytecode).
+
+   Although the Java environment comes with a default programming
+language, this language is not a fundamental component of the
+technology. Any programming language that can be mapped onto the JVM
+can be used to develop Java applications.
+
+   The JGNAT system offers a complete Ada 95 programming environment for
+the Java platform. In addition to a bytecode compiler, binder and
+linker, JGNAT comprises a Java-to-Ada 95 binding generator which
+produces the Ada 95 specs of the services contained in any Java `.class'
+file or API.  In addition to all of the conventional GNAT tools, a
+bytecode disassembler and a `.class' file stripper are also provided
+with JGNAT.
+
+   Furthermore, because the `.class' files generated by the JGNAT
+compiler are fully compliant with Sun's standard, the user can employ
+any JVM to run Ada applications, any JVM debugger to debug Ada code,
+and can use any of the Java tools that operate on `.class' files (e.g.
+`jar', `javap', etc.).
+
+   As a side note, the JGNAT system is implemented in Ada 95 and its
+sources are available under the GPL.
+
+
+File: jgnat_ug.info,  Node: JGNAT Tools,  Next: Java Development Kits that you can use with JGNAT,  Prev: Overview,  Up: Getting Started with JGNAT
+
+JGNAT Tools
+===========
+
+Most JGNAT tools are regular GNAT tools that have been slightly adapted
+for use with JGNAT. They are used in the same fashion as their
+corresponding GNAT equivalent. These tools are:
+
+   * `jgnat': the JGNAT compiler, compiles an Ada unit into one or more
+     JVM `.class' files.
+
+   * `jgnatbind': the JGNAT binder, generates an Ada source file
+     containing the elaboration code for the Ada application to run.
+
+   * `jgnatlink': the JGNAT linker, compiles the source file generated
+     by `jgnatbind'. `jgnatlink' provides no linking capabilities since
+     the linker is directly embedded into the JVM.  To gather the
+     `.class' files of an application into a single file, one can use
+     the `zip' or `jar' commands provided with your Java Development
+     Kit.
+
+   * `jgnatmake': the JGNAT automatic make program, automatically
+     determines the set of sources needed by an Ada compilation unit,
+     and executes the necessary compilations, binding, and link.
+
+   * `jgnatls': the JGNAT library browser, displays information about
+     compiled units, including dependences on the corresponding sources
+     files, and consistency of compilations.
+
+   * `jgnatfind': the JGNAT find utility, provides an easy way to locate
+     the declaration and references for an Ada entity.
+
+   * `jgnatxref': the JGNAT cross-referencer, allows you to generate a
+     full report of all cross-references in a given set of Ada units.
+
+   * `jgnatpsta': the JGNAT utility to print the JGNAT version of
+     package Standard.
+
+The GNAT tools that are completely target independent (such as
+`gnatchop', `gnatprep', `gnatelim', etc.) have not been provided with
+JGNAT since they are available in the regular GNAT installation and you
+can use them directly.
+
+   Please note that, unless you are using GLIDE (the GNAT IDE), all
+JGNAT tools are command-line tools. This means that they must be
+invoked from the shell (UNIX) or DOS window (Microsoft Windows).
+
+   The JGNAT tools which have been specifically developed for JGNAT are:
+
+   * `jvmlist': The JGNAT disassembler, (*note Viewing Class Files with
+     jvmlist::.) disassembles a JVM `.class' file to view its contents:
+     bytecode, constant pool (i.e., symbol table), debugging info, etc.
+     This utility will also embed the original source code into the
+     assembly listing.  This utility is independent of the original
+     programming language and works equally well on programs containing
+     a mixture of Ada and Java code.
+
+   * `jvmstrip': The JGNAT strip utility, (*note Stripping Debug Info
+     with jvmstrip::.) is a utility that strips a `.class' file,
+     removing all of its debugging info to reduce file size. This tool
+     is also programming-language independent.
+
+   * `jarmake': The JGNAT archiver tool, (*note Building Archives with
+     jarmake::.) takes `.class' files as input and recursively collects
+     into an uncompressed zip archive all the `.class' files needed by
+     the `.class' files specified on the command line. This tool can be
+     used to prepare self-standing applications or gnapplets that you
+     can ship.  This tool is programming-language independent.
+
+   * `jvm2ada': The JGNAT interfacing tool, (*note Using the Java API
+     with jvm2ada::.) takes `.class' files, or zip archives as input
+     and generates Ada package specifications as output. The resulting
+     Ada package specs can be `with'-ed by Ada programs to interface to
+     Java services.
+
+
+File: jgnat_ug.info,  Node: Java Development Kits that you can use with JGNAT,  Next: Compiling Your First Application with JGNAT,  Prev: JGNAT Tools,  Up: Getting Started with JGNAT
+
+Java Development Kits that you can use with JGNAT
+=================================================
+
+Because JGNAT generates class files that are fully compliant with Sun's
+JVM standard, you can use any Java Virtual Machine and bytecode tools
+that meet the Sun Java platform standard.
+
+
+File: jgnat_ug.info,  Node: Compiling Your First Application with JGNAT,  Prev: Java Development Kits that you can use with JGNAT,  Up: Getting Started with JGNAT
+
+Compiling Your First Application with JGNAT
+===========================================
+
+Before trying out JGNAT, make sure you first read the section on
+installing JGNAT in the file `jgnat-1.1p-README.txt', which explains
+about setting the variables PATH and CLASSPATH on your system.
+
+To compile the following "`Hello JGNAT'" program put the following in
+file `hello.adb':
+
+     with Ada.Text_IO; use Ada.Text_IO;
+     procedure Hello is
+     begin
+        Put_Line ("Hello JGNAT.");
+     end Hello;
+
+then type:
+
+     $ jgnatmake hello
+
+This command will generate file `hello.class'. To run it, assuming you
+are using Sun's JDK (Java Development Kit), you can just type
+
+     $ java hello
+
+It's as simple as that. To compile more complex Ada applications use
+`jgnatmake' as usual. If you want to use the JGNAT compiler, binder,
+and linker separately, you will need to individually invoke the
+appropriate `jgnat', `jgnatbind' and `jgnatlink' commands.
+
+
+File: jgnat_ug.info,  Node: Ada & Java Interoperability,  Next: Viewing Class Files with jvmlist,  Prev: Getting Started with JGNAT,  Up: (dir)
+
+Ada & Java Interoperability
+***************************
+
+One aspect of Java that makes it an interesting platform is its growing
+set of API classes. It is therefore fundamental that the API be made
+available to the Ada programmer transparently. It is also important that
+the Ada programmer be able to write libraries or APIs for the Java
+platform in Ada, and that these libraries be easily usable in any Java
+application.  JGNAT guarantees full interoperability between Ada and
+Java.
+
+   To achieve this goal, constructs that can appear in a Java class at
+the specification level are mapped to Ada either by means of a
+corresponding Ada feature or by using an implementation-defined Ada
+pragma.
+
+   In addition we have taken great care that the mapping from Java to
+Ada is completely automatic. This means that JGNAT comes with no Ada
+bindings for the Java API, but instead provides a tool (*note Using the
+Java API with jvm2ada::.) which is able to produce Ada specifications
+from any set of JVM `.class' files.
+
+* Menu:
+
+* Importing Java Services to Ada::
+* Exporting Ada Services to Java::
+
+
+File: jgnat_ug.info,  Node: Importing Java Services to Ada,  Next: Exporting Ada Services to Java,  Prev: Ada & Java Interoperability,  Up: Ada & Java Interoperability
+
+Importing Java Services to Ada
+==============================
+
+To access the services provided by the Java API or by any set of JVM
+`.class' files, you should proceed as follows:
+
+  1. If your Java code is in source form, compile it using any Java
+     compiler.
+
+  2. If you just want to import a variable or a subprogram from a Java
+     class use `pragma Import' (*note Pragma Import Java::.) in the Ada
+     code where you want to import the Java service.
+
+  3. More generally, you can use the `jvm2ada' utility to produce the
+     Ada specs (containing the appropriate Java-specific pragmas) for
+     the `.class', `.zip', or `.jar' files containing the Java services
+     you would like to use from Ada (*note Using the Java API with
+     jvm2ada::.). Note that `jvm2ada' preserves, in the generated Ada
+     specs, the names of the original Java services (for a detailed
+     explanation of the Java to Ada mapping *note Mapping Java into
+     Ada::.).
+
+  4. `with' the needed Ada specs and use their services as usual.
+
+It's as simple as that.
+
+
+File: jgnat_ug.info,  Node: Exporting Ada Services to Java,  Prev: Importing Java Services to Ada,  Up: Ada & Java Interoperability
+
+Exporting Ada Services to Java
+==============================
+
+To export a set of Ada services to Java you should:
+
+  1. Use `pragma Export' and other Java interfacing pragmas inside the
+     Ada code (*note Java-Specific Pragmas::.). This gives you complete
+     control of what is being generated and allows you to decide very
+     precisely what the exported services look like on the Java side.
+
+  2. Compile your Ada code with the JGNAT compiler.
+
+  3. Use `javap' to display the spec of the `.class' files generated by
+     JGNAT whose services you would like to use in your Java code.
+
+
+File: jgnat_ug.info,  Node: Viewing Class Files with jvmlist,  Next: Stripping Debug Info with jvmstrip,  Prev: Ada & Java Interoperability,  Up: (dir)
+
+Viewing Class Files with `jvmlist'
+**********************************
+
+The `jvmlist' tool takes JVM `.class' files as input (directly or
+regrouped in an uncompressed `.zip' or `.jar' file) and disassembles it
+to view its contents: bytecode, constant pool (i.e., symbol table),
+debugging info, etc. This utility can also embed the original source
+code in the assembly listing.  `jvmlist' is independent of the original
+programming language and works equally well on programs containing a
+mixture of Ada and Java code.
+
+* Menu:
+
+* Running jvmlist::
+* Switches for jvmlist::
+
+
+File: jgnat_ug.info,  Node: Running jvmlist,  Next: Switches for jvmlist,  Prev: Viewing Class Files with jvmlist,  Up: Viewing Class Files with jvmlist
+
+Running jvmlist
+===============
+
+The form of the `jvmlist' command is
+
+     jvmlist [SWITCHES] FILE [FILE ... FILE]
+
+where FILE can be one of the following:
+
+   - the name of a `.class' file (possibly without the `.class' suffix);
+
+   - the name of an uncompressed zip archive (in this case the `jvmlist'
+     command applies to all `.class' files within the archive);
+
+   - the name of a `.class' file within an uncompressed zip archive
+     (e.g. `rt.jar/java/lang/Object.class').
+
+File names can be prefixed with directory information.
+
+   The output of `jvmlist' contains a listing of all the fields and
+methods declared inside the `.class' file, in addition to various other
+class information such as the class it extends, the interfaces it
+implements, etc.
+
+   If you select switch `-c', then `jvmlist' will also print the
+bytecode for each method. The bytecode mnemonics used by `jvmlist' are
+the same as those documented in Sun's JVM book The Java Virtual Machine
+Specification by Lindholm and Yellin. If you select switch `-c',
+`jvmlist' will also embed the original source code in the bytecode.
+For now, `jvmlist' only looks for source files in the current directory.
+
+
+File: jgnat_ug.info,  Node: Switches for jvmlist,  Prev: Running jvmlist,  Up: Viewing Class Files with jvmlist
+
+Switches for jvmlist
+====================
+
+The following switches are available with the `jvmlist' utility:
+
+`-c'
+     Display bytecode. By default `jvmlist' does not display the
+     bytecode of each method. This switch specifies that bytecode
+     should be displayed.
+
+`-g'
+     Embed source code. This switch implies `-c' and embeds the original
+     source code within the disassembled bytecode. If the input `.class'
+     file does not contain source file information, or if the source
+     file cannot be located in the current directory (the one where
+     `jvmlist' was invoked), then this switch is equivalent to `-c'.
+
+`-l'
+     Display line number tables.
+
+`-p'
+     Display the constant pool.
+
+`-t'
+     Display local variable tables.
+
+`-v'
+     Verbose. Outputs the name of each class file for which an Ada spec
+     is generated.
+
+`-V'
+     Very verbose. Implies -v. Each item that is encountered in a zip
+     or jar file is listed on the screen. Class files are preceded with
+     a `->', other items are listed with a message saying that the item
+     is skipped.  Only class files whose name is listed twice (one
+     preceded with a `->' and the following one without the `->') have a
+     corresponding Ada spec generated for them, other class files are
+     ignored (because for instance they are not public classes).
+
+
+File: jgnat_ug.info,  Node: Stripping Debug Info with jvmstrip,  Next: Building Archives with jarmake,  Prev: Viewing Class Files with jvmlist,  Up: (dir)
+
+Stripping Debug Info with `jvmstrip'
+************************************
+
+The `jvmstrip' tool takes a `.class' files as input (directly or
+packaged in an uncompressed `.zip' or `.jar' file) and strips off all
+of its debugging info to reduce its size. This utility is independent
+of the original programming language and works equally well on programs
+containing a mixture of Ada and Java code.
+
+* Menu:
+
+* Running jvmstrip::
+* Switches for jvmstrip::
+
+
+File: jgnat_ug.info,  Node: Running jvmstrip,  Next: Switches for jvmstrip,  Prev: Stripping Debug Info with jvmstrip,  Up: Stripping Debug Info with jvmstrip
+
+Running jvmstrip
+================
+
+The form of the `jvmstrip' command is
+
+     jvmstrip [SWITCHES] FILE [FILE ... FILE]
+
+where FILE can be one of the following:
+
+   - the name of a `.class' file
+
+   - the name of an uncompressed zip archive (in this case the
+     `jvmstrip' command applies to all `.class' files within the
+     archive);
+
+File names can be prefixed with directory information.
+
+   The output of `jvmstrip' is a stripped `.class' file which replaces
+the original input file. If the input is an archive, then all of the
+`.class' files within the archive are stripped and the updated archive
+replaces the input file.
+
+
+File: jgnat_ug.info,  Node: Switches for jvmstrip,  Prev: Running jvmstrip,  Up: Stripping Debug Info with jvmstrip
+
+Switches for jvmstrip
+=====================
+
+The following switches are available with the `jvmstrip' utility:
+
+`-v'
+     Verbose.
+
+
+File: jgnat_ug.info,  Node: Building Archives with jarmake,  Next: Using the Java API with jvm2ada,  Prev: Stripping Debug Info with jvmstrip,  Up: (dir)
+
+Building Archives with `jarmake'
+********************************
+
+When building an Ada application with JGNAT, a number of JVM `.class'
+files are generated. In addition to potentially being numerous, the
+generated classes depend on the JGNAT library `jgnat.jar' which is
+installed with JGNAT.
+
+   If you need to ship your Ada application or gnapplet to people who
+do not have JGNAT installed this can be cumbersome as you would need to
+ship the `.class' files of your application along with `jgnat.jar'.
+
+   To automate such process we have provided `jarmake', the JGNAT
+archiver tool. `jarmake' takes `.class' files as input and recursively
+collects into an uncompressed zip archive all the `.class' files needed
+by the `.class' files specified on the command line. This tool can be
+used to prepare self-standing applications or gnapplets.
+
+   This utility is independent of the original programming language and
+works equally well on programs containing a mixture of Ada and Java
+code.
+
+* Menu:
+
+* Running jarmake::
+* Switches for jarmake::
+
+
+File: jgnat_ug.info,  Node: Running jarmake,  Next: Switches for jarmake,  Prev: Building Archives with jarmake,  Up: Building Archives with jarmake
+
+Running jarmake
+===============
+
+The form of the `jarmake' command is
+
+     jarmake [SWITCHES] FILE [FILE ... FILE]
+
+where FILE can be one of the following:
+
+   - the name of a `.class' file
+
+   - the name of an image, sound or any other file that you want to
+     bundle with your application.
+
+File names can be prefixed with directory information.
+
+   The output of `jarmake' is an uncompressed zip archive containing the
+files specified on the command line along with the `.class' files they
+recursively reference.
+
+
+File: jgnat_ug.info,  Node: Switches for jarmake,  Prev: Running jarmake,  Up: Building Archives with jarmake
+
+Switches for `jarmake'
+======================
+
+The following switches are available with the `jarmake' utility:
+
+`-LZIP-ARCHIVE'
+     When searching for `.class' files, look in the uncompressed zip
+     archive ZIP-ARCHIVE.
+
+`-j'
+     Do not skip `.class' files in the Java API. By default `jarmake'
+     skips all the `.class' files in the Java API. By using this switch
+     you are asking `jarmake' to include Java API classes in the output
+     zip archive. If you set this flag you should also provide a `-L'
+     flag giving the location of the Java API zip archive.
+
+`-k'
+     Keep going even if not all of the `.class' files are found. By
+     default, `jarmake' will stop if it cannot find all the needed
+     `.class' files. By setting this switch `jarmake' will emit a
+     warning message when it cannot find a `.class' file it is looking
+     for and will continue.
+
+`-n'
+     Do not include the `.class' files of the JGNAT library `jgnat.jar'
+     in the output archive. By default these files are included in the
+     output archive so that the the archive is autonomous.
+
+`-o ZIP-ARCHIVE'
+     Name of the output uncompressed zip archive. If this switch is not
+     specified, then the default name is `gnapplet.jar'.
+
+`-q'
+     Quiet.
+
+`-v'
+     Verbose.
+
+
+File: jgnat_ug.info,  Node: Using the Java API with jvm2ada,  Next: Java-Specific Pragmas,  Prev: Building Archives with jarmake,  Up: (dir)
+
+Using the Java API with `jvm2ada'
+*********************************
+
+The `jvm2ada' tool takes JVM `.class' files as input (directly or
+regrouped in an uncompressed `.zip' or `.jar' file) and generates Ada
+specs as output.
+
+* Menu:
+
+* Running jvm2ada::
+* Switches for jvm2ada::
+* Running jvm2ada on the Java API::
+* Parameter Names and Source Search Paths::
+* Class File Search Paths::
+* Identifier Mangling::
+
+
+File: jgnat_ug.info,  Node: Running jvm2ada,  Next: Switches for jvm2ada,  Prev: Using the Java API with jvm2ada,  Up: Using the Java API with jvm2ada
+
+Running `jvm2ada'
+=================
+
+The form of the `jvm2ada' command is
+
+     jvm2ada [SWITCHES] FILE [FILE ... FILE]
+
+where FILE can be any of the following:
+
+   - the name of a `.class' file (possibly without the `.class' suffix);
+
+   - the name of an uncompressed zip archive (in this case the `jvm2ada'
+     command applies to all `.class' files within the archive);
+
+   - the name of a `.class' file within an uncompressed zip or jar
+     archive
+     (e.g. `rt.jar/java/lang/Object.class').
+
+File names can be prefixed with directory information.
+
+   The output of `jvm2ada' is an Ada source file for each `.class' file
+processed. The Ada source file contains a package spec giving the Ada
+declaration for the services exported by the corresponding `.class'
+file.  The name of the Ada package is obtained by concatenating the
+name of the Java class to the name of the Java package containing the
+class. As an example, a Java class `someName' occurring within Java
+package `some.pack' yields the Ada package `some.pack.someName' and is
+in a file named `some-pack-somename.ads'.
+
+   Unless switch `-o' is used (*note Switches for jvm2ada::.), the Ada
+files generated are placed in the directory where the `jvm2ada' command
+is invoked.
+
+
+File: jgnat_ug.info,  Node: Switches for jvm2ada,  Next: Running jvm2ada on the Java API,  Prev: Running jvm2ada,  Up: Using the Java API with jvm2ada
+
+Switches for `jvm2ada'
+======================
+
+The following switches are available with the `jvm2ada' utility:
+
+`-IZIP-ARCHIVE'
+     When looking for a source file (to find the parameter names of a
+     Java method), search the uncompressed zip archive ZIP-ARCHIVE.
+     *Note Parameter Names and Source Search Paths::, for details.
+     (This switch is not yet supported.)
+
+`-LZIP-ARCHIVE'
+     When searching for `.class' files, look in the uncompressed zip
+     archive ZIP-ARCHIVE. *Note Class File Search Paths::, for details.
+
+`-k'
+     Keep original JVM identifiers. By default, identifiers encountered
+     in a JVM .class file are mangled whenever needed to turn them into
+     proper Ada identifiers. When this switch is set, identifiers are
+     left as is in the generated Ada package spec. *Note Identifier
+     Mangling::, for details.
+
+`-o DIR'
+     Output to DIR. Put all generated Ada source files into directory
+     DIR rather than the current directory.
+
+`-q'
+     Quiet.
+
+`-s'
+     Map Sun-specific classes into Ada specs. By default, Sun's classes
+     are not mapped into Ada even if they are public, because they are
+     typically not part of the API at hand (certainly they are not part
+     of the Java API, even though the corresponding jar file contains
+     them). Sun's classes are the classes in packages `sun', `sunw',
+     and `com.sun'.
+
+`-v'
+     Verbose.
+
+`-w'
+     Overwrite existing file names. Normally `jvm2ada' regards it as a
+     fatal error if there is already a file with the same name as a
+     file it would otherwise output. This switch bypasses this check,
+     and any such existing files will be silently overwritten.
+
+
+File: jgnat_ug.info,  Node: Running jvm2ada on the Java API,  Next: Parameter Names and Source Search Paths,  Prev: Switches for jvm2ada,  Up: Using the Java API with jvm2ada
+
+Running jvm2ada on the Java API
+===============================
+
+To be able to access the Java API you need to process it to generate an
+Ada package spec for each public class in the API. To do this you need
+to locate the zip or jar archive containing all class files of the Java
+API (for instance in Sun's Windows JDK 1.2.2 this archive is located in
+JAVA-DIR`\jdk1.2.2\jre\lib\rt.jar', where JAVA-DIR is the JDK 1.2.2
+installation directory) and simply type:
+
+     $ cd YOUR-FAVORITE-DIR
+     $ jvm2ada JAVA-DIR\jdk1.2.2\jre\lib\rt.jar
+
+This will create, in directory YOUR-FAVORITE-DIR, an Ada package spec
+for each public Java class. If you would like to output the Ada specs
+in some other directory use `jvm2ada' switch `-o'.
+
+   Please note that because of a limitation of `jvm2ada' (*note
+Identifier Mangling::.), the following Ada specs have ben edited so
+that they can compile:
+
+   - `java-awt-image-componentsamplemodel.ads': field `numBands' was
+     renamed into `numBands_C' because the parent type of
+     `ComponentSampleModel' has also a field named `numBands'.
+
+   - `javax-swing-jcolorchooser.ads': field `accessibleContext' was
+     renamed into
+     `accessibleContext_C' because the parent type of `JColorChooser'
+     has also a fieldnamed `accessibleContext'.
+
+   - `javax-swing-jfilechooser.ads': field `accessibleContext' was
+     renamed into
+     `accessibleContext_C' because the parent type of `JFileChooser'
+     has also a fieldnamed `accessibleContext'.
+
+
+File: jgnat_ug.info,  Node: Parameter Names and Source Search Paths,  Next: Class File Search Paths,  Prev: Running jvm2ada on the Java API,  Up: Using the Java API with jvm2ada
+
+Parameter Names and Source Search Paths
+=======================================
+
+Note: Only point 2. below is implemented.
+
+When generating the Ada spec for a `.class' file, `jvm2ada' tries to
+preserve the original names of method parameters.  If the `.class' file
+was compiled enabling the generation of debugging tables (switch `-g'
+in Sun's JDK `javac' compiler), parameter names are stored in the
+`.class' file. If not `jvm2ada' proceeds as follows:
+
+  1. If the name of the original source file is present in the `.class'
+     file, `jvm2ada' tries to locate this source by looking at the
+     uncompressed zip archives specified by the `-IZIP-ARCHIVE'
+     switches, in the order in which these switches occur.  Once found,
+     `jvm2ada' uses the source file to locate parameter names. If the
+     original source is not around you can always communicate parameter
+     names by creating a Java source file containing the appropriate
+     method specs. For instance to give the names of the parameters of
+     method `someMethod' in class `someClass' in package `some_package'
+     you could create the following source file:
+
+          package some_package;
+          //  You must provide the appropriate Java package for someClass
+          
+          public class someClass {
+             public int someMethod (int someName, float anotherName) {}
+             //  The methods for which you want to name the parameters must have the
+             //  same signature as the methods found in the .class file. The body
+             //  can be empty.
+          }
+
+  2. If the appropriate source file cannot be located `jvm2ada' assigns
+     arbitrary parameter names of the form `P1_'type, `P2_'type, etc.
+     where type denotes the flattened type name for the corresponding
+     parameter. The reason for appending type to the parameter name is
+     to allow the Ada programmer to resolve possible overloading
+     resolution conflicts of the following kind
+
+          public class Base { }
+          public class Deriv extends Base {
+             public static void p (Base  obj) { ... }
+             public static void p (Deriv obj) { ... }
+          }
+
+     The overloaded procedure `p' above are translated by `jvm2ada' to
+     the following Ada specs:
+
+          procedure p (P1_Base  : access Base.Typ'Class);
+          procedure p (P1_Deriv : access Deriv.Typ'Class);
+
+     The problem that arises is shown by the following example:
+
+          type Deriv_Ref is access all Deriv.Typ'Class;
+          Obj : Deriv_Ref := ...;
+          procedure p (Obj);              --  Ambiguos call
+          procedure p (P1_Base  => Obj);  --  OK
+          procedure p (P1_Deriv => Obj);  --  OK
+
+
+
+File: jgnat_ug.info,  Node: Class File Search Paths,  Next: Identifier Mangling,  Prev: Parameter Names and Source Search Paths,  Up: Using the Java API with jvm2ada
+
+Class File Search Paths
+=======================
+
+When processing a `.class' file, `jvm2ada' may need to locate other
+`.class' files.  For instance, to know whether the JVM class being
+processed is a Java exception, `jvm2ada' must traverse the inheritance
+tree and must therefore locate the `.class' files of the ancestor
+classes.
+
+   If `jvm2ada' does not find the `.class' file it is looking for, then
+a warning message is emitted. The order in which `jvm2ada' searches
+`.class' files is given below.
+
+  1. If the `.class' file being processed belongs to an uncompressed zip
+     archive, `jvm2ada' will look there first.
+
+  2. The uncompressed zip archives specified by a `-LZIP-ARCHIVE'
+     switch are searched next, in the order in which the `-L' switches
+     occur.
+
+
+File: jgnat_ug.info,  Node: Identifier Mangling,  Prev: Class File Search Paths,  Up: Using the Java API with jvm2ada
+
+Identifier Mangling
+===================
+
+`jvm2ada' retains, whenever possible, the identifiers it finds in the
+`.class' files it processes. This is not always possible, however,
+because Java's set of legal identifiers is bigger than Ada's. To address
+these issues `jvm2ada' proceeds as follows: If switch `-k' is set, the
+original identifiers found in the JVM .class are left unchanged. You
+will have to change these yourself in the generated packages if these
+are illegal Ada identifiers. If switch `-k' is not set then:
+
+   * Every identifier which is an Ada reserved word or any of the words
+     "`Standard'", "`Ref'", "`Typ'", "`Arr'", "`Arr_2'", "`Arr_3'", is
+     suffixed with `_K'. For instance, `Abort' is mapped to `Abort_K'.
+
+   * A single underscore is replaced by "`U'".
+
+   * A leading underscore is replaced by "`U_'".
+
+   * A trailing underscore is replaced by "`_U'".
+
+   * A letter "`U'" is placed between every two consecutive underscores.
+
+   * If two or more identifiers generated in an Ada spec lead to an Ada
+     name conflict, then `jvm2ada' will add a trailing `_K' at the end
+     of the second occurrence, a trailing `_K2' at the end of the third
+     occurrence, a trailing `_K3' at the end of the fourth occurrence,
+     etc.  The cases currently caught are: identical variable names,
+     identical variable and subprogram names, identical variable and
+     child package name.  More complex cases are not yet handled. In
+     particular, we do not yet detect the case where we have two
+     identical field names in a record `B' and a record `D' derived
+     from `B'. In these cases you will have to revise the generated Ada
+     spec to allow it to compile.
+
+
+File: jgnat_ug.info,  Node: Java-Specific Pragmas,  Next: Mapping Java into Ada,  Prev: Using the Java API with jvm2ada,  Up: (dir)
+
+Java-Specific Pragmas
+*********************
+
+The typical way to import services from Java classes is to use the
+`jvm2ada' tool to automatically generate the specification of the
+corresponding `.class' file. This specification contains the
+appropriate Java-specific pragmas.
+
+   In some cases you may wish to import just one routine to your Ada
+code or you may prefer to group certain services from multiple `.class'
+files into a single Ada spec (for instance if you are trying to provide
+a simplified view of the Java API).
+
+   In such cases it is useful to understand how the various
+Java-specific pragmas work. Another situation where you may have to use
+these pragmas explicitly is when exporting Ada services to Java.
+
+   This chapter introduces the features and pragmas that are needed for
+full support of interfacing between Java and Ada.
+
+* Menu:
+
+* Handling Circularities using With-Type Clauses::
+* Creating Java Interfaces with Pragma Java_Interface::
+* Using Java Interfaces::
+* The Java_Constructor Pragma::
+* Pragma Import Java::
+* Pragma Export Java::
+
+
+File: jgnat_ug.info,  Node: Handling Circularities using With-Type Clauses,  Next: Creating Java Interfaces with Pragma Java_Interface,  Prev: Java-Specific Pragmas,  Up: Java-Specific Pragmas
+
+Handling Circularities using With-Type Clauses
+==============================================
+
+* Menu:
+
+* Introduction::
+* The With-Type Clause::
+* Semantics of the With-Type Clause::
+* With-Type and the -gnatX Compiler Switch::
+* With-Type Example::
+* A Word of Caution::
+
+
+File: jgnat_ug.info,  Node: Introduction,  Next: The With-Type Clause,  Prev: Handling Circularities using With-Type Clauses,  Up: Handling Circularities using With-Type Clauses
+
+Introduction
+------------
+
+A long-standing programming problem that is difficult to solve in Ada
+is that of creating mutually dependent package specifications.  The
+problem is that Ada package specifications aren't allowed to depend on
+each other. There are various possibilities for working around this
+restriction in specific cases, generally involving levels of
+indirection and syntactically heavy programming idioms. However, these
+workarounds are too cumbersome for practical use, and certainly not
+appropriate in the context of interfacing to the Java API (which allows
+circular class definitions). A simple example of this occurs between the
+classes `java.lang.Object' and `java.lang.String':
+
+     public class Object {
+        ...
+        public String toString ();
+     }
+     
+     public final class String {
+        ...
+        public static String valueOf (Object obj);
+     }
+
+Each class declares operations using a type declared in the other
+class. Clearly this can't be mapped directly into two independent Ada
+package specifications.
+
+
+File: jgnat_ug.info,  Node: The With-Type Clause,  Next: Semantics of the With-Type Clause,  Prev: Introduction,  Up: Handling Circularities using With-Type Clauses
+
+The With-Type Clause
+--------------------
+
+To support such mutual dependencies we have implemented a
+general-purpose feature called the with-type clause. The purpose of the
+with-type clause is to import the name of an access or tagged type
+defined in a separate package, while not requiring the package with the
+clause to depend (in the Ada semantic sense) on the other package.
+
+The form of the with-type clause for access types is:
+
+     with type PACKAGE-NAME.ACCESS-TYPE is access;
+
+where PACKAGE-NAME must denote an existing package containing an access
+type whose name is ACCESS-TYPE.  The ACCESS-TYPE can be any access type
+declared inside the visible part of PACKAGE-NAME's spec.  It is a
+compile-time error if PACKAGE-NAME's spec is not available or does not
+contain the access type ACCESS-TYPE.  A with-type clause is only
+allowed in the context clause of a package spec, that is, in the same
+location where `with' clauses can appear. If an explicit `with' clause
+for PACKAGE-NAME appears in the same context clause as a with-type
+clause for PACKAGE-NAME.ACCESS-TYPE, then the with-type clause is
+superfluous and is ignored. Note that PACKAGE-NAME must be a fully
+qualified name in the case of child packages.
+
+   The with-type clause can also be used for tagged types, and the
+syntax is:
+
+     with type PACKAGE-NAME.TAGGED-TYPE is tagged;
+
+In the tagged form of the with-type clause, the PACKAGE-NAME must
+denote a package whose visible part contains a tagged type named
+TAGGED-TYPE.
+
+
+File: jgnat_ug.info,  Node: Semantics of the With-Type Clause,  Next: With-Type and the -gnatX Compiler Switch,  Prev: The With-Type Clause,  Up: Handling Circularities using With-Type Clauses
+
+Semantics of the With-Type Clause
+---------------------------------
+
+The semantic effect of giving the with-type clause is to make the
+specified type name available for use within the containing package,
+though the uses of such a type name are restricted.
+
+   In the access type case, the type name can only be used to declare
+formal parameter types and component types. However, since nothing is
+known about the designated type within the package specifying the
+with-type clause, no operations involving dereferencing pointers of the
+access type are permitted within the specification.
+
+   For the tagged type form of the clause, the type name can only be
+used in formal parameter declarations, for declaring access types, and
+as the prefix of the `Class' attribute (and the same restrictions apply
+to the name of the class-wide type).
+
+   In terms of elaboration dependencies, no dependency is introduced by
+the with-type clause. On the other hand, if a package spec `P' contains
+a with-type clause that names an access type in a package spec `Q',
+then `P' depends on `Q''s spec at the source file level. This means
+that if `Q''s spec is updated then `P' needs to be recompiled.
+
+
+File: jgnat_ug.info,  Node: With-Type and the -gnatX Compiler Switch,  Next: With-Type Example,  Prev: Semantics of the With-Type Clause,  Up: Handling Circularities using With-Type Clauses
+
+With-Type and the `-gnatX' Compiler Switch
+------------------------------------------
+
+Because the with-type clause is an extension to the Ada language, it is
+necessary to use the GNAT compile-time option `-gnatX' (or the
+`Extensions_Allowed' pragma) when compiling any unit that either uses
+this feature or depends on a unit that uses it.
+
+   For convenience, when using an Ada spec generated by `jvm2ada', the
+use of option `-gnatX' is not necessary because `jvm2ada' inserts the
+appropriate `Extensions_Allowed' pragmas around the generated Ada
+sources.
+
+
+File: jgnat_ug.info,  Node: With-Type Example,  Next: A Word of Caution,  Prev: With-Type and the -gnatX Compiler Switch,  Up: Handling Circularities using With-Type Clauses
+
+With-Type Example
+-----------------
+
+Let's look at an example. Here are portions of the packages
+`java.lang.Object' and `java.lang.String' that uses this pragma:
+
+     with type java.lang.String.Ref is access;
+     package java.lang.Object is
+        type Typ is tagged limited private;
+        type Ref is access all Typ'Class;
+        ...
+        function toString (This : access Typ) return java.lang.String.Ref;
+     end java.lang.Object;
+     
+     with java.lang.Object;
+     package java.lang.String is
+        type Typ is ...;
+        type Ref is access all Typ'Class;
+        ...
+        function valueOf (Obj : access java.lang.Object.Typ'Class)
+                         return java.lang.String.Ref;
+     end java.lang.String;
+
+A client of package `Object' wanting to use `toString' would have to
+write:
+
+
+     with Java.Lang.Object;
+     with Java.Lang.String; use Java.Lang;
+     procedure Client is
+        Obj : Object.Ref := ...;
+        Str : String.Ref := toString (Obj);
+        ...
+
+Here is another example, where `with type' is used for access to array
+types.
+
+
+     with type Class_B.Ptr is access;
+     with type Class_B.Arr_Ptr is access;
+     package Class_A is
+        type Typ is record
+           Val      : Integer;
+           Link     : Class_B.Ptr;
+           Arr_Link : Class_B.Arr_Ptr;
+        end record;
+     
+        type Ptr is access Typ;
+        type Arr is array (Natural range <>) of Ptr;
+        type Arr_Ptr is access Arr;
+     
+        procedure Proc_A (P1 : Class_A.Ptr; P2 : Class_B.Ptr);
+     end Class_A;
+
+     with type Class_A.Ptr is access;
+     with type Class_A.Arr_Ptr is access;
+     package Class_B is
+        type Typ is record
+           Val      : Float;
+           Link     : Class_A.Ptr;
+           Arr_Link : Class_A.Arr_Ptr;
+        end record;
+     
+        type Ptr is access Typ;
+        type Arr is array (Natural range <>) of Ptr;
+        type Arr_Ptr is access Arr;
+     
+        procedure Proc_B (P1 : Class_A.Ptr; P2 : Class_B.Ptr);
+     end Class_A;
+     
+     with Class_A;
+     with Class_B;
+     procedure Client is
+        P_A : Class_A.Ptr := new Class_A.Typ;
+        P_B : Class_B.Ptr := new Class_B.Typ;
+     begin
+       Class_A.Proc_A (P_A, P_B);
+       Class_B.Proc_B (P_A, P_B);
+     end Client;
+
+One important thing to note is that eventually there need to be normal
+with clauses for the units containing any types that are referenced via
+with-type clauses.
+
+   This should be checked by the compiler, but there are currently
+cases where this is not enforced and it is possible to dereference an
+access value even though the unit was only imported via a with-type
+clause. For now users must be aware of this and ensure that all units
+that use access values originating from such types make a real
+dependence on the package defining the type.
+
+
+File: jgnat_ug.info,  Node: A Word of Caution,  Prev: With-Type Example,  Up: Handling Circularities using With-Type Clauses
+
+A Word of Caution
+-----------------
+
+   The specifics of the with-type feature may change in the future.
+The important capability of supporting mutually dependent packages via
+a feature like the with-type clause is currently being discussed by the
+ISO WG9-sponsored Ada Rapporteur Group. However, the current GNAT
+implementation may differ from the final, WG9-approved version, though
+it is similar in syntax and semantics to what is currently being
+proposed. Users are cautioned that this is not yet an approved
+extension to the Ada language and should be used judiciously.
+

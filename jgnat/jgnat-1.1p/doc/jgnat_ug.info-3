@@ -1,0 +1,851 @@
+This is jgnat_ug.info, produced by Makeinfo version 3.12d from
+jgnat_ug.texi.
+
+
+File: jgnat_ug.info,  Node: Java Interface,  Next: Java Class Implementing Interfaces,  Prev: Nested Classes,  Up: Mapping Java into Ada
+
+Java Interface
+==============
+
+*Note Creating Java Interfaces with Pragma Java_Interface::.
+
+
+File: jgnat_ug.info,  Node: Java Class Implementing Interfaces,  Next: Java Exceptions,  Prev: Java Interface,  Up: Mapping Java into Ada
+
+Java Class Implementing Interfaces
+==================================
+
+*Note Using Java Interfaces::.
+
+
+File: jgnat_ug.info,  Node: Java Exceptions,  Next: Static Fields,  Prev: Java Class Implementing Interfaces,  Up: Mapping Java into Ada
+
+Java Exceptions
+===============
+
+When processing a JVM class, `jvm2ada' must figure out whether this
+class is a Java exception, i.e. whether it derives, directly or
+indirectly from class `java.lang.Throwable'.
+
+   To determine this, `jvm2ada' traverses the inheritance tree and must
+locate the `.class' files of the ancestor classes (*note Class File
+Search Paths::.). If the class is indeed a Java exception, an Ada
+exception is added to the generated Ada spec as shown in the following
+example:
+
+     package pack1.pack2;
+     public class C extends java.lang.Throwable { ... }
+
+is mapped into
+
+     package pack1.pack2.C is
+        ...
+        Except : Exception;
+        ...
+     end pack1.pack2.C;
+
+
+File: jgnat_ug.info,  Node: Static Fields,  Next: Final Static Fields,  Prev: Java Exceptions,  Up: Mapping Java into Ada
+
+Static Fields
+=============
+
+A static field in Java is equivalent to a regular variable in Ada and is
+mapped accordingly by `jvm2ada'.
+
+
+File: jgnat_ug.info,  Node: Final Static Fields,  Next: Instance Fields,  Prev: Static Fields,  Up: Mapping Java into Ada
+
+Final Static Fields
+===================
+
+A Java `final' static field is equivalent to an Ada constant.  When
+importing a final static field from Java, `jvm2ada' maps each such
+field to an Ada deferred constant with an associated pragma `Import'
+Java.
+
+
+File: jgnat_ug.info,  Node: Instance Fields,  Next: Volatile and Transient Fields,  Prev: Final Static Fields,  Up: Mapping Java into Ada
+
+Instance Fields
+===============
+
+An instance field is mapped by `jvm2ada' into a field of its
+corresponding tagged type.
+
+
+File: jgnat_ug.info,  Node: Volatile and Transient Fields,  Next: Static Methods,  Prev: Instance Fields,  Up: Mapping Java into Ada
+
+Volatile and Transient Fields
+=============================
+
+The JVM `volatile' and `transient' attributes are currently ignored by
+`jvm2ada'.
+
+
+File: jgnat_ug.info,  Node: Static Methods,  Next: Instance Methods,  Prev: Volatile and Transient Fields,  Up: Mapping Java into Ada
+
+Static Methods
+==============
+
+A Java static method is equivalent to a regular nondispatching
+subprogram in Ada and is mapped that way by `jvm2ada'.
+
+
+File: jgnat_ug.info,  Node: Instance Methods,  Next: Abstract Methods,  Prev: Static Methods,  Up: Mapping Java into Ada
+
+Instance Methods
+================
+
+Each instance method is converted into a primitive operation whose first
+parameter is of type "`access Typ'" and whose remaining parameters are
+as given for the Java method.
+
+
+File: jgnat_ug.info,  Node: Abstract Methods,  Next: Native Methods,  Prev: Instance Methods,  Up: Mapping Java into Ada
+
+Abstract Methods
+================
+
+Java's abstract methods are exactly equivalent to Ada's abstract
+primitive operations and are mapped accordingly by `jvm2ada'.
+
+
+File: jgnat_ug.info,  Node: Native Methods,  Next: Final Classes and Final Methods,  Prev: Abstract Methods,  Up: Mapping Java into Ada
+
+Native Methods
+==============
+
+In Java one can assert that a certain method is `native', i.e., that
+its implementation is provided in some native language such as C or Ada,
+external to the JVM.  The `jvm2ada' tool ignores the `native' attribute
+when mapping JVM methods into Ada, since JVM methods are invoked in
+exactly the same way regardless of whether they have a `native'
+attribute.
+
+
+File: jgnat_ug.info,  Node: Final Classes and Final Methods,  Next: Visibility Issues,  Prev: Native Methods,  Up: Mapping Java into Ada
+
+Final Classes and Final Methods
+===============================
+
+Java has a way to restrict further derivation from a class type or
+further overriding of a primitive operation. For instance, given
+
+     public class Base { ... }
+     public final class Deriv extends Base { ... }
+
+it is possible to create subclasses of `Base' but not of `Deriv', since
+`Deriv' is marked `final'. Likewise, given
+
+     public class Base {
+        public       int service_1 () { ... }
+        public final int service_2 () { ... }
+     }
+
+it is possible to override method `service_1' in every subclass of
+`Base', whereas `service_2' cannot be overriden.
+
+   Limiting type derivation and primitive operation overriding is not
+directly possible in Ada. We have therefore chosen for the time being
+to ignore `final' classes and methods (a comment is emitted before them
+but nothing more). If a Java final class is extended or a final method
+overridden in Ada, an exception (or verifier error) will be emitted at
+execution time.
+
+
+File: jgnat_ug.info,  Node: Visibility Issues,  Next: Java Implicit Upcasting in Ada,  Prev: Final Classes and Final Methods,  Up: Mapping Java into Ada
+
+Visibility Issues
+=================
+
+   * A `public' Java class is mapped into a public Ada package spec.
+
+   * A non-public Java class containing `public' nested classes is
+     mapped into an empty Ada package (much in the same way Java
+     packages are mapped into Ada packages). This ensures that the
+     parent Ada package is defined for the child classes.
+
+   * A `public' Java member is mapped into an entity declared in the
+     public part of the corresponding Ada package if all of its
+     parameter and return types refer to a public Java class.
+
+   * A `protected' Java member is mapped into an entity declared in the
+     public part of the corresponding Ada package and treated like a
+     `public' Java member as described in the above bullet point.
+     Because in Ada there is no concept similar to the `protected'
+     qualifier in Java, if you use a protected entity from Ada in a way
+     that is forbidden by the JVM a run-time exception will occur.
+
+   * A `private' Java member corresponds to an Ada entity declared in a
+     package body. `jvm2ada' ignores all such entities.
+
+   * Java entities declared as non-public (i.e. with no Java access
+     qualifiers) are visible only to Java classes belonging to the same
+     Java package and are intended to be accessed only from classes in
+     the same API as `C'.  `jvm2ada' ignores all such entities.
+
+
+File: jgnat_ug.info,  Node: Java Implicit Upcasting in Ada,  Next: Mixing Ada Strings and Java Strings,  Prev: Visibility Issues,  Up: Mapping Java into Ada
+
+Java Implicit Upcasting in Ada
+==============================
+
+Given the following two class definitions:
+
+     public class Base {
+        public static void proc (Base p, Base q) {...}
+     }
+     public class Derived extends Base {...}
+
+Java allows the following code to be written (and Java programmers take
+advantage of the following):
+
+     Base    obj1 = new Base ();
+     Derived obj2 = new Derived ();
+     proc (obj1, obj2);
+
+The implicit conversion from the pointer to the `Derived' type to the
+`Base' type is completely safe and is allowed in Java much as Ada allows
+implicit conversion between similar anonymous access types (in Java
+when you write "`Derived obj2'" you are really saying that `obj2' is a
+pointer to an object of type `Derived' whose pointer type is anonymous).
+If `jvm2ada' mapped class Base into:
+
+     package Base is
+        type Typ;
+        type Ref is access all Typ'class;
+        ...
+        procedure proc (P1 : Base.Ref; P2 : Base.Ref);
+        ...
+     end Base;
+
+The call to `proc' in Ada would have to look like
+
+        obj1 : Base.Ref    := new_Base;
+        obj2 : Derived.Ref := new_Derived;
+        proc (obj1, Base.Ref (obj2));
+
+which is verbose (especially when using real class names) without any
+fundamental reason (writing "`proc (obj1, obj2.all'access)'" would
+hardly be any terser). To address this inconvenience we have used access
+parameters when generating the Ada equivalent to `proc':
+
+     procedure proc (P1 : access Base.Typ'Class;
+                     P2 : access Base.Typ'Class);
+
+allowing us to write:
+
+        obj1 : Base.Ref    := new_Base;
+        obj2 : Derived.Ref := new_Derived;
+        proc (obj1, obj2);
+
+The observant reader will notice that this new mapping into Ada of
+procedure `proc' is not equivalent to the first one since in the case
+of access parameters Ada checks that the parameters are not `null' (and
+an exception will be raised if they are).
+
+   This problem is worked around by disabling the `null' access check
+in package specs imported from Java. Note that this is a temporary
+expedient until a solution to this problem is agreed upon by the ISO
+WG9-sponsored Ada Rapporteur Group (ARG).
+
+
+File: jgnat_ug.info,  Node: Mixing Ada Strings and Java Strings,  Next: An Example,  Prev: Java Implicit Upcasting in Ada,  Up: Mapping Java into Ada
+
+Mixing Ada Strings and Java Strings
+===================================
+
+To facilitate the use of regular Ada strings in Java routines we have
+added the following type definition and subprograms to the body of
+package `java.lang.String' generated by `jvm2ada':
+
+     ---------------------------------------------------
+     -- Java String to Ada String Conversion Routines --
+     ---------------------------------------------------
+     
+     type String_Access is access all Standard.String;
+     function "+" (S : java.lang.String.Ref) return String_Access;
+     function "+" (S : Standard.String) return java.lang.String.Ref;
+
+With the above you can write:
+
+
+     procedure P (JS : java.lang.String.Ref);
+     function  F return java.lang.String.Ref;
+     
+     S_Ptr String_Access := +F;
+     P (+"hello JGNAT");
+
+
+File: jgnat_ug.info,  Node: An Example,  Prev: Mixing Ada Strings and Java Strings,  Up: Mapping Java into Ada
+
+An Example
+==========
+
+As an example consider the following Java class
+
+     package A.B;
+     
+     public class Foo
+       extends    java.awt.event.ComponentAdapter
+       implements java.io.Serializable
+     {
+        //  Instance Variables
+     
+        public int   i_Field;
+        public float f_Filed;
+     
+        //  Constructors
+     
+        public Foo () {}
+        public Foo (java.lang.String s) {}
+     
+        //  Instance Methods
+     
+        public void first_op  (java.lang.Thread t) {}
+        public int  second_op () {return 1;}
+     
+        //  Static Variables
+     
+        public static int   i_Var;
+        public static float f_Var;
+     
+        //  Static Methods
+     
+        public static void proc  (Foo obj, int [] b) {}
+        public static int  funct (Foo [][] a, int l, int h) {return 1;}
+     }
+
+After processing this class using the following `jvm2ada' command
+(JAVA-DIR is the location of Sun's JDK 1.2 installation):
+
+     jvm2ada -LJAVA-DIR/jdk1.2.2/jre/lib/rt.jar Foo.class
+
+we obtain the following Ada spec (comments in italics have been added
+for explanatory purposes):
+
+     pragma Extensions_Allowed (On);
+     with Java; use Java;
+     with java.awt.event.ComponentAdapter;
+     with type java.awt.event.ComponentListener.Ref is access;
+     with type java.io.Serializable.Ref is access;
+     with type java.lang.String.Typ is tagged;
+     with type java.lang.Thread.Typ is tagged;
+     
+     package A.B.Foo is
+        pragma Preelaborate;
+     
+        -----------------------
+        -- Type Declarations --
+        -----------------------
+     
+        type Typ;
+        type Ref is access all Typ'Class;
+     
+        type Arr_Obj is array (Natural range <>) of Ref;
+        type Arr     is access all Arr_Obj;
+     
+        type Arr_2_Obj is array (Natural range <>) of Arr;
+        type Arr_2     is access all Arr_2_Obj;
+     
+        type Arr_3_Obj is array (Natural range <>) of Arr_2;
+        type Arr_3     is access all Arr_3_Obj;
+     
+        type Typ
+           (ComponentListener_I : java.awt.event.ComponentListener.Ref;
+           --  In the Ada mapping all implemented interfaces must appear
+           --  in the list of discriminants. The discriminats corresponding
+           --  to those inherited from the parent type (in this case
+           --  Component_Listener) must be used to constrain the parent
+           --  type in the Ada tagged type definition.
+           Serializable_I : java.io.Serializable.Ref)
+           is new
+              java.awt.event.ComponentAdapter.Typ (ComponentListener_I)
+           with record
+     
+              ------------------------
+              -- Field Declarations --
+              ------------------------
+     
+              i_Field : java.Int;
+              pragma Import (Java, i_Field, "i_Field");
+     
+              f_Filed : java.Float;
+              pragma Import (Java, f_Filed, "f_Filed");
+     
+           end record;
+     
+        ------------------------------
+        -- Constructor Declarations --
+        ------------------------------
+     
+        function new_Foo (This : Ref := null)
+                          return Ref;
+     
+        function new_Foo (P1 : access java.lang.String.Typ'Class;
+                          This : Ref := null)
+                          return Ref;
+     
+        -------------------------
+        -- Method Declarations --
+        -------------------------
+     
+        procedure first_op (This : access Typ;
+                            P1 : access java.lang.Thread.Typ'Class);
+     
+        function funct (P1 : A.B.Foo.Arr_2;
+                        P2 : java.Int;
+                        P3 : java.Int)
+                        return java.Int;
+     
+        procedure proc (P1 : access A.B.Foo.Typ'Class;
+                        P2 : java.Int_Arr);
+     
+        function second_op (This : access Typ)
+                            return java.Int;
+     
+        ---------------------------
+        -- Variable Declarations --
+        ---------------------------
+     
+        i_Var : Java.Int;
+        f_Var : Java.Float;
+     
+     private
+     
+        pragma Convention (Java, Typ);
+        pragma Java_Constructor (new_Foo);
+        pragma Import (Java, first_op, "first_op");
+        pragma Import (Java, funct, "funct");
+        pragma Import (Java, proc, "proc");
+        pragma Import (Java, second_op, "second_op");
+        pragma Import (Java, i_Var, "i_Var");
+        pragma Import (Java, f_Var, "f_Var");
+     
+     end A.B.Foo;
+     pragma Import (Java, A.B.Foo, "A.B.Foo");
+     pragma Extensions_Allowed (Off);
+
+The following code shows you how to use `Foo''s services in your code.
+
+
+     with java.lang.String; use java.lang.String;
+     with A.B.Foo; use A.B.Foo;
+     use Java;
+     
+     procedure Client is
+        O  : Foo.Ref   := new_Foo (+"hello there");
+        AO : Foo.Arr_2 :=
+           new Foo.Arr_2_Obj
+             (0 .. 9 =>
+                new Foo.Arr_Obj (0 .. 3 => new_Foo));
+        I  : int       := funct (A, A'Last, 7);
+        AI : Java.Int_Arr := new Java.Int_Arr_Obj (0 .. 5);
+     begin
+        proc (O, AI);
+     end Client;
+
+
+File: jgnat_ug.info,  Node: Creating Gnapplets with JGNAT,  Next: Debugging Ada Programs,  Prev: Mapping Java into Ada,  Up: (dir)
+
+Creating Gnapplets with JGNAT
+*****************************
+
+This chapter explains how you can use JGNAT to create a "gnapplet"
+(GNAT applet).
+
+* Menu:
+
+* Extending java.applet.Applet.Typ::
+* Initializing and Finalizing the JGNAT Runtime::
+* Compiling the Gnapplet::
+* Creating the HTML file::
+
+The examples provided with your JGNAT installation contain a couple of
+gnapplet examples. This chapter explains the steps that you need to take
+to create your own gnapplets.
+
+
+File: jgnat_ug.info,  Node: Extending java.applet.Applet.Typ,  Next: Initializing and Finalizing the JGNAT Runtime,  Prev: Creating Gnapplets with JGNAT,  Up: Creating Gnapplets with JGNAT
+
+Extending `java.applet.Applet.Typ'
+==================================
+
+The first thing you need to do to create an applet is to extend
+`java.Applet.Applet.Typ' as shown in the followng example:
+
+     with java; use java;
+     with java.applet.Applet;
+     with java.awt.Graphics;
+     
+     package Animate is
+        --  Typ implements the same interfaces as Applet.Typ and no
+        --  new interfaces, so we do not need to add discriminants to the
+        --  type definition below.
+     
+        type Typ is new java.applet.Applet.Typ with record
+           Count : Integer;
+        end record;
+        type Ref is access all Typ'Class;
+     
+        procedure Init    (This : access Typ);
+        procedure Start   (This : access Typ);
+        procedure Stop    (This : access Typ);
+        procedure Destroy (This : access Typ);
+     
+     private
+        pragma Convention (Java, Typ);
+     end Animate;
+
+In addition to extending `java.applet.Applet.Typ', some functions from
+`java.applet.Applet' need to be overridden, namely:
+
+        procedure Init (This : access Typ);
+        --  This function is called the first time the JVM initializes the
+        --  the applet. This is where you should put your own initializations
+        --  as well as the call to the elaboration code for the Ada runtime
+        --  library, as shown in the next section.
+     
+        procedure Start (This : access Typ):
+        procedure Stop  (This : access Typ);
+        --  These routines are called when your applet starts or stops
+        --  running (e.g., when it becomes visible to the user,
+        --  or when the user moves to another page)
+     
+        procedure Destroy (This : access Typ);
+        --  Called by the browser or applet viewer to inform this applet
+        --  that it is being reclaimed and that it should destroy any
+        --  resources that it has allocated. The stop method will always
+        --  be called before destroy.
+        --  A subclass of Applet should override this method if it has
+        --  any operation that it wants to perform before it is destroyed.
+
+In addition you may want to override the following two methods:
+
+       procedure Paint (This     : access Typ;
+                        Graphics : access Java.Awt.Graphics.Typ'Class);
+       --  Called every time the applet needs to be repainted.
+       --  Every drawing should be done on Graphics. See the Java API
+       --  documentation for more info.
+     
+       procedure Update (This : access Typ;
+                         G    : access java.awt.Graphics.Typ'Class);
+       --  The AWT calls this method in response to a call to
+       --  repaintupdate or paint. See the Java API
+       --  documentation for more info.
+
+
+File: jgnat_ug.info,  Node: Initializing and Finalizing the JGNAT Runtime,  Next: Compiling the Gnapplet,  Prev: Extending java.applet.Applet.Typ,  Up: Creating Gnapplets with JGNAT
+
+Initializing and Finalizing the JGNAT Runtime
+=============================================
+
+When writing the code for your gnapplet you must remeber to initialize
+the JGNAT runtime upon startup of your applet. You must also remember to
+finalize the JGNAT runtime upon destruction of your applet. This is easy
+to do: you just need to call the routine `Adainit' in method `Init' and
+the routine `Adafinal' in method `Destroy'.  As usual `Adainit' and
+`Adafinal' have been generated by `jgnatbind' if switch `-n' is
+selected.
+
+   The only additional thing you need to know is the name of the class
+file where `jgnatbind' generates these routines. The name of this class
+file is `ada_'GNAPPLET-NAME, where GNAPPLET-NAME is the name of the
+gnapplet package where `java.applet.Applet.Typ' was derived.
+
+   As an example here is the body of methods `Init' and `Destroy' of
+the `Animate' gnapplet example given in the previous section:
+
+     package body Animate is
+        ...
+        procedure Init (This : access Typ) is
+           procedure Adainit;
+           pragma Import (Ada, Adainit, "ada_animate.adainit");
+        begin
+           Adainit;
+           --  other initializations go here, after the call to Adainit
+        end Init;
+     
+        procedure Destroy (This : access Typ) is
+           procedure Adafinal;
+           pragma Import (Ada, Adafinal, "ada_animate.adafinal");
+        begin
+           --  other finalizations go here, before the call to Adafinal
+           Adafinal;
+        end Destroy;
+        ...
+     end Animate
+
+
+File: jgnat_ug.info,  Node: Compiling the Gnapplet,  Next: Creating the HTML file,  Prev: Initializing and Finalizing the JGNAT Runtime,  Up: Creating Gnapplets with JGNAT
+
+Compiling the Gnapplet
+======================
+
+Once you have written your gnapplet, you need to compile it.  This is
+done in the usual fashion, except for the fact that because there is no
+main program you need to call the binder and the linker by hand. As an
+example, to compile the gnapplet given in package `Animate' given in
+the previous example you can type:
+
+         $ jgnatmake animate
+         $ jgnatbind -n animate.ali
+         $ jgnatlink animate.ali
+         $ jarmake -o animate.jar animate$typ.class
+
+The `jarmake' command is particularly important for packaging all the
+`.class' files needed by your gnapplet in a single zip archive.
+
+
+File: jgnat_ug.info,  Node: Creating the HTML file,  Prev: Compiling the Gnapplet,  Up: Creating Gnapplets with JGNAT
+
+Creating the HTML file
+======================
+
+The last step before running your gnapplet is to create an HTML file
+that will be loaded into your viewer or browser. This HTML file should
+include a special tag that indicates where you want to run your applet,
+and what size its allotted window should be. The `WIDTH' and `HEIGHT'
+parameters below are mandatory.  The `ARCHIVE' parameter is only
+required when you created a zip archive (as you did above with
+`jarmake'). As an example, a minimal html file for the previous example
+could be:
+
+         <html><head></head></head>
+         <body>
+           <APPLET CODE="animate$typ.class"
+            ARCHIVE="animate.jar"
+            WIDTH=200 HEIGHT=200> </APPLET>
+         </body> </html>
+
+
+File: jgnat_ug.info,  Node: Debugging Ada Programs,  Next: Index,  Prev: Creating Gnapplets with JGNAT,  Up: (dir)
+
+Debugging Ada Programs
+**********************
+
+Because JGNAT generates class files that are fully compliant with Sun's
+JVM standard, you can use any JVM debugger, such as Sun's `jdb', with
+JGNAT.  As a side note, there are several graphical interfaces to
+`jdb'. You can use GLIDE (the GNAT IDE), or you can use DDD.
+
+   The minor drawback of using a JVM debugger directly is that for
+those Ada constructs that are not directly available in the Java
+programming language (e.g. attributes), you need to know how JGNAT
+compiles these into bytecode in order to retrieve their value.
+
+   The purpose of this chapter is precisely to explain how the JGNAT
+compiler compiles Ada contructs into bytecode so that you can use any
+Java debugger on your Ada application.
+
+   Note that this chapter is not yet complete. If you need to
+understand what the JGNAT compiler generates for a particular Ada
+construct which is not documented below, we suggest running the command
+`jvmlist -g' on the generated JVM `.class' files.
+
+* Menu:
+
+* Ada Compilation Units and JVM Class Files::
+* Lexical Elements::
+* Enumeration Types::
+* Integer Types::
+* Floating Point Types::
+
+
+File: jgnat_ug.info,  Node: Ada Compilation Units and JVM Class Files,  Next: Lexical Elements,  Prev: Debugging Ada Programs,  Up: Debugging Ada Programs
+
+Ada Compilation Units and JVM Class Files
+=========================================
+
+Unless pragma `Export' is used (*note Pragma Export Java::.), lower-case
+letters are used for the names of all JVM class files generated from the
+compilation of an Ada unit. Likewise, the names of all of the entities
+generated inside a class file are lower-case.
+
+   The compilation of a nongeneric Ada library unit P always generates
+a JVM class file (`p.class'). In addition to the class file `p.class',
+separate class files are emitted for each nested exception, record
+type, and tagged type declared in unit P.  More specifically:
+
+   * A subprogram library unit `P' is compiled into a JVM class file
+     `p.class' containing all the objects and nondispatching operations
+     defined inside `P'.
+
+   * The specification and body of a library package `P' are compiled
+     into a single JVM class file `p.class' containing all of the
+     objects and nondispatching operations defined in the spec or body
+     of `P'.
+
+   * Any tagged or untagged record type `R' declared inside a package or
+     subprogram `P' is treated like a static inner class in Java, that
+     is, a new JVM class `p$r.class' is generated containing `R''s
+     fields as instance variables, and, if `R' is a tagged type, its
+     associated dispatching operations.
+
+   * A package `Q' nested inside an Ada unit `P' does not result in a
+     separate class. Entities declared within the nested package will
+     generally be associated as members of the containing library
+     package's class (except in the case of exceptions or type
+     declarations that, as usual, result in their own class). However,
+     the names of the corresponding fields and methods resulting from
+     the nested package will be given expanded names that include the
+     name of the outermost library package followed by the names of any
+     enclosing nested packages, and where adjacent pairs of simple
+     names in the expanded are separated by dollar sign characters
+     (e.g., `p$q$proc').
+
+   * A child unit `P.Q' is compiled into the JVM class file
+     `p$q.class'. All the rules described here are applied recursively
+     with respect to `Q''s contents.
+
+   * A generic package instantiation `R' nested inside an Ada unit `P'
+     is treated exactly like a nested package.
+
+   * A generic subprogram instantiation `S' nested inside an Ada unit
+     `P' treated exacly like a nested subprogram.
+
+   * An Ada exception `E' declared inside an Ada unit `P' is treated
+     like a member class in Java and is compiled into JVM class
+     `p$e.class'.
+
+   * A task type or protected type T nested inside an Ada unit `P' is
+     compiled into JVM class file `p$t.class'.
+
+   * A subprogram `N' nested inside another subprogram `P' will be
+     treated as a static method of the enclosing library unit's class
+     and will be given an expanded name that includes the names of any
+     enclosing subprograms (e.g., `pkg$p$n'). In addition, a special
+     class will be generated for the nested subprogram's enclosing
+     subprogram to contain fields for any objects of the enclosing
+     subprogram that are referenced by the nested subprogram. The name
+     of this special Activation Record class is constructed by
+     appending the prefix `__AR_' to the name of the enclosing
+     subprogram (e.g., `__AR_pkg$p').
+
+   * Any other Ada type or construct `X' occurring inside an Ada unit
+     `P' that needs to generate a standalone JVM class will be compiled
+     into `p$x.class'.
+
+As an example, the compilation of the following package:
+
+     package Outer is
+        package Nested is
+           type Typ is tagged record
+              Field : Integer;
+           end record;
+     
+           E : exception
+        end Nested;
+     
+        type Rec is record
+          X : Float;
+        end record;
+     end Outer;
+
+yields the following JVM class files: `outer.class',
+`outer$nested$typ.class',
+`outer$nested$e.class', `outer$rec.class'.
+
+
+File: jgnat_ug.info,  Node: Lexical Elements,  Next: Enumeration Types,  Prev: Ada Compilation Units and JVM Class Files,  Up: Debugging Ada Programs
+
+Lexical Elements
+================
+
+All Ada identifiers are mapped into the corresponding lower case
+identifiers when generating symbolic references for the JVM, unless
+`pragma Export' is used (but note that certain names corresponding to
+internal entities generated by the GNAT front end may inlude upper-case
+letters).
+
+
+File: jgnat_ug.info,  Node: Enumeration Types,  Next: Integer Types,  Prev: Lexical Elements,  Up: Debugging Ada Programs
+
+Enumeration Types
+=================
+
+An Ada enumeration type is converted into a Java 1-byte, 2-byte, 4-byte
+or 8-byte integer whose size best matches the value of the largest
+enumeration literal.
+
+   Character types are treated like regular Ada enumeration types. More
+specifically, an Ada `Character' type is mapped into a Java `byte',
+whereas an Ada `Wide_Character' type is mapped onto the equivalent
+2-byte Java `char' type.
+
+   An Ada boolean type is treated like a standard Ada enumeration type
+with 2 values and is consequently mapped into a Java `byte'.
+
+
+File: jgnat_ug.info,  Node: Integer Types,  Next: Floating Point Types,  Prev: Enumeration Types,  Up: Debugging Ada Programs
+
+Integer Types
+=============
+
+Each signed integer type is mapped into the smallest corresponding JVM
+integer type whose size is able to represent all required integer
+values:
+
+           Short_Short_Integer  is mapped into  byte  (1 byte)
+           Short_Integer         "    "     "   short (2 bytes)
+           Integer               "    "     "   int   (4 bytes)
+           Long_Integer          "    "     "   long  (8 bytes)
+           Long_Long_Integer     "    "     "   long  (8 bytes)
+
+Each modular type is also mapped into the smallest corresponding Java
+integer type whose size is able to represent all required modular
+values.
+
+
+File: jgnat_ug.info,  Node: Floating Point Types,  Prev: Integer Types,  Up: Debugging Ada Programs
+
+Floating Point Types
+====================
+
+The Ada predefined floating point types map very naturally onto Java's
+IEEE 32-bit float and IEEE 64-bit double:
+
+           Short_Float     is mapped into  float  (4 bytes)
+           Float            "    "     "   float  (4 bytes)
+           Long_Float       "    "     "   double (8 bytes)
+           Long_Long_Float  "    "     "   double (8 bytes)
+
+User-defined floating point types are mapped into `Float' where
+possible, and `Long_Float' otherwise.
+
+
+File: jgnat_ug.info,  Node: Index,  Prev: Debugging Ada Programs,  Up: (dir)
+
+Index
+*****
+
+* Menu:
+
+* -c (jvm2ada):                          Switches for jvmlist.
+* -I (jvm2ada):                          Switches for jvm2ada.
+* -j (jarmake):                          Switches for jarmake.
+* -k (jarmake):                          Switches for jarmake.
+* -k (jvm2ada):                          Switches for jvm2ada.
+* -L (jarmake):                          Switches for jarmake.
+* -L (jvm2ada):                          Switches for jvm2ada.
+* -n (jarmake):                          Switches for jarmake.
+* -o (jarmake):                          Switches for jarmake.
+* -o (jvm2ada):                          Switches for jvm2ada.
+* -q (jarmake):                          Switches for jarmake.
+* -q (jvm2ada) <1>:                      Switches for jvmlist.
+* -q (jvm2ada) <2>:                      Switches for jvm2ada.
+* -q (jvm2ada) <3>:                      Switches for jvmstrip.
+* -q (jvm2ada):                          Switches for jvmlist.
+* -s (jvm2ada):                          Switches for jvm2ada.
+* -v (jarmake):                          Switches for jarmake.
+* -v (jvm2ada):                          Switches for jvm2ada.
+* -w (jvm2ada):                          Switches for jvm2ada.
+* Conventions:                           Conventions.
+* jarmake:                               Building Archives with jarmake.
+* jvm2ada:                               Using the Java API with jvm2ada.
+* jvmlist:                               Viewing Class Files with jvmlist.
+* jvmstrip:                              Stripping Debug Info with jvmstrip.
+* Typographical conventions:             Conventions.
+
+

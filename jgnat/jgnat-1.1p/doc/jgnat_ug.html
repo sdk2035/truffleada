@@ -1,0 +1,3748 @@
+<p><hr>[ Next: <a rel=next href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>
+ | Previous: <a rel=previous href="#Top">Top</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="About%20This%20Guide">About This Guide</a></h1>
+
+<p>This guide describes the features and the use of JGNAT, the Ada 95
+development environment for the Java platform. This guide also explains
+how to use the Java API from Ada and how to interface Ada and the Java
+programming language.
+
+<p>Please note that, unless you are using GLIDE (the GNAT IDE), all JGNAT
+tools are command-line tools. This means that they must be invoked from
+the shell (UNIX) or DOS window (Microsoft Windows).
+
+<p>Please consult file <code>jgnat-1.1p-README.txt</code> for JGNAT
+installation information. The section "Problem Reports" in that file
+explains how to report problems that you may find in JGNAT.
+
+<p>Before reading this manual you should be familiar with the <cite>GNAT
+User Guide</cite> as a thorough understanding of the concepts and notions
+explained there is needed to use JGNAT effectively.
+
+<ul>
+<p>
+<li><a href="#What%20This%20Guide%20Contains">What This Guide Contains</a>:
+
+<p><li><a href="#What%20you%20should%20know%20before%20reading%20this%20guide">What you should know before reading this guide</a>: 
+<p>
+<li><a href="#Related%20Information">Related Information</a>:
+
+<p><li><a href="#Conventions">Conventions</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#What%20you%20should%20know%20before%20reading%20this%20guide">What you should know before reading this guide</a>
+ | Previous: <a rel=previous href="#About%20This%20Guide">About This Guide</a>
+ | Up: <a rel=up href="#About%20This%20Guide">About This Guide</a>
+ ]<p>
+
+<h2><a name="What%20This%20Guide%20Contains">What This Guide Contains</a></h2>
+
+<p>This guide contains the following chapters:
+
+<ul>
+</p><li>[<a href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>], gives an overview of JGNAT and its
+tools and explains how to compile and run your first Ada program for the
+Java platform.
+
+</p><li>[<a href="#Ada%20&amp;%20Java%20Interoperability">Ada &amp; Java Interoperability</a>] explains how the Java API and the
+services of any JVM class can be used from Ada. This section also explains
+how Ada services can be exported to Java programmers.
+
+</p><li>[<a href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>], describes <code>jvmlist</code>, a
+utility to disassemble a JVM <code>.class</code> file to view its contents:
+bytecode, contant pool (i.e. symbol table), debugging info, etc. This
+utility can also embed the original source code into the assembly listing.
+
+</p><li>[<a href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>], describes <code>jvmstrip</code> a
+utility that strips a <code>.class</code> file, removing all of its debugging
+info to reduce the file size.
+
+</p><li>[<a href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>], describes the <code>jarmake</code> tool to
+make a single <code>.jar</code> file for an application built with JGNAT. This is
+useful when you want to ship a self-contained application built with JGNAT
+to someone who does not have JGNAT installed. This tool is very useful
+useful when creating "gnapplets" (GNAT applets, see [<a href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>]).
+
+</p><li>[<a href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>], describes the <code>jvm2ada</code>
+interfacing tool that takes any JVM <code>.class</code>, <code>.zip</code> or
+<code>.jar</code> files as input and generates Ada package specs as output. The
+resulting Ada specs can be used by Ada programs to interface to Java.
+
+</p><li>[<a href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>] explains some special pragmas that have been
+introduced to support certain aspects of interfacing between Ada and Java.
+
+</p><li>[<a href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>] gives details on how the Java API and, in
+general, any Java class spec is mapped into an Ada package specification by
+the <code>jvm2ada</code> tool.
+
+</p><li>[<a href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>], explains how you can create
+"gnapplets" (GNAT applets).
+
+</p><li>[<a href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>], describes how to run and
+debug Ada programs. 
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Related%20Information">Related Information</a>
+ | Previous: <a rel=previous href="#What%20This%20Guide%20Contains">What This Guide Contains</a>
+ | Up: <a rel=up href="#About%20This%20Guide">About This Guide</a>
+ ]<p>
+
+<h2><a name="What%20you%20should%20know%20before%20reading%20this%20guide">What You Should Know Before Reading This Guide</a></h2>
+
+<p>Before reading this document readers should be familiar with the
+<cite>GNAT User Guide</cite> and have a conceptual understanding of the Java
+technology.
+
+<p><hr>[ Next: <a rel=next href="#Conventions">Conventions</a>
+ | Previous: <a rel=previous href="#What%20you%20should%20know%20before%20reading%20this%20guide">What you should know before reading this guide</a>
+ | Up: <a rel=up href="#About%20This%20Guide">About This Guide</a>
+ ]<p>
+
+<h2><a name="Related%20Information">Related Information</a></h2>
+
+<p>For further information about GNAT, Ada 95, and the Java technology,
+we recommend consulting the following documents:
+
+<ul>
+</p><li><cite>GNAT User Guide</cite>, contains introductory and reference material
+for the GNAT development environemnt.
+
+</p><li><cite>Ada 95 Language Reference Manual</cite>, contains all reference material
+for the Ada 95 programming language.
+
+</p><li><cite>The Java Tutorial: Object-Oriented Programming for the Internet</cite>,
+2nd edition, by Mary Campione and Kathy Walrath, published by Addison
+Wesley.
+
+</p><li><cite>The Java Virtual Machine Specification</cite>, by Tim Lindholm and Frank
+Yellin, published by Addison Wesley. 
+</ul>
+
+<p><hr>[ Previous: <a rel=previous href="#Related%20Information">Related Information</a>
+ | Up: <a rel=up href="#About%20This%20Guide">About This Guide</a>
+ ]<p>
+
+<h2><a name="Conventions">Conventions</a></h2>
+
+<p>Following are examples of the typographical and graphic conventions used
+in this guide:
+
+<ul>
+</p><li><code>source code</code>, and <code>utility program names</code>.
+
+</p><li><code>Option flags</code>.
+
+</p><li><code>File Names</code>.
+
+</p><li><var>Variables</var>.
+
+</p><li><em>Emphasis</em>.
+
+</p><li>[optional information or parameters]
+
+</p><li>Examples are described by text
+<pre>
+and then shown this way.
+</pre>
+</ul>
+
+<p>Commands that are entered by the user are preceded in this manual by the
+"<code>$ </code>" characters (dollar sign followed by space). If your system uses
+this sequence as a prompt, then the commands will appear exactly as you see
+them in the manual. If your system uses some other prompt, then the command
+will appear with the <code>$</code> replaced by whatever prompt character you are
+using.
+
+<p><hr>[ Next: <a rel=next href="#Ada%20&amp;%20Java%20Interoperability">Ada &amp; Java Interoperability</a>
+ | Previous: <a rel=previous href="#About%20This%20Guide">About This Guide</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a></h1>
+
+<ul>
+<p>
+<li><a href="#Overview">Overview</a>:
+
+<p><li><a href="#JGNAT%20Tools">JGNAT Tools</a>: 
+<p>
+<li><a href="#Java%20Development%20Kits%20that%20you%20can%20use%20with%20JGNAT">Java Development Kits that you can use with JGNAT</a>:
+
+<p><li><a href="#Compiling%20Your%20First%20Application%20with%20JGNAT">Compiling Your First Application with JGNAT</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#JGNAT%20Tools">JGNAT Tools</a>
+ | Previous: <a rel=previous href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>
+ | Up: <a rel=up href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>
+ ]<p>
+
+<h2><a name="Overview">Overview</a></h2>
+
+<p>The Java(TM) technology, introduced by Sun Microsystems, is a paradigm
+whose goal is to add platform-independent programming flexibility to
+Internet, Intranet and Extranet applications, embedded devices such as
+Internet appliances, consumer electronics, smart cards, etc.
+
+<p>The Java technology comprises, a simple object-oriented programming
+language (Java), a comprehensive set of libraries (Java API), and
+a virtual machine (JVM) offering the same object code interface on
+all platforms (bytecode).
+
+<p>Although the Java environment comes with a default programming language,
+this language is not a fundamental component of the technology. Any
+programming language that can be mapped onto the JVM can be used to
+develop Java applications.
+
+<p>The JGNAT system offers a complete Ada 95 programming environment for
+the Java platform. In addition to a bytecode compiler, binder and
+linker, JGNAT comprises a Java-to-Ada 95 binding generator which produces
+the Ada 95 specs of the services contained in any Java <code>.class</code>
+file or API.  In addition to all of the conventional GNAT tools, a
+bytecode disassembler and a <code>.class</code> file stripper are also
+provided with JGNAT.
+
+<p>Furthermore, because the <code>.class</code> files generated by the JGNAT
+compiler are fully compliant with Sun's standard, the user can employ
+any JVM to run Ada applications, any JVM debugger to debug Ada
+code, and can use any of the Java tools that operate on <code>.class</code>
+files (e.g. <code>jar</code>, <code>javap</code>, etc.).
+
+<p>As a side note, the JGNAT system is implemented in Ada 95 and its sources
+are available under the GPL.
+
+<p><hr>[ Next: <a rel=next href="#Java%20Development%20Kits%20that%20you%20can%20use%20with%20JGNAT">Java Development Kits that you can use with JGNAT</a>
+ | Previous: <a rel=previous href="#Overview">Overview</a>
+ | Up: <a rel=up href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>
+ ]<p>
+
+<h2><a name="JGNAT%20Tools">JGNAT Tools</a></h2>
+
+<p>Most JGNAT tools are regular GNAT tools that have been slightly adapted
+for use with JGNAT. They are used in the same fashion as their
+corresponding GNAT equivalent. These tools are:
+
+<ul>
+</p><li><code>jgnat</code>: the JGNAT compiler, compiles an Ada unit into one or more JVM
+<code>.class</code> files.
+
+</p><li><code>jgnatbind</code>: the JGNAT binder, generates an Ada source file
+containing the elaboration code for the Ada application to run.
+
+</p><li><code>jgnatlink</code>: the JGNAT linker, compiles the source file generated
+by <code>jgnatbind</code>. <code>jgnatlink</code> provides no linking capabilities
+since the linker is directly embedded into the JVM.  To gather the
+<code>.class</code> files of an application into a single file, one can use
+the <code>zip</code> or <code>jar</code> commands provided with your Java Development
+Kit.
+
+</p><li><code>jgnatmake</code>: the JGNAT automatic make program, automatically
+determines the set of sources needed by an Ada compilation unit, and
+executes the necessary compilations, binding, and link.
+
+</p><li><code>jgnatls</code>: the JGNAT library browser, displays information about
+compiled units, including dependences on the corresponding sources
+files, and consistency of compilations.
+
+</p><li><code>jgnatfind</code>: the JGNAT find utility, provides an easy way to locate
+the declaration and references for an Ada entity.
+
+</p><li><code>jgnatxref</code>: the JGNAT cross-referencer, allows you to generate a
+full report of all cross-references in a given set of Ada units.
+
+</p><li><code>jgnatpsta</code>: the JGNAT utility to print the JGNAT version of package
+Standard. 
+</ul>
+
+<p>The GNAT tools that are completely target independent (such as
+<code>gnatchop</code>, <code>gnatprep</code>, <code>gnatelim</code>, etc.) have not been
+provided with JGNAT since they are available in the regular GNAT
+installation and you can use them directly.
+
+<p>Please note that, unless you are using GLIDE (the GNAT IDE), all JGNAT
+tools are command-line tools. This means that they must be invoked from the
+shell (UNIX) or DOS window (Microsoft Windows).
+
+<p>The JGNAT tools which have been specifically developed for JGNAT are:
+
+<ul>
+</p><li><code>jvmlist</code>: The JGNAT disassembler, (see [<a href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>]) disassembles a JVM <code>.class</code> file to view its contents:
+bytecode, constant pool (i.e., symbol table), debugging info, etc. This
+utility will also embed the original source code into the assembly listing. 
+This utility is independent of the original programming language and works
+equally well on programs containing a mixture of Ada and Java code.
+
+</p><li><code>jvmstrip</code>: The JGNAT strip utility, (see [<a href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>]) is a utility that strips a <code>.class</code> file, removing all
+of its debugging info to reduce file size. This tool is also
+programming-language independent.
+
+</p><li><code>jarmake</code>: The JGNAT archiver tool, (see [<a href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>]) takes <code>.class</code> files as input and recursively collects into
+an uncompressed zip archive all the <code>.class</code> files needed by the
+<code>.class</code> files specified on the command line. This tool can be used to
+prepare self-standing applications or gnapplets that you can ship.  This
+tool is programming-language independent.
+
+</p><li><code>jvm2ada</code>: The JGNAT interfacing tool, (see [<a href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>]) takes <code>.class</code> files, or zip archives as input and generates
+Ada package specifications as output. The resulting Ada package specs can be
+<code>with</code>-ed by Ada programs to interface to Java services. 
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Compiling%20Your%20First%20Application%20with%20JGNAT">Compiling Your First Application with JGNAT</a>
+ | Previous: <a rel=previous href="#JGNAT%20Tools">JGNAT Tools</a>
+ | Up: <a rel=up href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>
+ ]<p>
+
+<h2><a name="Java%20Development%20Kits%20that%20you%20can%20use%20with%20JGNAT">Java Development Kits that you can use with JGNAT</a></h2>
+
+<p>Because JGNAT generates class files that are fully compliant with Sun's JVM
+standard, you can use any Java Virtual Machine and bytecode tools that meet
+the Sun Java platform standard.
+
+<p><hr>[ Previous: <a rel=previous href="#Java%20Development%20Kits%20that%20you%20can%20use%20with%20JGNAT">Java Development Kits that you can use with JGNAT</a>
+ | Up: <a rel=up href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>
+ ]<p>
+
+<h2><a name="Compiling%20Your%20First%20Application%20with%20JGNAT">Compiling Your First Application with JGNAT</a></h2>
+
+<p>Before trying out JGNAT, make sure you first read the section on
+installing JGNAT in the file <code>jgnat-1.1p-README.txt</code>,
+which explains about setting the variables PATH and CLASSPATH
+on your system.
+
+<p>To compile the following "<code>Hello JGNAT</code>" program put the following in
+file <code>hello.adb</code>:
+
+<pre>
+with Ada.Text_IO; use Ada.Text_IO;
+procedure Hello is
+begin
+   Put_Line ("Hello JGNAT.");
+end Hello;
+</pre>
+
+<p>then type:
+
+<pre>
+$ jgnatmake hello
+</pre>
+
+<p>This command will generate file <code>hello.class</code>. To run it,
+assuming you are using Sun's JDK (Java Development Kit), you can
+just type
+
+<pre>
+$ java hello
+</pre>
+
+<p>It's as simple as that. To compile more complex Ada applications use
+<code>jgnatmake</code> as usual. If you want to use the JGNAT compiler, binder,
+and linker separately, you will need to individually invoke the appropriate
+<code>jgnat</code>, <code>jgnatbind</code> and <code>jgnatlink</code> commands.
+
+<p><hr>[ Next: <a rel=next href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>
+ | Previous: <a rel=previous href="#Getting%20Started%20with%20JGNAT">Getting Started with JGNAT</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Ada%20&amp;%20Java%20Interoperability">Ada &amp; Java Interoperability</a></h1>
+
+<p>One aspect of Java that makes it an interesting platform is its growing
+set of API classes. It is therefore fundamental that the API be made
+available to the Ada programmer transparently. It is also important that
+the Ada programmer be able to write libraries or APIs for the Java platform
+in Ada, and that these libraries be easily usable in any Java application. 
+JGNAT guarantees full interoperability between Ada and Java.
+
+<p>To achieve this goal, constructs that can appear in a Java class at the
+specification level are mapped to Ada either by means of a corresponding
+Ada feature or by using an implementation-defined Ada pragma.
+
+<p>In addition we have taken great care that the mapping from Java to Ada is
+completely automatic. This means that JGNAT comes with no Ada bindings
+for the Java API, but instead provides a tool (see [<a href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>]) which is able to produce Ada specifications from any set
+of JVM <code>.class</code> files.
+
+<ul>
+<p>
+<li><a href="#Importing%20Java%20Services%20to%20Ada">Importing Java Services to Ada</a>:
+
+<p><li><a href="#Exporting%20Ada%20Services%20to%20Java">Exporting Ada Services to Java</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Exporting%20Ada%20Services%20to%20Java">Exporting Ada Services to Java</a>
+ | Previous: <a rel=previous href="#Ada%20&amp;%20Java%20Interoperability">Ada &amp; Java Interoperability</a>
+ | Up: <a rel=up href="#Ada%20&amp;%20Java%20Interoperability">Ada &amp; Java Interoperability</a>
+ ]<p>
+
+<h2><a name="Importing%20Java%20Services%20to%20Ada">Importing Java Services to Ada</a></h2>
+
+<p>To access the services provided by the Java API or by any set of
+JVM <code>.class</code> files, you should proceed as follows:
+
+<ol>
+</p><li>If your Java code is in source form, compile it using any Java compiler.
+
+</p><li>If you just want to import a variable or a subprogram from a Java class
+use <code>pragma Import</code> (see [<a href="#Pragma%20Import%20Java">Pragma Import Java</a>]) in the Ada code
+where you want to import the Java service.
+
+</p><li>More generally, you can use the <code>jvm2ada</code> utility to produce the Ada
+specs (containing the appropriate Java-specific pragmas) for the <code>.class</code>,
+<code>.zip</code>, or <code>.jar</code> files containing the Java services you would
+like to use from Ada (see [<a href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>]). Note that
+<code>jvm2ada</code> preserves, in the generated Ada specs, the names of the
+original Java services (for a detailed explanation of the Java to Ada
+mapping see [<a href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>]).
+
+</p><li><code>with</code> the needed Ada specs and use their services as usual.
+</ol>
+
+<p>It's as simple as that.
+
+<p><hr>[ Previous: <a rel=previous href="#Importing%20Java%20Services%20to%20Ada">Importing Java Services to Ada</a>
+ | Up: <a rel=up href="#Ada%20&amp;%20Java%20Interoperability">Ada &amp; Java Interoperability</a>
+ ]<p>
+
+<h2><a name="Exporting%20Ada%20Services%20to%20Java">Exporting Ada Services to Java</a></h2>
+
+<p>To export a set of Ada services to Java you should:
+
+<ol>
+</p><li>Use <code>pragma Export</code> and other Java interfacing pragmas inside the Ada
+code (see [<a href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>]). This gives you complete control of
+what is being generated and allows you to decide very precisely what the
+exported services look like on the Java side.
+
+</p><li>Compile your Ada code with the JGNAT compiler.
+
+</p><li>Use <code>javap</code> to display the spec of the <code>.class</code> files generated
+by JGNAT whose services you would like to use in your Java code.
+</ol>
+
+<p><hr>[ Next: <a rel=next href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>
+ | Previous: <a rel=previous href="#Ada%20&amp;%20Java%20Interoperability">Ada &amp; Java Interoperability</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with <code>jvmlist</code></a></h1>
+
+<p>The <code>jvmlist</code> tool takes JVM <code>.class</code> files as input (directly or
+regrouped in an uncompressed <code>.zip</code> or <code>.jar</code> file) and
+disassembles it to view its contents: bytecode, constant pool (i.e., symbol
+table), debugging info, etc. This utility can also embed the original source
+code in the assembly listing.  <code>jvmlist</code> is independent of the original
+programming language and works equally well on programs containing a mixture
+of Ada and Java code.
+
+<ul>
+<p>
+<li><a href="#Running%20jvmlist">Running jvmlist</a>:
+
+<p><li><a href="#Switches%20for%20jvmlist">Switches for jvmlist</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Switches%20for%20jvmlist">Switches for jvmlist</a>
+ | Previous: <a rel=previous href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>
+ | Up: <a rel=up href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>
+ ]<p>
+
+<h2><a name="Running%20jvmlist">Running jvmlist</a></h2>
+
+<p>The form of the <code>jvmlist</code> command is
+
+<pre>
+jvmlist [<var>switches</var>] <var>file</var> [<var>file</var> ... <var>file</var>]
+</pre>
+
+<p>where <var>file</var> can be one of the following:
+
+<ul>
+</p><li>the name of a <code>.class</code> file (possibly without the <code>.class</code> suffix);
+
+</p><li>the name of an uncompressed zip archive (in this case the <code>jvmlist</code>
+command applies to all <code>.class</code> files within the archive);
+
+</p><li>the name of a <code>.class</code> file within an uncompressed zip archive <br>
+(e.g. <code>rt.jar/java/lang/Object.class</code>). 
+</ul>
+
+<p>File names can be prefixed with directory information.
+
+<p>The output of <code>jvmlist</code> contains a listing of all the fields and methods
+declared inside the <code>.class</code> file, in addition to various other class
+information such as the class it extends, the interfaces it implements, etc.
+
+<p>If you select switch <code>-c</code>, then <code>jvmlist</code> will also print the
+bytecode for each method. The bytecode mnemonics used by <code>jvmlist</code>
+are the same as those documented in Sun's JVM book <i>The Java Virtual
+Machine Specification</i> by Lindholm and Yellin. If you select switch <code>-c</code>,
+<code>jvmlist</code> will also embed the original source code in the bytecode. 
+For now, <code>jvmlist</code> only looks for source files in the current directory.
+
+<p><hr>[ Previous: <a rel=previous href="#Running%20jvmlist">Running jvmlist</a>
+ | Up: <a rel=up href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>
+ ]<p>
+
+<h2><a name="Switches%20for%20jvmlist">Switches for jvmlist</a></h2>
+
+<p>The following switches are available with the <code>jvmlist</code> utility:
+
+<dl compact>
+<dt><code>-c</code>
+<dd>Display bytecode. By default <code>jvmlist</code> does not display the bytecode
+of each method. This switch specifies that bytecode should be displayed.
+
+<dt><code>-g</code>
+<dd>Embed source code. This switch implies <code>-c</code> and embeds the original
+source code within the disassembled bytecode. If the input <code>.class</code>
+file does not contain source file information, or if the source file cannot
+be located in the current directory (the one where <code>jvmlist</code> was
+invoked), then this switch is equivalent to <code>-c</code>.
+
+<dt><code>-l</code>
+<dd>Display line number tables.
+
+<dt><code>-p</code>
+<dd>Display the constant pool.
+
+<dt><code>-t</code>
+<dd>Display local variable tables.
+
+<dt><code>-v</code>
+<dd>Verbose. Outputs the name of each class file for which an Ada spec is
+generated.
+
+<dt><code>-V</code>
+<dd>Very verbose. Implies -v. Each item that is encountered in a zip or jar
+file is listed on the screen. Class files are preceded with a <code>-&gt;</code>,
+other items are listed with a message saying that the item is skipped. 
+Only class files whose name is listed twice (one preceded with a
+<code>-&gt;</code> and the following one without the <code>-&gt;</code>) have a
+corresponding Ada spec generated for them, other class files are ignored
+(because for instance they are not public classes). 
+</dl>
+
+<p><hr>[ Next: <a rel=next href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>
+ | Previous: <a rel=previous href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with <code>jvmstrip</code></a></h1>
+
+<p>The <code>jvmstrip</code> tool takes a <code>.class</code> files as input (directly or
+packaged in an uncompressed <code>.zip</code> or <code>.jar</code> file) and strips
+off all of its debugging info to reduce its size. This utility is independent
+of the original programming language and works equally well on programs
+containing a mixture of Ada and Java code.
+
+<ul>
+<p>
+<li><a href="#Running%20jvmstrip">Running jvmstrip</a>:
+
+<p><li><a href="#Switches%20for%20jvmstrip">Switches for jvmstrip</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Switches%20for%20jvmstrip">Switches for jvmstrip</a>
+ | Previous: <a rel=previous href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>
+ | Up: <a rel=up href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>
+ ]<p>
+
+<h2><a name="Running%20jvmstrip">Running jvmstrip</a></h2>
+
+<p>The form of the <code>jvmstrip</code> command is
+
+<pre>
+jvmstrip [<var>switches</var>] <var>file</var> [<var>file</var> ... <var>file</var>]
+</pre>
+
+<p>where <var>file</var> can be one of the following:
+
+<ul>
+</p><li>the name of a <code>.class</code> file
+
+</p><li>the name of an uncompressed zip archive (in this case the <code>jvmstrip</code>
+command applies to all <code>.class</code> files within the archive);
+</ul>
+
+<p>File names can be prefixed with directory information.
+
+<p>The output of <code>jvmstrip</code> is a stripped <code>.class</code> file which
+replaces the original input file. If the input is an archive, then all of
+the <code>.class</code> files within the archive are stripped and the updated
+archive replaces the input file.
+
+<p><hr>[ Previous: <a rel=previous href="#Running%20jvmstrip">Running jvmstrip</a>
+ | Up: <a rel=up href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>
+ ]<p>
+
+<h2><a name="Switches%20for%20jvmstrip">Switches for jvmstrip</a></h2>
+
+<p>The following switches are available with the <code>jvmstrip</code> utility:
+
+<dl compact>
+<dt><code>-v</code>
+<dd>Verbose. 
+</dl>
+
+<p><hr>[ Next: <a rel=next href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ | Previous: <a rel=previous href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Building%20Archives%20with%20jarmake">Building Archives with <code>jarmake</code></a></h1>
+
+<p>When building an Ada application with JGNAT, a number of JVM <code>.class</code>
+files are generated. In addition to potentially being numerous, the
+generated classes depend on the JGNAT library <code>jgnat.jar</code> which is
+installed with JGNAT.
+
+<p>If you need to ship your Ada application or gnapplet to people who do not
+have JGNAT installed this can be cumbersome as you would need to ship the
+<code>.class</code> files of your application along with <code>jgnat.jar</code>.
+
+<p>To automate such process we have provided <code>jarmake</code>, the JGNAT archiver
+tool. <code>jarmake</code> takes <code>.class</code> files as input and recursively
+collects into an uncompressed zip archive all the <code>.class</code> files needed
+by the <code>.class</code> files specified on the command line. This tool can be
+used to prepare self-standing applications or gnapplets.
+
+<p>This utility is independent of the original programming language and works
+equally well on programs containing a mixture of Ada and Java code.
+
+<ul>
+<p>
+<li><a href="#Running%20jarmake">Running jarmake</a>:
+
+<p><li><a href="#Switches%20for%20jarmake">Switches for jarmake</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Switches%20for%20jarmake">Switches for jarmake</a>
+ | Previous: <a rel=previous href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>
+ | Up: <a rel=up href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>
+ ]<p>
+
+<h2><a name="Running%20jarmake">Running jarmake</a></h2>
+
+<p>The form of the <code>jarmake</code> command is
+
+<pre>
+jarmake [<var>switches</var>] <var>file</var> [<var>file</var> ... <var>file</var>]
+</pre>
+
+<p>where <var>file</var> can be one of the following:
+
+<ul>
+</p><li>the name of a <code>.class</code> file
+
+</p><li>the name of an image, sound or any other file that you want to bundle with
+your application. 
+</ul>
+
+<p>File names can be prefixed with directory information.
+
+<p>The output of <code>jarmake</code> is an uncompressed zip archive containing the
+files specified on the command line along with the <code>.class</code> files they
+recursively reference.
+
+<p><hr>[ Previous: <a rel=previous href="#Running%20jarmake">Running jarmake</a>
+ | Up: <a rel=up href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>
+ ]<p>
+
+<h2><a name="Switches%20for%20jarmake">Switches for <code>jarmake</code></a></h2>
+
+<p>The following switches are available with the <code>jarmake</code> utility:
+
+<dl compact>
+<dt><code>-L<var>zip-archive</var></code>
+<dd>When searching for <code>.class</code> files, look in the uncompressed zip archive
+<var>zip-archive</var>.
+
+<dt><code>-j</code>
+<dd>Do not skip <code>.class</code> files in the Java API. By default <code>jarmake</code>
+skips all the <code>.class</code> files in the Java API. By using this switch you
+are asking <code>jarmake</code> to include Java API classes in the output zip
+archive. If you set this flag you should also provide a <code>-L</code> flag
+giving the location of the Java API zip archive.
+
+<dt><code>-k</code>
+<dd>Keep going even if not all of the <code>.class</code> files are found. By default,
+<code>jarmake</code> will stop if it cannot find all the needed <code>.class</code>
+files. By setting this switch <code>jarmake</code> will emit a warning message
+when it cannot find a <code>.class</code> file it is looking for and will continue.
+
+<dt><code>-n</code>
+<dd>Do not include the <code>.class</code> files of the JGNAT library <code>jgnat.jar</code>
+in the output archive. By default these files are included in the output
+archive so that the the archive is autonomous.
+
+<dt><code>-o <var>zip-archive</var></code>
+<dd>Name of the output uncompressed zip archive. If this switch is not specified,
+then the default name is <code>gnapplet.jar</code>.
+
+<dt><code>-q</code>
+<dd>Quiet.
+
+<dt><code>-v</code>
+<dd>Verbose. 
+</dl>
+
+<p><hr>[ Next: <a rel=next href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ | Previous: <a rel=previous href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with <code>jvm2ada</code></a></h1>
+
+<p>The <code>jvm2ada</code> tool takes JVM <code>.class</code> files as input (directly
+or regrouped in an uncompressed <code>.zip</code> or <code>.jar</code> file) and
+generates Ada specs as output.
+
+<ul>
+<p>
+<li><a href="#Running%20jvm2ada">Running jvm2ada</a>:
+
+<p><li><a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>: 
+<p>
+<li><a href="#Running%20jvm2ada%20on%20the%20Java%20API">Running jvm2ada on the Java API</a>:
+
+<p><li><a href="#Parameter%20Names%20and%20Source%20Search%20Paths">Parameter Names and Source Search Paths</a>: 
+<p>
+<li><a href="#Class%20File%20Search%20Paths">Class File Search Paths</a>:
+
+<p><li><a href="#Identifier%20Mangling">Identifier Mangling</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+ | Previous: <a rel=previous href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ | Up: <a rel=up href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ ]<p>
+
+<h2><a name="Running%20jvm2ada">Running <code>jvm2ada</code></a></h2>
+
+<p>The form of the <code>jvm2ada</code> command is
+
+<pre>
+jvm2ada [<var>switches</var>] <var>file</var> [<var>file</var> ... <var>file</var>]
+</pre>
+
+<p>where <var>file</var> can be any of the following:
+
+<ul>
+</p><li>the name of a <code>.class</code> file (possibly without the <code>.class</code> suffix);
+
+</p><li>the name of an uncompressed zip archive (in this case the <code>jvm2ada</code>
+command applies to all <code>.class</code> files within the archive);
+
+</p><li>the name of a <code>.class</code> file within an uncompressed zip or jar archive <br>
+(e.g. <code>rt.jar/java/lang/Object.class</code>). 
+</ul>
+
+<p>File names can be prefixed with directory information.
+
+<p>The output of <code>jvm2ada</code> is an Ada source file for each <code>.class</code>
+file processed. The Ada source file contains a package spec giving the Ada
+declaration for the services exported by the corresponding <code>.class</code>
+file.  The name of the Ada package is obtained by concatenating the name of
+the Java class to the name of the Java package containing the class. As an
+example, a Java class <code>someName</code> occurring within Java package
+<code>some.pack</code> yields the Ada package <code>some.pack.someName</code> and
+is in a file named <code>some-pack-somename.ads</code>.
+
+<p>Unless switch <code>-o</code> is used (see [<a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>]), the Ada files
+generated are placed in the directory where the <code>jvm2ada</code> command is
+invoked.
+
+<p><hr>[ Next: <a rel=next href="#Running%20jvm2ada%20on%20the%20Java%20API">Running jvm2ada on the Java API</a>
+ | Previous: <a rel=previous href="#Running%20jvm2ada">Running jvm2ada</a>
+ | Up: <a rel=up href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ ]<p>
+
+<h2><a name="Switches%20for%20jvm2ada">Switches for <code>jvm2ada</code></a></h2>
+
+<p>The following switches are available with the <code>jvm2ada</code> utility:
+
+<dl compact>
+<dt><code>-I<var>zip-archive</var></code>
+<dd>When looking for a source file (to find the parameter names of a Java method),
+search the uncompressed zip archive <var>zip-archive</var>.  See [<a href="#Parameter%20Names%20and%20Source%20Search%20Paths">Parameter Names and Source Search Paths</a>], for details. (This switch is not yet
+supported.)
+
+<dt><code>-L<var>zip-archive</var></code>
+<dd>When searching for <code>.class</code> files, look in the uncompressed zip archive
+<var>zip-archive</var>. See [<a href="#Class%20File%20Search%20Paths">Class File Search Paths</a>], for details.
+
+<dt><code>-k</code>
+<dd>Keep original JVM identifiers. By default, identifiers encountered in a
+JVM .class file are mangled whenever needed to turn them into proper Ada
+identifiers. When this switch is set, identifiers are left as is in the
+generated Ada package spec. See [<a href="#Identifier%20Mangling">Identifier Mangling</a>], for details.
+
+<dt><code>-o <var>dir</var></code>
+<dd>Output to <var>dir</var>. Put all generated Ada source files into directory <var>dir</var>
+rather than the current directory.
+
+<dt><code>-q</code>
+<dd>Quiet.
+
+<dt><code>-s</code>
+<dd>Map Sun-specific classes into Ada specs. By default, Sun's classes are
+not mapped into Ada even if they are public, because they are typically not
+part of the API at hand (certainly they are not part of the Java API, even
+though the corresponding jar file contains them). Sun's classes are the classes
+in packages <code>sun</code>, <code>sunw</code>, and <code>com.sun</code>.
+
+<dt><code>-v</code>
+<dd>Verbose.
+
+<dt><code>-w</code>
+<dd>Overwrite existing file names. Normally <code>jvm2ada</code> regards it as a fatal
+error if there is already a file with the same name as a file it would
+otherwise output. This switch bypasses this check, and any such existing
+files will be silently overwritten. 
+</dl>
+
+<p><hr>[ Next: <a rel=next href="#Parameter%20Names%20and%20Source%20Search%20Paths">Parameter Names and Source Search Paths</a>
+ | Previous: <a rel=previous href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+ | Up: <a rel=up href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ ]<p>
+
+<h2><a name="Running%20jvm2ada%20on%20the%20Java%20API">Running jvm2ada on the Java API</a></h2>
+
+<p>To be able to access the Java API you need to process it to generate an Ada
+package spec for each public class in the API. To do this you need to locate
+the zip or jar archive containing all class files of the Java API (for
+instance in Sun's Windows JDK 1.2.2 this archive is located in
+<var>java-dir</var><code>\jdk1.2.2\jre\lib\rt.jar</code>, where <var>java-dir</var> is the
+JDK 1.2.2 installation directory) and simply type:
+
+<pre>
+$ cd <var>your-favorite-dir</var>
+$ jvm2ada <var>java-dir</var>\jdk1.2.2\jre\lib\rt.jar
+</pre>
+
+<p>This will create, in directory <var>your-favorite-dir</var>, an Ada package spec
+for each public Java class. If you would like to output the Ada specs in some
+other directory use <code>jvm2ada</code> switch <code>-o</code>.
+
+<p>Please note that because of a limitation of <code>jvm2ada</code> (see [<a href="#Identifier%20Mangling">Identifier Mangling</a>]), the following Ada specs have ben edited so that they can compile:
+
+<ul>
+</p><li><code>java-awt-image-componentsamplemodel.ads</code>: field <code>numBands</code> was
+renamed into <code>numBands_C</code> because the parent type of
+<code>ComponentSampleModel</code> has also a field named <code>numBands</code>.
+
+</p><li><code>javax-swing-jcolorchooser.ads</code>: field <code>accessibleContext</code> was
+renamed into <br>
+<code>accessibleContext_C</code> because the parent type of
+<code>JColorChooser</code> has also a fieldnamed <code>accessibleContext</code>.
+
+</p><li><code>javax-swing-jfilechooser.ads</code>: field <code>accessibleContext</code> was
+renamed into <br>
+<code>accessibleContext_C</code> because the parent type of
+<code>JFileChooser</code> has also a fieldnamed <code>accessibleContext</code>. 
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Class%20File%20Search%20Paths">Class File Search Paths</a>
+ | Previous: <a rel=previous href="#Running%20jvm2ada%20on%20the%20Java%20API">Running jvm2ada on the Java API</a>
+ | Up: <a rel=up href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ ]<p>
+
+<h2><a name="Parameter%20Names%20and%20Source%20Search%20Paths">Parameter Names and Source Search Paths</a></h2>
+
+<p>Note: Only point 2. below is implemented.
+
+<p>When generating the Ada spec for a <code>.class</code> file, <code>jvm2ada</code> tries
+to preserve the original names of method parameters.  If the <code>.class</code>
+file was compiled enabling the generation of debugging tables (switch
+<code>-g</code> in Sun's JDK <code>javac</code> compiler), parameter names are stored in
+the <code>.class</code> file. If not <code>jvm2ada</code>
+proceeds as follows:
+
+<ol>
+</p><li>If the name of the original source file is present in the <code>.class</code>
+file, <code>jvm2ada</code> tries to locate this source by looking at the
+uncompressed zip archives specified by the <code>-I<var>zip-archive</var></code>
+switches, in the order in which these switches occur.  Once found,
+<code>jvm2ada</code> uses the source file to locate parameter names. If the
+original source is not around you can always communicate parameter names by
+creating a Java source file containing the appropriate method specs. For
+instance to give the names of the parameters of method <code>someMethod</code> in
+class <code>someClass</code> in package <code>some_package</code> you could create the
+following source file:
+
+<pre>
+package some_package;
+<i>//  You must provide the appropriate Java package for</i> someClass
+
+public class someClass {
+   public int someMethod (int someName, float anotherName) {}
+   <i>//  The methods for which you want to name the parameters must have the</i>
+   <i>//  same signature as the methods found in the .class file. The body</i>
+   <i>//  can be empty.</i>
+}
+</pre>
+
+</p><li>If the appropriate source file cannot be located <code>jvm2ada</code> assigns
+arbitrary parameter names of the form <code>P1_</code><i>type</i>,
+<code>P2_</code><i>type</i>, etc. where <i>type</i> denotes the flattened type name
+for the corresponding parameter. The reason for appending <i>type</i> to
+the parameter name is to allow the Ada programmer to resolve possible
+overloading resolution conflicts of the following kind
+
+<pre>
+public class Base { }
+public class Deriv extends Base {
+   public static void p (Base  obj) { ... }
+   public static void p (Deriv obj) { ... }
+}
+</pre>
+
+<p>The overloaded procedure <code>p</code> above are translated by <code>jvm2ada</code>
+to the following Ada specs:
+
+<pre>
+procedure p (P1_Base  : access Base.Typ'Class);
+procedure p (P1_Deriv : access Deriv.Typ'Class);
+</pre>
+
+<p>The problem that arises is shown by the following example:
+
+<pre>
+type Deriv_Ref is access all Deriv.Typ'Class;
+Obj : Deriv_Ref := ...;
+procedure p (Obj);              --  Ambiguos call
+procedure p (P1_Base  =&gt; Obj);  --  OK
+procedure p (P1_Deriv =&gt; Obj);  --  OK
+</pre>
+
+</ol>
+
+<p><hr>[ Next: <a rel=next href="#Identifier%20Mangling">Identifier Mangling</a>
+ | Previous: <a rel=previous href="#Parameter%20Names%20and%20Source%20Search%20Paths">Parameter Names and Source Search Paths</a>
+ | Up: <a rel=up href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ ]<p>
+
+<h2><a name="Class%20File%20Search%20Paths">Class File Search Paths</a></h2>
+
+<p>When processing a <code>.class</code> file, <code>jvm2ada</code> may need to locate other
+<code>.class</code> files.  For instance, to know whether the JVM class being
+processed is a Java exception, <code>jvm2ada</code> must traverse the inheritance
+tree and must therefore locate the <code>.class</code> files of the ancestor
+classes.
+
+<p>If <code>jvm2ada</code> does not find the <code>.class</code> file it is looking for,
+then a warning message is emitted. The order in which <code>jvm2ada</code> searches
+<code>.class</code> files is given below.
+
+<ol>
+</p><li>If the <code>.class</code> file being processed belongs to an uncompressed zip
+archive, <code>jvm2ada</code> will look there first.
+
+</p><li>The uncompressed zip archives specified by a <code>-L<var>zip-archive</var></code>
+switch are searched next, in the order in which the <code>-L</code> switches occur.
+</ol>
+
+<p><hr>[ Previous: <a rel=previous href="#Class%20File%20Search%20Paths">Class File Search Paths</a>
+ | Up: <a rel=up href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ ]<p>
+
+<h2><a name="Identifier%20Mangling">Identifier Mangling</a></h2>
+
+<code>jvm2ada</code> retains, whenever possible, the identifiers it finds in the
+<code>.class</code> files it processes. This is not always possible, however,
+because Java's set of legal identifiers is bigger than Ada's. To address
+these issues <code>jvm2ada</code> proceeds as follows: If switch <code>-k</code> is set,
+the original identifiers found in the JVM .class are left unchanged. You
+will have to change these yourself in the generated packages if these are
+illegal Ada identifiers. If switch <code>-k</code> is not set then:
+
+<ul>
+</p><li>Every identifier which is an Ada reserved word or any of the words
+"<code>Standard</code>", "<code>Ref</code>", "<code>Typ</code>", "<code>Arr</code>",
+"<code>Arr_2</code>", "<code>Arr_3</code>", is suffixed with <code>_K</code>. For instance,
+<code>Abort</code> is mapped to <code>Abort_K</code>.
+
+</p><li>A single underscore is replaced by "<code>U</code>".
+
+</p><li>A leading underscore is replaced by "<code>U_</code>".
+
+</p><li>A trailing underscore is replaced by "<code>_U</code>".
+
+</p><li>A letter "<code>U</code>" is placed between every two consecutive underscores.
+
+</p><li>If two or more identifiers generated in an Ada spec lead to an Ada name
+conflict, then <code>jvm2ada</code> will add a trailing <code>_K</code> at the end
+of the second occurrence, a trailing <code>_K2</code> at the end of the third
+occurrence, a trailing <code>_K3</code> at the end of the fourth occurrence, etc. 
+The cases currently caught are: identical variable names, identical variable
+and subprogram names, identical variable and child package name.  More complex
+cases are not yet handled. In particular, we do not yet detect the case where
+we have two identical field names in a record <code>B</code> and a record <code>D</code>
+derived from <code>B</code>. In these cases you will have to revise the generated
+Ada spec to allow it to compile. 
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ | Previous: <a rel=previous href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Java-Specific%20Pragmas">Java-Specific Pragmas</a></h1>
+
+<p>The typical way to import services from Java classes is to use the
+<code>jvm2ada</code> tool to automatically generate the specification of the
+corresponding <code>.class</code> file. This specification contains the
+appropriate Java-specific pragmas.
+
+<p>In some cases you may wish to import just one routine to your Ada code
+or you may prefer to group certain services from multiple <code>.class</code>
+files into a single Ada spec (for instance if you are trying to provide
+a simplified view of the Java API).
+
+<p>In such cases it is useful to understand how the various Java-specific
+pragmas work. Another situation where you may have to use these pragmas
+explicitly is when exporting Ada services to Java.
+
+<p>This chapter introduces the features and pragmas that are needed for full
+support of interfacing between Java and Ada.
+
+<ul>
+<p>
+<li><a href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>:
+
+<p><li><a href="#Creating%20Java%20Interfaces%20with%20Pragma%20Java_Interface">Creating Java Interfaces with Pragma Java_Interface</a>: 
+<p>
+<li><a href="#Using%20Java%20Interfaces">Using Java Interfaces</a>:
+
+<p><li><a href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>: 
+<p>
+<li><a href="#Pragma%20Import%20Java">Pragma Import Java</a>:
+
+<p><li><a href="#Pragma%20Export%20Java">Pragma Export Java</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Creating%20Java%20Interfaces%20with%20Pragma%20Java_Interface">Creating Java Interfaces with Pragma Java_Interface</a>
+ | Previous: <a rel=previous href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ | Up: <a rel=up href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ ]<p>
+
+<h2><a name="Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a></h2>
+
+<ul>
+<p>
+<li><a href="#Introduction">Introduction</a>:
+
+<p><li><a href="#The%20With-Type%20Clause">The With-Type Clause</a>: 
+<p>
+<li><a href="#Semantics%20of%20the%20With-Type%20Clause">Semantics of the With-Type Clause</a>:
+
+<p><li><a href="#With-Type%20and%20the%20-gnatX%20Compiler%20Switch">With-Type and the -gnatX Compiler Switch</a>: 
+<p>
+<li><a href="#With-Type%20Example">With-Type Example</a>:
+
+<p><li><a href="#A%20Word%20of%20Caution">A Word of Caution</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#The%20With-Type%20Clause">The With-Type Clause</a>
+ | Previous: <a rel=previous href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ | Up: <a rel=up href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ ]<p>
+
+<h3><a name="Introduction">Introduction</a></h3>
+
+<p>A long-standing programming problem that is difficult to solve in Ada is that
+of creating mutually dependent package specifications.  The problem is that Ada
+package specifications aren't allowed to depend on each other. There are
+various possibilities for working around this restriction in specific cases,
+generally involving levels of indirection and syntactically heavy programming
+idioms. However, these workarounds are too cumbersome for practical use, and
+certainly not appropriate in the context of interfacing to the Java API (which
+allows circular class definitions). A simple example of this occurs between the
+classes <code>java.lang.Object</code> and <code>java.lang.String</code>:
+
+<pre>
+public class Object {
+   ...
+   public String toString ();
+}
+
+public final class String {
+   ...
+   public static String valueOf (Object obj);
+}
+</pre>
+
+<p>Each class declares operations using a type declared in the other
+class. Clearly this can't be mapped directly into two independent Ada
+package specifications.
+
+<p><hr>[ Next: <a rel=next href="#Semantics%20of%20the%20With-Type%20Clause">Semantics of the With-Type Clause</a>
+ | Previous: <a rel=previous href="#Introduction">Introduction</a>
+ | Up: <a rel=up href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ ]<p>
+
+<h3><a name="The%20With-Type%20Clause">The With-Type Clause</a></h3>
+
+<p>To support such mutual dependencies we have implemented a general-purpose
+feature called the <i>with-type</i> clause. The purpose of the <i>with-type</i>
+clause is to import the name of an access or tagged type defined in a
+separate package, while not requiring the package with the clause to
+depend (in the Ada semantic sense) on the other package.
+
+<p>The form of the <i>with-type</i> clause for access types is:
+
+<pre>
+with type <var>package-name</var>.<var>access-type</var> is access;
+</pre>
+
+<p>where <var>package-name</var> must denote an existing package containing an
+access type whose name is <var>access-type</var>.  The <var>access-type</var> can
+be any access type declared inside the visible part of
+<var>package-name</var>'s spec.  It is a compile-time error if
+<var>package-name</var>'s spec is not available or does not contain the access
+type <var>access-type</var>.  A <i>with-type</i> clause is only allowed in
+the context clause of a package spec, that is, in the same location where
+<code>with</code> clauses can appear. If an explicit <code>with</code> clause for
+<var>package-name</var> appears in the same context clause as a <i>with-type</i>
+clause for <var>package-name</var>.<var>access-type</var>, then the <i>with-type</i>
+clause is superfluous and is ignored. Note that <var>package-name</var> must
+be a fully qualified name in the case of child packages.
+
+<p>The <i>with-type</i> clause can also be used for tagged types,
+and the syntax is:
+
+<pre>
+with type <var>package-name</var>.<var>tagged-type</var> is tagged;
+</pre>
+
+<p>In the tagged form of the <i>with-type</i> clause, the <var>package-name</var>
+must denote a package whose visible part contains a tagged type
+named <var>tagged-type</var>.
+
+<p><hr>[ Next: <a rel=next href="#With-Type%20and%20the%20-gnatX%20Compiler%20Switch">With-Type and the -gnatX Compiler Switch</a>
+ | Previous: <a rel=previous href="#The%20With-Type%20Clause">The With-Type Clause</a>
+ | Up: <a rel=up href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ ]<p>
+
+<h3><a name="Semantics%20of%20the%20With-Type%20Clause">Semantics of the With-Type Clause</a></h3>
+
+<p>The semantic effect of giving the <i>with-type</i> clause is to make the
+specified type name available for use within the containing package,
+though the uses of such a type name are restricted.
+
+<p>In the access type case, the type name can only be used to declare
+formal parameter types and component types. However, since nothing is known
+about the designated type within the package specifying the <i>with-type</i>
+clause, no operations involving dereferencing pointers of the access type
+are permitted within the specification.
+
+<p>For the tagged type form of the clause, the type name can only be used in
+formal parameter declarations, for declaring access types, and as the
+prefix of the <code>Class</code> attribute (and the same restrictions apply to
+the name of the class-wide type).
+
+<p>In terms of elaboration dependencies, no dependency is introduced by the
+<i>with-type</i> clause. On the other hand, if a package spec <code>P</code>
+contains a <i>with-type</i> clause that names an access type in a package
+spec <code>Q</code>, then <code>P</code> depends on <code>Q</code>'s spec at the source file
+level. This means that if <code>Q</code>'s spec is updated then <code>P</code> needs
+to be recompiled.
+
+<p><hr>[ Next: <a rel=next href="#With-Type%20Example">With-Type Example</a>
+ | Previous: <a rel=previous href="#Semantics%20of%20the%20With-Type%20Clause">Semantics of the With-Type Clause</a>
+ | Up: <a rel=up href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ ]<p>
+
+<h3><a name="With-Type%20and%20the%20-gnatX%20Compiler%20Switch">With-Type and the <code>-gnatX</code> Compiler Switch</a></h3>
+
+<p>Because the <i>with-type</i> clause is an extension to the Ada language, it is
+necessary to use the GNAT compile-time option <code>-gnatX</code> (or the
+<code>Extensions_Allowed</code> pragma) when compiling any unit that either uses
+this feature or depends on a unit that uses it.
+
+<p>For convenience, when using an Ada spec generated by <code>jvm2ada</code>, the
+use of option <code>-gnatX</code> is not necessary because <code>jvm2ada</code> inserts
+the appropriate <code>Extensions_Allowed</code> pragmas around the generated Ada
+sources.
+
+<p><hr>[ Next: <a rel=next href="#A%20Word%20of%20Caution">A Word of Caution</a>
+ | Previous: <a rel=previous href="#With-Type%20and%20the%20-gnatX%20Compiler%20Switch">With-Type and the -gnatX Compiler Switch</a>
+ | Up: <a rel=up href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ ]<p>
+
+<h3><a name="With-Type%20Example">With-Type Example</a></h3>
+
+<p>Let's look at an example. Here are portions of the packages
+<code>java.lang.Object</code> and <code>java.lang.String</code> that uses this pragma:
+
+<pre>
+with type java.lang.String.Ref is access;
+package java.lang.Object is
+   type Typ is tagged limited private;
+   type Ref is access all Typ'Class;
+   ...
+   function toString (This : access Typ) return java.lang.String.Ref;
+end java.lang.Object;
+
+with java.lang.Object;
+package java.lang.String is
+   type Typ is ...;
+   type Ref is access all Typ'Class;
+   ...
+   function valueOf (Obj : access java.lang.Object.Typ'Class)
+                    return java.lang.String.Ref;
+end java.lang.String;
+
+</pre>
+
+<p>A client of package <code>Object</code> wanting to use <code>toString</code> would
+have to write:
+
+<pre>
+
+with Java.Lang.Object;
+with Java.Lang.String; use Java.Lang;
+procedure Client is
+   Obj : Object.Ref := ...;
+   Str : String.Ref := toString (Obj);
+   ...
+
+</pre>
+
+<p>Here is another example, where <code>with type</code> is used for access to
+array types.
+
+<pre>
+
+with type Class_B.Ptr is access;
+with type Class_B.Arr_Ptr is access;
+package Class_A is
+   type Typ is record
+      Val      : Integer;
+      Link     : Class_B.Ptr;
+      Arr_Link : Class_B.Arr_Ptr;
+   end record;
+
+   type Ptr is access Typ;
+   type Arr is array (Natural range &lt;&gt;) of Ptr;
+   type Arr_Ptr is access Arr;
+
+   procedure Proc_A (P1 : Class_A.Ptr; P2 : Class_B.Ptr);
+end Class_A;
+</pre>
+
+<pre>
+with type Class_A.Ptr is access;
+with type Class_A.Arr_Ptr is access;
+package Class_B is
+   type Typ is record
+      Val      : Float;
+      Link     : Class_A.Ptr;
+      Arr_Link : Class_A.Arr_Ptr;
+   end record;
+
+   type Ptr is access Typ;
+   type Arr is array (Natural range &lt;&gt;) of Ptr;
+   type Arr_Ptr is access Arr;
+
+   procedure Proc_B (P1 : Class_A.Ptr; P2 : Class_B.Ptr);
+end Class_A;
+
+with Class_A;
+with Class_B;
+procedure Client is
+   P_A : Class_A.Ptr := new Class_A.Typ;
+   P_B : Class_B.Ptr := new Class_B.Typ;
+begin
+  Class_A.Proc_A (P_A, P_B);
+  Class_B.Proc_B (P_A, P_B);
+end Client;
+
+</pre>
+
+<p>One important thing to note is that eventually there need to be normal with
+clauses for the units containing any types that are referenced via
+<i>with-type</i> clauses.
+
+<p>This should be checked by the compiler, but there are currently cases where
+this is not enforced and it is possible to dereference an access value even
+though the unit was only imported via a <i>with-type</i> clause. For now users
+must be aware of this and ensure that all units that use access values
+originating from such types make a real dependence on the package defining
+the type.
+
+<p><hr>[ Previous: <a rel=previous href="#With-Type%20Example">With-Type Example</a>
+ | Up: <a rel=up href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ ]<p>
+
+<h3><a name="A%20Word%20of%20Caution">A Word of Caution</a></h3>
+The specifics of the <i>with-type</i> feature may change in the future. 
+The important capability of supporting mutually dependent packages
+via a feature like the <i>with-type</i> clause is currently being
+discussed by the ISO WG9-sponsored Ada Rapporteur Group. However,
+the current GNAT implementation may differ from the final, WG9-approved
+version, though it is similar in syntax and semantics to what is
+currently being proposed. Users are cautioned that this is not yet an
+approved extension to the Ada language and should be used judiciously.
+
+<p><hr>[ Next: <a rel=next href="#Using%20Java%20Interfaces">Using Java Interfaces</a>
+ | Previous: <a rel=previous href="#Handling%20Circularities%20using%20With-Type%20Clauses">Handling Circularities using With-Type Clauses</a>
+ | Up: <a rel=up href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ ]<p>
+
+<h2><a name="Creating%20Java%20Interfaces%20with%20Pragma%20Java_Interface">Creating Java Interfaces: Pragma <code>Java_Interface</code></a></h2>
+
+<p>Java offers a special kind of class called an interface. Interfaces
+provide a limited but useful form of multiple inheritance. A Java
+interface is basically an abstract class with no fields and whose methods
+are all abstract. Instead of inheriting from an interface, a Java class
+<code>C</code> is said to implement the interface, which means that <code>C</code>
+must provide an implementation for all of the abstract methods declared
+in the interface.
+
+<p>The key point to note about interfaces is that a class <code>C</code> can
+implement several interfaces at the same time, and this mechanism is
+orthogonal to the fact that <code>C</code> may be extending some other class.
+
+<p>To make a Java interface available to an Ada program we have
+provided the pragma <code>Java_Interface</code>. Its syntax is:
+
+<pre>
+pragma Java_Interface (<var>type-name</var>);
+</pre>
+
+<p>where <var>type-name</var> is the name of a type <var>T</var> declared earlier,
+immediately within the same declarative part where the pragma occurs, and
+where the type has the following characteristics that reflect the restrictions
+on Java interfaces:
+
+<ol>
+</p><li><var>T</var> must be an abstract tagged type with a null record extension.
+
+</p><li><var>T</var> must be derived from <code>java.lang.Object.Typ</code>
+(see [<a href="#Java%20References%20and%20java.lang.Object">Java References and java.lang.Object</a>]).
+
+</p><li><var>T</var> must have an access discriminant named <code>Self</code> with
+<code>java.lang.Object.Typ'Class</code> as its designated type.
+
+</p><li>All of <var>T</var>'s primitive operations must be abstract.
+
+</p><li><var>T</var> must have Java <code>Convention</code>.
+</ol>
+
+<p>Here is an example of using pragma <code>Java_Interface</code>:
+
+<pre>
+with java.lang.Object;
+package Foo is
+   type Typ (Self : access java.lang.Object.Typ'Class)
+     is abstract new java.lang.Object.Typ with null record;
+   pragma Java_Interface (Typ);
+
+   type Ref is access all Typ'Class;
+
+   procedure Proc (This : access Typ; Val : Integer) is abstract;
+   function  Func (This : access Typ) return Integer is abstract;
+
+private
+   pragma Convention (Java, Typ);
+end Foo;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>
+ | Previous: <a rel=previous href="#Creating%20Java%20Interfaces%20with%20Pragma%20Java_Interface">Creating Java Interfaces with Pragma Java_Interface</a>
+ | Up: <a rel=up href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ ]<p>
+
+<h2><a name="Using%20Java%20Interfaces">Using Java Interfaces</a></h2>
+
+<p>In order to declare an Ada type that implements one or more Java interfaces
+it is necessary to use a simple programming idiom that is specially
+recognized by the compiler. This mechanism is not restricted for use only
+with types imported from Java, but can be applied to any Ada tagged type
+<var>T</var>.
+
+<p>The idiom consists in specifying a discriminant <var>D</var> for each Java
+interface <var>Interf</var> that type <var>T</var> implements. The type of <var>D</var> must
+be some access type whose designated type is <var>Interf</var>.  Discriminants such
+as <var>D</var> are not represented by an actual field in the object, but rather
+serve as a symbolic shorthand to indicate the special characteristics of
+type <var>T</var> to the compiler.
+
+<p>As an example, the following package spec declares a type <code>Bar.Typ</code>
+which implements interface <code>Foo.Typ</code>:
+
+<pre>
+with Foo;
+package Bar is
+   type Typ (Foo_I : Foo.Ref) is tagged record
+      Field : Integer;
+   end record;
+   --  <i>Discriminant</i> Foo_I <i>above signals that</i> Bar.Typ <i>implements the</i>
+   --  Foo.Typ <i>interface (</i>Foo_I <i>stands for</i> Foo <i>Interface). The</i>
+   --  <i>compiler does not create a field for</i> Foo_I <i>but marks the</i>
+   --  <i>generated .class file as implementing interface</i> Foo.Typ.
+
+   procedure Proc (This : access Typ; Val : Integer);
+   function  Func (This : access Typ) return Integer;
+   --  <i>Unless</i> Bar.Typ <i>is itself marked abstract,</i> Bar.Typ <i>must</i>
+   --  <i>provide an implementation for subprograms</i> Proc <i>and</i> Func.
+   --  <i>Right now if you omit these subprograms the JGNAT compiler will not</i>
+   --  <i>complain, but when loading the .class file corresponding to</i> Bar.Typ
+   --  <i>the JVM will halt execution with a verifier error</i>.
+end Bar;
+</pre>
+
+<p>As mentioned in the example, unless <var>T</var> is abstract, <var>T</var> must
+provide an implementation for each of the abstract operations of the
+<var>Interf</var> interface (currently this check is not done by the JGNAT
+compiler but is caght later on by the JVM).
+
+<p>A second use of these special interface discriminants is to enable
+conversions between pointers to type <var>T</var> and pointers of its
+implemented interface types as the example below demostrates.
+
+<pre>
+with Foo;
+with Bar;
+package Client is
+   X : Bar.Ref := new Bar.Typ (null);
+   --  <i>Create an object of type</i> Bar.Typ. <i>To satisfy Ada's semantic rules</i>
+   --  <i>we must provide a value for</i> Foo_I<i>, but this value is ignored.</i>
+
+   Y : Foo.Ref := X.Foo_I;
+   --  <i>OK, upward conversion allowed, no checks.</i>
+   --  <i>Referencing discriminant</i> Foo_I <i>is a convenient way to convert</i> X
+   --  <i>to a</i> Foo.Ref<i>. The compiler transorms all references to</i> Foo_I
+   --  <i>into references to the selector itself, in this case</i> X.
+
+   Val : Integer := Foo.Func (Y);
+   --  <i>Dispatching call</i>
+end Client;
+</pre>
+
+<p>A conversion can also be made from an object of the class-wide interface
+reference type to an implementing reference type, by selecting the
+<code>Self</code> field (which is of type <code>java.lang.Object.Typ'Class</code>), and
+then applying a downward tagged type conversion (assuming that <var>T</var>
+derives directly or indirectly from <code>java.lang.Object</code>). Such a
+downward conversion will involve a run-time check, to ensure that the
+source object belongs to the target type's class. The package spec below
+illustrates one such downward conversion.
+
+<pre>
+with Foo;
+with java.lang.Object;
+package Zar is
+   type Typ (Foo_I : Foo.Ref) is new java.lang.Object.Typ with record
+      Field : Integer;
+   end record;
+
+   type Ref is access all Typ'Class;
+
+   procedure Proc (This : access Typ; Val : Integer);
+   function  Func (This : access Typ) return Integer;
+
+   X : Zar.Ref := new Zar.Typ (null);
+   Y : Foo.Ref := X.Foo_I;
+
+   Z : Zar.Ref := Zar.Ref (Y.Self);
+   --  <i>OK, downward conversion, run-time check that</i> Y <i>designates an</i>
+   --  <i>object in</i> Zar.Obj'Class.
+   --  <i>Again the compiler ignores the special discriminant</i> Self <i>and</i>
+   --  <i>returns the selector itself, in this case</i> Y.
+end Zar;
+</pre>
+
+<p>In both of the cases shown above, the compiler recognizes the special
+idiom of selecting the interface or <code>Self</code> discriminant as meaning
+a reference to the object itself, reinterpreting the type of the
+object appropriately.
+
+<p>The above mechanism can also be used within another <code>Java_Interface</code>
+type as illustrated by the following example:
+
+<pre>
+with java.lang.Object;
+package Zoo is
+   type Typ (Self : access java.lang.Object.Typ'Class) is
+     new abstract java.lang.Object.Typ with null record;
+   pragma Java_Interface (Typ);
+
+   type Ref is access all Typ'Class;
+
+   procedure Interface_Op (This : access Typ) is abstract;
+private
+   pragma Convention (Java, Typ);
+end Zoo;
+
+with java.lang.Object; use java.lang.Object;
+with Foo;
+with Zoo;
+package Woo is
+   type Typ (Foo_I : Foo.Ref;
+             Zoo_I : Zoo.Ref)
+     is new abstract java.lang.Object.Typ with null record;
+   pragma Java_Interface (Typ);
+
+   type Ref is access all Typ'Class;
+
+   --  <i>Woo must list all of the abstract operations of interfaces</i>
+   --  <i>Foo and Zoo.</i>
+
+   procedure Proc (This : access Typ; Val : Integer) is abstract;
+   function  Func (This : access Typ) return Integer is abstract;
+   procedure Interface_Op (This : access Typ) is abstract;
+
+   procedure New_Op (This : access Typ) is abstract;
+   --  <i>A new operation of the interface</i>
+private
+   pragma Convention (Java, Typ);
+end Woo;
+</pre>
+
+<p>Another interesting example is the declaration of a type <code>Bar.Child.Typ</code>
+that derives from <code>Bar.Typ</code> and implements interface <code>Woo.Typ</code>,
+as shown below:
+
+<pre>
+with Foo;
+with Woo;
+package Bar.Child is
+   type Typ (Foo_I : Foo.Ref;
+             Woo_I : Woo.ref)
+     is new Bar.Typ (Foo_I) with null record;
+   --  <i>Note how</i> Foo_I <i>is used to constrain</i> Bar.Typ<i>. This is just to</i>
+   --  <i>satisfy Ada semantics requirements and has no other implications.</i>
+
+   type Ref is access all Typ'Class;
+
+   procedure Proc (This : access Typ; Val : Integer);
+   function  Func (This : access Typ) return Integer;
+   procedure Interface_Op (This : access Typ);
+   procedure New_Op (This : access Typ);
+end Woo;
+
+</pre>
+
+<p>An interesting point to note is when an Ada tagged type <code>Deriv</code> derives
+from an Ada tagged type <code>Base</code> which implements a number of
+interfaces. If <code>Deriv</code> does not implement any additional interface
+there is no need to specify interface discriminants for <code>Deriv</code>, since
+it can simply inherit those of <code>Base</code>.
+
+<p><hr>[ Next: <a rel=next href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ | Previous: <a rel=previous href="#Using%20Java%20Interfaces">Using Java Interfaces</a>
+ | Up: <a rel=up href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ ]<p>
+
+<h2><a name="The%20Java_Constructor%20Pragma">The <code>Java_Constructor</code> Pragma</a></h2>
+
+<ul>
+<p>
+<li><a href="#Background%20on%20Java%20Constructors">Background on Java Constructors</a>:
+
+<p><li><a href="#Using%20Java%20Constructors%20in%20Ada">Using Java Constructors in Ada</a>: 
+<p>
+<li><a href="#Java%20Constructors%20and%20Ada%20Allocators">Java Constructors and Ada Allocators</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Using%20Java%20Constructors%20in%20Ada">Using Java Constructors in Ada</a>
+ | Previous: <a rel=previous href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>
+ | Up: <a rel=up href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>
+ ]<p>
+
+<h3><a name="Background%20on%20Java%20Constructors">Background on Java Constructors</a></h3>
+
+<p>A Java constructor is a special method that must be invoked immediately
+after allocating an object, in order to initialize the object. Given
+the following Java class:
+
+<pre>
+public class C {
+   public int field;
+   public C ()      { field = 3; }
+   public C (int i) { field = i; }
+}
+</pre>
+
+<p>then the statement <code>C obj = new C (3)</code> accomplishes two things:
+
+<ol>
+</p><li>It allocates a new instance of class <code>C</code> in the Java heap and sets
+<code>obj</code> to point to this object;
+
+</p><li>It then calls the constructor that takes an <code>int</code> parameter, passing
+<code>obj</code> to it as a hidden parameter and the value 3 for its <code>int</code>
+parameter.
+</ol>
+
+<p>If no constructor is provided, as in the following class:
+
+<pre>
+class D extends C {
+   float f;
+}
+</pre>
+
+<p>then a default constructor
+
+<pre>
+public D () {
+   super ();
+}
+</pre>
+
+<p>is automatically generated for class <code>D</code>. The call of <code>super()</code>
+inside this default constructor (known as a <em>no-arg</em> constructor)
+invokes the no-arg constructor of the superclass of <code>D</code>, that is, the
+constructor of class <code>C</code>.
+
+<p>Generally speaking, the first statement of every constructor must either be
+a call to another constructor of the class, or a call to a constructor of
+the superclass. For instance, given a constructor
+
+<pre>
+public C (int i, int j) { this (i + j); }
+</pre>
+
+<p>The call <code>this (...)</code> invokes another constructor in the same class
+whose profile matches the parameters specified in <code>(...)</code>. As another
+example, consider:
+
+<pre>
+public D (int k) { super (k); }
+</pre>
+
+<p>where again <code>super (...)</code> invokes a constructor in the superclass
+whose profile matches the parameters specified in <code>(...)</code>.
+
+<p>The observant reader will note that in both of the original constructors of
+class C, there are no calls to either <code>this (...)</code> or <code>super
+(...)</code>. When no such call is explicitly given, the Java compiler
+automatically inserts calls to the no-arg constructor in the superclass. If
+the superclass does not have a no-arg constructor (more on this below),
+then you must explicitly insert calls to <code>super (...)</code>  or <code>this
+(...)</code>.
+
+<p>As noted above, a class might not have a no-arg constructor. This can occur
+only when explicit constructors are defined in the class.  In this case,
+the no-arg constructor is not automatically generated for the class, and if
+a no-arg constructor is desired, you must add it yourself. For instance, in
+the following class:
+
+<pre>
+public class A {
+   int ival;
+   public A (int i) { ival = i; }
+}
+
+public class B extends A {
+   float fval;
+   public B (float f) { fval = f; }
+}
+</pre>
+
+<p>the Java compiler will issue a compile-time error reporting that no
+constructor matching <code>A ()</code> was found in class <code>A</code>, because the
+compiler tries to insert such a call at the beginning of <code>B</code>. To
+correct this problem the Java programmer must either add a no-arg
+constructor <code>A ()</code> in class <code>A</code>, or else change the definition of
+<code>B</code>'s constructor to contain an explicit constructor, e.g., as
+follows:
+
+<pre>
+public B (float f) {
+  super (0);
+  fval = f;
+}
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Java%20Constructors%20and%20Ada%20Allocators">Java Constructors and Ada Allocators</a>
+ | Previous: <a rel=previous href="#Background%20on%20Java%20Constructors">Background on Java Constructors</a>
+ | Up: <a rel=up href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>
+ ]<p>
+
+<h3><a name="Using%20Java%20Constructors%20in%20Ada">Using Java Constructors in Ada</a></h3>
+
+<p>To assert that an Ada function <var>function-name</var> should be mapped to a
+Java constructor of some Ada <var>tagged-type</var>, we have introduced the
+<code>Java_Constructor</code> pragma. Its syntax is as follows:
+
+<pre>
+pragma Java_Constructor (<var>function-name</var>);
+</pre>
+
+<p>where <var>function-name</var> is the name of a function declared immediately
+within the same declarative part where the pragma occurs, and the function
+must have the following characteristics:
+
+<ol>
+</p><li>The function's result type must be an access type designating a class-wide
+type declared at the same declarative level as the function (<code>access
+<var>tagged-type</var>'Class</code>);
+
+</p><li>The last function parameter should be named <code>This</code>, its type must be a
+named access type designating <var>tagged-type</var><code>'Class</code>, and it should
+have a <code>null</code> default value;
+
+</p><li>The very first declaration in the function body should contain an object
+declaration with a default initial expression of the form
+<code><var>constructor-func</var> (..., This)</code>, where the <var>constructor-func</var>
+is a <code>Java_Constructor</code> function which belongs either to
+<var>tagged-type</var> or to the parent type of <var>tagged-type</var>;
+</ol>
+
+<p>The effect of a <code>Java_Constructor</code> pragma is to compile
+<var>function-name</var> into a constructor for the class corresponding to
+<var>tagged-type</var>.  In addition, whenever <var>function-name</var> is invoked
+with a <code>null</code> value for parameter <code>This</code>, the compiler calls the
+<code>tagged-type</code> object allocator and passes in the pointer to the newly
+allocated object in lieu of the value <code>null</code>.
+
+<p>A <code>Java_Constructor</code> pragma is a program unit pragma. It can appear in
+the same places where an <code>Inline</code> pragma for <var>function-name</var> can
+appear. The <code>Java_Constructor</code> pragma applies to all the overloaded
+<var>function-name</var> subprograms declared immediately within the declarative
+region containing the pragma.
+
+<p>As an example, the following Java code:
+
+<pre>
+public class C {
+   public int field;
+   public C ()             { field = 3; }
+   public C (int i)        { field = i; }
+   public C (int i, int j) { this (i + j); }
+}
+</pre>
+
+<p>is equivalent to the following Ada:
+
+<pre>
+with java.lang.Object;  --  <i>more on this package in the coming sections</i>
+use  java.lang.Object;
+package C is
+   use java.lang;
+
+   type Typ is new java.lang.Object.Typ with record
+      Field : Integer;
+   end record;
+
+   type Ref is access all Typ'Class;
+
+   function new_C (This : Ref := null) return Ref;
+   function new_C (I : Integer; This : Ref := null) return Ref;
+   function new_C (I, J : Integer; This : Ref := null) return Ref;
+
+private
+   pragma Java_Constructor (new_C);
+end C;
+
+package body C is
+   function new_C (This : Ref := null) return Ref is
+      Super : Object.Ref := Object.new_Object (Object.Ref (This));
+   begin
+      This.Field := 3;
+      return This;
+   end new_C;
+
+   function new_C (I : Integer; This : Ref := null) return Ref is
+      Super : Object.Ref := Object.new_Object (Object.Ref (This));
+   begin
+      This.Field := I;
+      return This;
+   end new_C;
+
+   function new_C (I, J : Integer; This : Ref := null) return Ref is
+      Ignore : Ref := new_C (I + J, This);
+   begin
+      return This;
+   end new_C;
+end C;
+</pre>
+
+<p><hr>[ Previous: <a rel=previous href="#Using%20Java%20Constructors%20in%20Ada">Using Java Constructors in Ada</a>
+ | Up: <a rel=up href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>
+ ]<p>
+
+<h3><a name="Java%20Constructors%20and%20Ada%20Allocators">Java Constructors and Ada Allocators</a></h3>
+
+<p>An interesting question raised by the <code>Java_Constructor</code> pragma is
+the interaction between Ada allocators and constructors. 
+For instance a client of package <code>C</code> given in the previous section
+could write:
+
+<pre>
+with C;
+procedure Client is
+   Obj_1 : C.Ref := new_C;
+   Obj_2 : C.Ref := new C.Typ;  -- <i>what happens here ???</i>
+</pre>
+
+<p>What JGNAT does in the allocator case is to call the no-arg constructor if
+present (in the example <code>new_C (This : Ref := null)</code>). If there is no
+no-arg constructor then an error is emitted by the JGNAT compiler (this last
+check is currently not yet supported, and there will be an exception at
+run time).
+
+<p><hr>[ Next: <a rel=next href="#Pragma%20Export%20Java">Pragma Export Java</a>
+ | Previous: <a rel=previous href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>
+ | Up: <a rel=up href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ ]<p>
+
+<h2><a name="Pragma%20Import%20Java">Pragma Import Java</a></h2>
+
+<p>For convention Java, pragma <code>Import</code> has the following syntax:
+
+<pre>
+pragma Import ([Convention    =&gt;] Java,
+               [Entity        =&gt;] <var>Local_Name</var>
+             [,[External_Name =&gt;] <var>String_Expression</var>]);
+</pre>
+
+<p>where <var>Local_Name</var> is the name of an object, subprogram, record
+component, exception, or package, while <var>String_Expression</var> is a string
+giving the Java name of the imported entity. If <var>String_Expression</var> is
+missing it is taken to be the <var>Local_Name</var>, all in lower-case letters.
+
+<ul>
+<p>
+<li><a href="#Importing%20Packages">Importing Packages</a>:
+
+<p><li><a href="#Importing%20Exceptions">Importing Exceptions</a>: 
+<p>
+<li><a href="#Importing%20Record%20Components">Importing Record Components</a>:
+
+<p><li><a href="#Importing%20Dispatching%20Subprograms">Importing Dispatching Subprograms</a>: 
+<p>
+<li><a href="#Importing%20Objects">Importing Objects</a>:
+
+<p><li><a href="#Importing%20Non-Dispatching%20Subprograms">Importing Non-Dispatching Subprograms</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Importing%20Exceptions">Importing Exceptions</a>
+ | Previous: <a rel=previous href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ | Up: <a rel=up href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ ]<p>
+
+<h3><a name="Importing%20Packages">Importing Packages</a></h3>
+
+<p>If the <var>Local_Name</var> of an <code>Import</code> pragma is the name of a package
+spec <var>P</var>, then all the entities declared in <var>P</var> must be
+explicitly imported from Java. The <var>String_Expression</var> of such an
+<code>Import</code> pragma gives the name of the Java class corresponding to
+<var>P</var> and can be a simple class name or it can have the form
+<var>java_package_name</var><code>.</code><var>class_name</var>, which indicates that the
+class <var>class_name</var> corresponding to <var>P</var> belongs to Java package
+<var>java_package_name</var>. If <var>java_package_name</var> is missing, the class
+belongs to the anonymous Java package.
+
+<p>The precise rules when importing a package <var>P</var> are:
+
+<ul>
+</p><li>All the entities declared inside <var>P</var> must be imported either by means
+of the <code>Import</code> pragma or by using other Java-specific pragmas.
+
+</p><li><var>P</var> should contain at most one tagged or untagged record type whose
+name must be <code>Typ</code>. <code>Typ</code> models the record part of the class
+corresponding to <var>P</var>.
+
+</p><li><var>P</var> can contain at most one exception, whose <code>Import</code> pragma
+must have exactly the same <var>String_Expression</var> as for <var>P</var>. (In
+<code>jvm2ada</code> such an exception is present only if the class
+corresponing to <var>P</var> derives, directly or indirectly, from class
+<code>java.lang.Throwable</code>. The name we have selected for such an
+exception is <code>Except</code>.)
+
+</p><li><var>P</var> should not contain task types or protected types.
+
+</p><li>The <var>String_Expression</var> of the <code>Import</code> pragma for an object,
+subprogram, or record component declared in <var>P</var> must be a simple
+name (it cannot contain any "<code>.</code>" characters).
+
+</p><li>If <var>P</var> contains nested packages, these must themselves contain an
+<code>Import</code> pragma (and the above rules apply recursively). 
+</ul>
+
+<p>As a first example consider the following package:
+
+<pre>
+with java.lang.Object; --  <i>more on this package in the coming sections</i>
+package root.outer.Child is
+   type Typ is new java.lang.Object.Typ with record
+      x : Integer;
+      pragma Import (Java, x, "x");
+
+      Y : Integer;
+      pragma Import (Java, Y, "Y");
+   end record;
+
+   type Ref is access all Typ'Class;
+
+   procedure Dispatching_Op (This : access Typ; I : Integer);
+   function Non_Dispatching_Op (F : Float) return Integer;
+
+   function New_Child (This : Ref := null) return Ref;
+   Global : Integer;
+
+private
+   pragma Import (Java, Dispatching_Op, "someProcedure");
+   pragma Import (Java, Non_Dispatching_Op, "someFunction");
+   pragma Java_Constructor (New_Child);
+   pragma Import (Java, Global);
+end root.outer.Child;
+pragma Import (Java, Outer.Child, "root.outer.CHILD");
+
+</pre>
+
+<p>This package imports into Ada the services of a class whose spec in
+Java looks like:
+
+<pre>
+
+package root.outer;
+public class CHILD extends java.lang.Object {
+   public int x;
+   public int Y;
+
+   public void someProcedure (int i);
+   public static int someFunction (float f);
+
+   public CHILD ();
+
+   public static int global;
+}
+</pre>
+
+<p>Note that in the Ada spec, the Java methods
+<code>someProcedure</code> and <code>someFunction</code> have been named
+<code>Dispatching_Op</code> and <code>Non_Dispatching_Op</code>.
+
+<p><hr>[ Next: <a rel=next href="#Importing%20Record%20Components">Importing Record Components</a>
+ | Previous: <a rel=previous href="#Importing%20Packages">Importing Packages</a>
+ | Up: <a rel=up href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ ]<p>
+
+<h3><a name="Importing%20Exceptions">Importing Exceptions</a></h3>
+
+<p>If the <var>Local_Name</var> of an <code>Import</code> pragma is the name of an
+exception <var>E</var>, the <var>String_Expression</var> of such an <code>Import</code>
+pragma gives the name of the JVM class corresponding to <var>E</var> and can be
+a simple class name or it can have the form
+<var>java_package_name</var><code>.</code><var>class_name</var> which says that the JVM
+class <var>class_name</var> corresponding to <var>E</var> belongs to Java package
+<var>java_package_name</var>. If <var>java_package_name</var> is missing, the JVM
+class belongs to the anonymous Java package.
+
+<p>When importing an exception you should make sure that the imported JVM
+class is indeed a Java exception, i.e. it derives from
+<code>java.lang.Throwable</code>.
+
+<p>As an example here is an excerpt of the spec of class
+<code>java.lang.Throwable</code> generated by <code>jvm2ada</code>:
+
+<pre>
+package java.lang.Throwable is
+   type Typ ...;
+   type Ref is access all Typ'Class;
+
+   Except : Exception;
+   ...
+private
+   pragma Import (Java, Except, "java.lang.Throwable);
+   ...
+end java.lang.Throwable;
+pragma Import (Java, java.lang.Throwable, "java.lang.Throwable");
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Importing%20Dispatching%20Subprograms">Importing Dispatching Subprograms</a>
+ | Previous: <a rel=previous href="#Importing%20Exceptions">Importing Exceptions</a>
+ | Up: <a rel=up href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ ]<p>
+
+<h3><a name="Importing%20Record%20Components">Importing Record Components</a></h3>
+
+<p>If the <var>Local_Name</var> of an <code>Import</code> pragma is the name of a record
+field, then the record field must be declared in a record whose convention
+is Java and the record must be declared in a package specification which is
+itself imported.  In this case <var>String_Expression</var> must be a simple name
+(i.e. contains no dots) giving the name of the imported field.
+
+<p><hr>[ Next: <a rel=next href="#Importing%20Objects">Importing Objects</a>
+ | Previous: <a rel=previous href="#Importing%20Record%20Components">Importing Record Components</a>
+ | Up: <a rel=up href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ ]<p>
+
+<h3><a name="Importing%20Dispatching%20Subprograms">Importing Dispatching Subprograms</a></h3>
+
+<p>If the <var>Local_Name</var> of an <code>Import</code> pragma is the name of a dispatching
+subprogram (i.e., a primitive operation of a tagged type), then the subprogram
+must be declared in a package specification which is itself imported. 
+In this case <var>String_Expression</var> must be a simple name (i.e. contains
+no dots) giving the name of the imported subprogram.
+
+<p><hr>[ Next: <a rel=next href="#Importing%20Non-Dispatching%20Subprograms">Importing Non-Dispatching Subprograms</a>
+ | Previous: <a rel=previous href="#Importing%20Dispatching%20Subprograms">Importing Dispatching Subprograms</a>
+ | Up: <a rel=up href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ ]<p>
+
+<h3><a name="Importing%20Objects">Importing Objects</a></h3>
+
+<p>If the <var>Local_Name</var> of an <code>Import</code> pragma is the name of an object
+and the object is declared in a package specification which is itself
+imported the <var>String_Expression</var> must be a simple name (i.e. contains no
+dots) giving the name of the imported Java static field.
+
+<p>An <code>Import</code> pragma for an object can be given even though such an
+entity does not occur in a package spec with an <code>Import</code> pragma. In
+this case the <var>String_Expression</var> of the <code>Import</code> pragma must give
+the complete Java name of the imported as shown in the following example:
+
+<pre>
+procedure Foo is
+   Var : Integer;
+   pragma Import (Java, Var, "pack.Foo.the_var");
+begin
+   Var := 3;
+end Foo;
+</pre>
+
+<p><hr>[ Previous: <a rel=previous href="#Importing%20Objects">Importing Objects</a>
+ | Up: <a rel=up href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ ]<p>
+
+<h3><a name="Importing%20Non-Dispatching%20Subprograms">Importing Non-Dispatching Subprograms</a></h3>
+
+<p>If the <var>Local_Name</var> of an <code>Import</code> pragma is the name of a
+non-dispatching subprogram and the subprogram is declared in a package
+specification which is itself imported the <var>String_Expression</var> must be a
+simple name (i.e. contains no dots) giving the name of the imported Java
+static method.
+
+<p>An <code>Import</code> pragma for a non-dispatching subprogram can be given even
+though such an entity does not occur in a package spec with an <code>Import</code>
+pragma. In this case the <var>String_Expression</var> of the <code>Import</code> pragma
+must give the complete Java name of the imported as shown in the following
+example:
+
+<pre>
+procedure Foo is
+   X : Integer;
+   function Compute (I : Integer) return Integer;
+   pragma Import (Java, Compute, "pack.Bar.calc");
+begin
+   X := Compute (3);
+end Foo;
+</pre>
+
+<p><hr>[ Previous: <a rel=previous href="#Pragma%20Import%20Java">Pragma Import Java</a>
+ | Up: <a rel=up href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ ]<p>
+
+<h2><a name="Pragma%20Export%20Java">Pragma Export Java</a></h2>
+
+<p>In the absence of pragma <code>Export</code>, the name of any Ada object,
+field, or subprogram compiled into a class file is the name of the
+corresponding Ada entity in lower-case letters.
+
+<p>For exceptions, record types and packages, the names of the generated class
+files are all in lower case.
+
+<p>By using pragma <code>Export</code> the user can change the default name that
+is generated by the JGNAT compiler. In addition, for Ada packages
+it can also specify which Java package they belong to. For convention
+Java, the pragma <code>Export</code> has the following syntax:
+
+<pre>
+pragma Export ([Convention    =&gt;] Java,
+               [Entity        =&gt;] <var>Local_Name</var>
+             [,[External_Name =&gt;] <var>String_Expression</var>]);
+</pre>
+
+<p>where <var>Local_Name</var> is the name of an object, subprogram, record
+component, record type, exception, or package, and <var>String_Expression</var>
+is a string giving the Java name of the exported entity. If
+<var>String_Expression</var> is missing it is taken to be the <var>Local_Name</var>,
+all in lower-case letters.
+
+<ul>
+<p>
+<li><a href="#Exporting%20Objects%20Subprograms%20and%20Record%20Components">Exporting Objects Subprograms and Record Components</a>:
+
+<p><li><a href="#Exporting%20Exceptions">Exporting Exceptions</a>: 
+<p>
+<li><a href="#Exporting%20Packages%20or%20Record%20Types">Exporting Packages or Record Types</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Exporting%20Exceptions">Exporting Exceptions</a>
+ | Previous: <a rel=previous href="#Pragma%20Export%20Java">Pragma Export Java</a>
+ | Up: <a rel=up href="#Pragma%20Export%20Java">Pragma Export Java</a>
+ ]<p>
+
+<h3><a name="Exporting%20Objects%20Subprograms%20and%20Record%20Components">Exporting Objects, Subprograms, and Record Components</a></h3>
+
+<p>NOTE: Exporting of record components is not yet supported. <br>
+
+<p>If the <var>Local_Name</var> of an <code>Export</code> pragma is the name of an
+object, record component, or subprogram (but not a top-level subprogram),
+<var>String_Expression</var> must be a simple name (i.e., it contains no
+<code>.</code> characters), giving the name of the corresponding entity at the
+JVM level. As an example, when compiling the following package specification:
+
+<pre>
+package C is
+   type Typ is tagged record
+      Field : Integer;
+      pragma Export(Java, Field, "THE_FIELD");
+   end record;
+
+   function Instance_Op (This : access Typ; I : Integer) return Integer;
+
+   Var : Integer;
+   function Op (J : Integer) return Integer;
+
+private
+   pragma Export (Java, Instance_Op, "dispatch_op");
+   pragma Export (Java, Var, "the_var");
+end C;
+</pre>
+
+<p>this is interpreted as the following two class specification at the JVM
+level:
+
+<pre>
+public class c {
+   public static int the_var;
+   public static int op (int j);
+}
+public class c$typ {
+   public int THE_FIELD;
+   public int dispatch_op (int i) {...}
+}
+</pre>
+
+<p>Note that when exporting an object, subprogram, or record component you
+cannot specify its JVM class, as this is determined by the compiler.
+
+<p><hr>[ Next: <a rel=next href="#Exporting%20Packages%20or%20Record%20Types">Exporting Packages or Record Types</a>
+ | Previous: <a rel=previous href="#Exporting%20Objects%20Subprograms%20and%20Record%20Components">Exporting Objects Subprograms and Record Components</a>
+ | Up: <a rel=up href="#Pragma%20Export%20Java">Pragma Export Java</a>
+ ]<p>
+
+<h3><a name="Exporting%20Exceptions">Exporting Exceptions</a></h3>
+
+<p>If the <var>Local_Name</var> of an <code>Export</code> pragma is the name of an
+exception <var>E</var>, then the <var>String_Expression</var> of such an
+<code>Export</code> pragma gives the name of the generated JVM class for the Ada
+exception, overriding the name that would have been given by the
+compiler. <var>String_Expression</var> can be a simple class name, or it can
+have the form
+
+<pre>
+<var>java_package_name</var><code>.</code><var>class_name</var>
+</pre>
+
+<p>indicating that the generated class belongs to Java package
+<var>java_package_name</var>.  If the name <var>java_package_name</var> is missing,
+the class is defined to belong to the anonymous Java package.
+
+<p>Care must be taken not to use the same class name for two Ada exceptions,
+packages or record types when they belong to different source files located
+in the same directory, since one <code>.class</code> file would overwrite the
+other.
+
+<p><hr>[ Previous: <a rel=previous href="#Exporting%20Exceptions">Exporting Exceptions</a>
+ | Up: <a rel=up href="#Pragma%20Export%20Java">Pragma Export Java</a>
+ ]<p>
+
+<h3><a name="Exporting%20Packages%20or%20Record%20Types">Exporting Packages or Record Types</a></h3>
+
+<p>NOTE: Exporting of packages is not yet supported. <br>
+
+<p>If the <var>Local_Name</var> of an <code>Export</code> pragma is the name of a package
+spec or record type <var>P</var>, then the <var>String_Expression</var> of such an
+<code>Export</code> pragma gives the name of the generated JVM class, overriding
+the name that would have been given by the
+compiler. <var>String_Expression</var> can be a simple class name, or it can
+have the form <var>java_package_name</var><code>.</code><var>class_name</var> indicating
+that the generated JVM class belongs to Java package
+<var>java_package_name</var>. If <var>java_package_name</var> is missing, the JVM
+class belongs to the anonymous Java package.
+
+<p>Care must be taken not to use the same class name for two Ada exceptions,
+packages or record types when they belong to different source files located
+in the same directory, since one <code>.class</code> file would overwrite the
+other.
+
+<p>If the same <code>Export</code> pragma is specified for a package spec and a
+record type contained inside it, then the JGNAT compiler will map both of
+these in the same JVM class. For instance without <code>Export</code> pragmas the
+following code generates 2 JVM <code>.class</code> files:
+<code>outer$child.class</code> and <code>outer$child$rec.class</code>.
+
+<pre>
+package Outer.Child is
+   type Rec is tagged record
+     F : Float;
+   end record;
+   procedure Proc (This : Rec);
+   --  <i>This always goes in the same .class file as type</i> Rec
+
+   function Global (I : Integer) return Rec;
+   --  <i>This always goes in the same .class file as the package</i>
+end Outer.Child;
+</pre>
+
+<p>If the same <code>Export</code> pragma is used a single class file is generated
+(<code>CHILD.class</code> in JVM package <code>root.outer</code>).
+
+<pre>
+package Outer.Child is
+   type Rec is record
+     X : Float;
+   end record;
+   pragma Export (Java, Rec, "root.outer.CHILD");
+
+   procedure Proc (This : Rec);
+   function Global (I : Integer) return Rec;
+   --  <i>Both subprograms are generated in the same .class file</i>
+end Outer.Child;
+pragma Export (Java, Outer.Child, "root.outer.CHILD");
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>
+ | Previous: <a rel=previous href="#Java-Specific%20Pragmas">Java-Specific Pragmas</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Mapping%20Java%20into%20Ada">Mapping Java into Ada</a></h1>
+
+<p>This chapter details the mapping used by <code>jvm2ada</code> to map Java
+<code>.class</code> files into Ada package specs. It is assumed that the reader
+is familiar with the Java language.
+
+<ul>
+<p>
+<li><a href="#Identifiers">Identifiers</a>:
+
+<p><li><a href="#Scalar%20Types">Scalar Types</a>: 
+<p>
+<li><a href="#Java%20References%20and%20java.lang.Object">Java References and java.lang.Object</a>:
+
+<p><li><a href="#Array%20Types">Array Types</a>: 
+<p>
+<li><a href="#The%20Ada%20Package%20Java">The Ada Package Java</a>:
+
+<p><li><a href="#Use%20of%20With-Type%20Clauses%20by%20jvm2ada">Use of With-Type Clauses by jvm2ada</a>: 
+<p>
+<li><a href="#Java%20Packages">Java Packages</a>:
+
+<p><li><a href="#Java%20Classes">Java Classes</a>: 
+<p>
+<li><a href="#Abstract%20Classes">Abstract Classes</a>:
+
+<p><li><a href="#Final%20Classes%20and%20Final%20Methods">Final Classes and Final Methods</a>: 
+<p>
+<li><a href="#Nested%20Classes">Nested Classes</a>:
+
+<p><li><a href="#Java%20Interface">Java Interface</a>: 
+<p>
+<li><a href="#Java%20Class%20Implementing%20Interfaces">Java Class Implementing Interfaces</a>:
+
+<p><li><a href="#Java%20Exceptions">Java Exceptions</a>: 
+<p>
+<li><a href="#Static%20Fields">Static Fields</a>:
+
+<p><li><a href="#Final%20Static%20Fields">Final Static Fields</a>: 
+<p>
+<li><a href="#Instance%20Fields">Instance Fields</a>:
+
+<p><li><a href="#Volatile%20and%20Transient%20Fields">Volatile and Transient Fields</a>: 
+<p>
+<li><a href="#Static%20Methods">Static Methods</a>:
+
+<p><li><a href="#Instance%20Methods">Instance Methods</a>: 
+<p>
+<li><a href="#Abstract%20Methods">Abstract Methods</a>:
+
+<p><li><a href="#Native%20Methods">Native Methods</a>: 
+<p>
+<li><a href="#Visibility%20Issues">Visibility Issues</a>:
+
+<p><li><a href="#Java%20Implicit%20Upcasting%20in%20Ada">Java Implicit Upcasting in Ada</a>: 
+<p>
+<li><a href="#Mixing%20Ada%20Strings%20and%20Java%20Strings">Mixing Ada Strings and Java Strings</a>:
+
+<p><li><a href="#An%20Example">An Example</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Scalar%20Types">Scalar Types</a>
+ | Previous: <a rel=previous href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Identifiers">Identifiers</a></h2>
+
+<p>See [<a href="#Identifier%20Mangling">Identifier Mangling</a>].
+
+<p><hr>[ Next: <a rel=next href="#Java%20References%20and%20java.lang.Object">Java References and java.lang.Object</a>
+ | Previous: <a rel=previous href="#Identifiers">Identifiers</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Scalar%20Types">Scalar Types</a></h2>
+
+<p>Java scalar tpes are mapped into Ada scalar types as follows:
+
+<pre>
+          boolean <i>(1 byte)  maps into</i> Standard.Boolean
+          char    <i>(2 bytes)  "    "  </i> Standard.Wide_Character
+
+          byte    <i>(1 byte)   "    "  </i> Standard.Short_Short_Integer
+          short   <i>(2 bytes)  "    "  </i> Standard.Short_Integer
+          int     <i>(4 bytes)  "    "  </i> Standard.Integer
+          long    <i>(8 bytes)  "    "  </i> Standard.Long_Integer
+
+          float   <i>(4 bytes)  "    "  </i> Standard.Float
+          double  <i>(8 bytes)  "    "  </i> Standard.Long_Float
+</pre>
+
+<p>As a convenience for the Ada programmer subtypes are used to express the
+correspondence between primitive numeric Java types and the Ada scalar
+types defined in package <code>Standard</code>.
+
+<p>We have chosen to place these subtypes at the root of the Ada version of
+the Java API, i.e., in package <code>Java</code>. Thus these subtypes are directly
+available in the Ada version of the API and at hand for users of the API. 
+The code excerpt below gives the beginning of package
+<code>java</code>:
+
+<pre>
+package java is
+   pragma Preelaborate;
+
+   subtype boolean is Standard.Boolean;
+   subtype char    is Standard.Wide_Character;
+   subtype byte    is Standard.Short_Short_Integer;
+   subtype short   is Standard.Short_Integer;
+   subtype int     is Standard.Integer;
+   subtype long    is Standard.Long_Integer;
+   subtype float   is Standard.Float;
+   subtype double  is Standard.Long_Float;
+   ...
+end java;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Array%20Types">Array Types</a>
+ | Previous: <a rel=previous href="#Scalar%20Types">Scalar Types</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Java%20References%20and%20java.lang.Object">Java References and <code>java.lang.Object</code></a></h2>
+
+<p>When it comes to composite objects such as arrays and records, Java differs
+from Ada in the fact that it only has reference semantics. More precisely, in
+Java you can only allocate an object in the garbage-collected heap and
+obtain a reference to such object. All object reads and writes are done
+via this reference.  In addition, you cannot copy an object as a whole into
+another object: there is no default deep-copy operation in Java.
+
+<p>In mapping Java services to Ada, we have preserved its reference semantics,
+as shown in the code excerpt below which shows the salient part of how
+class <code>java.lang.Object</code> is mapped into Ada:
+
+<pre>
+package java.lang.Object is
+   pragma Preelaborate;
+
+   type Typ is tagged limited private;
+   type Ref is access all Typ'Class;
+
+   function new_Object (This : Ref := null) return Ref;
+   --  <i>The constructor</i>
+   ...
+private
+
+   type Typ is tagged limited null record;
+   ...
+end java.lang.Object;
+</pre>
+
+<p>As a first remark, tagged types imported from Java should be limited
+since, as mentioned before, no object assignment operation exists on the JVM. 
+Second, unlike Java, in Ada we need to define two types: one for the actual
+tagged type (type <code>Typ</code>) and one for the actual refernces (type
+<code>Ref</code>). This means that while in Java you can write something like:
+
+<pre>
+import java.lang.Object;
+class client {
+   void foo () {
+      Object obj = new Object ();
+   }
+}
+</pre>
+
+<p>in Ada you have to write:
+
+<pre>
+with java.lang.Object; use java.lang.Object;
+procedure Foo is
+   obj : Object.Ref = new_Object;
+begin
+   null;
+end Foo;
+</pre>
+
+<p>Furthermore, for now we impose some restrictions on types that
+extend types that are declared in packages imported from Java.
+
+<p>Since the parent type of such a type extension has convention Java,
+the extended type inherits convention Java (even though declared
+within a normal Ada package). This means that the extended type
+should not contain any component declarations that would not
+be appropriate in an equivalent Java class.
+
+<p>In particular, a type that extends from a Java-convention parent
+type should not have any components of the following kinds:
+
+<ul>
+</p><li>components with default initialization (excepting access components
+that are initialized by null)
+</p><li>components of composite types (arrays, records, tasks, protected types)
+</p><li>components of private types whose full type is a composite type
+</ul>
+
+<p>The reason for these restrictions is that each of the above formsu
+of components requires some kind of run-time initialization at the
+time an object of the containing type is created. Such initialization
+needs to happen before any user code can reference the components. 
+However, in the presence of user-defined constructors, which are
+executed immediately after object creation (as required by the JVM),
+this is difficult for the compiler to support.
+
+<p>The workaround for cases where composite components are desired
+is instead to declare components of access types that designate the types
+you want to use. The allocation and initialization of those access
+components can then be performed as part of the actions of your own
+user-defined constructor function (see [<a href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>]).
+
+<p>If we were to allow such components, the consequences of failing to
+heed the above restrictions would include the creation of objects
+that are not fully allocated or initialized, with the potential
+for crashing the program.
+
+<p>The JGNAT compiler will reject the attempt to declare a Java-convention
+record type with any of the restricted forms of components by flagging
+each offending component. We plan to try relaxing these restrictions
+in a future release of JGNAT.
+
+<p><hr>[ Next: <a rel=next href="#The%20Ada%20Package%20Java">The Ada Package Java</a>
+ | Previous: <a rel=previous href="#Java%20References%20and%20java.lang.Object">Java References and java.lang.Object</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Array%20Types">Array Types</a></h2>
+
+<p>Let's illustrate the mapping with an example. Assume you would like to map
+a Java array of <code>int</code> into Ada. For instance, in Java you might write:
+
+<pre>
+int[] obj;
+//  obj <i>is a reference to an array of int</i>
+
+obj = new int [3];
+//  <i>Allocate an array-of-int object with 3 elements.</i>
+//  <i>The index of the first element is zero.</i>
+</pre>
+
+<p>The above is mapped into the following Ada declarations:
+
+<pre>
+type int_Arr_Obj is array (Natural range &lt;&gt;) of int;
+type int_Arr     is access all int_Arr_Obj;
+
+obj : int_Arr;
+--  int[] obj;
+
+obj := new int_Array_Obj (0 .. 2);
+--  obj = new int [3];
+</pre>
+
+<p>Java does not have multidimensional arrays, it only has arrays of arrays. As
+a result
+
+<pre>
+int[][] obj2 = new int [3][2];
+</pre>
+
+<p>is mapped into
+
+<pre>
+type int_Arr_2_Obj is array (Natural range &lt;&gt;) of int_Arr;
+type int_Arr_2     is access all int_Arr_2_Obj;
+
+Obj2 : int_Arr_2 := new int_Arr_2_Obj (0 .. 2, 0 .. 1);
+--  obj2 = new int [3][2];
+</pre>
+
+<p>The final question that remains to answer is where are the various array type
+definitions located. Scalar array types have been placed in
+package <code>Java</code>, while array types associated with a given JVM class are
+placed in the Ada package spec for that class. Indeed
+when processing a JVM class <var>C</var>, <code>jvm2ada</code> generates the
+following at the beginning of the Ada package spec coresponding to <var>C</var>:
+
+<pre>
+package <var>C</var> is
+   pragma Preelaborate;
+
+   type Typ is ...;
+   type Ref is access all Typ'Class;
+
+   type Arr_Obj is array (Natural range &lt;&gt;) of Ref;
+   type Arr     is access all Arr_Obj;
+
+   type Arr_2_Obj is array (Natural range &lt;&gt;) of Arr;
+   type Arr_2     is access all Arr_2_Obj;
+
+   ...
+end <var>C</var>;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Use%20of%20With-Type%20Clauses%20by%20jvm2ada">Use of With-Type Clauses by jvm2ada</a>
+ | Previous: <a rel=previous href="#Array%20Types">Array Types</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="The%20Ada%20Package%20Java">The Ada Package <code>Java</code></a></h2>
+<pre>
+package java is
+   pragma Preelaborate;
+
+   subtype boolean is Standard.Boolean;
+   subtype char    is Standard.Wide_Character;
+   subtype byte    is Standard.Short_Short_Integer;
+   subtype short   is Standard.Short_Integer;
+   subtype int     is Standard.Integer;
+   subtype long    is Standard.Long_Integer;
+   subtype float   is Standard.Float;
+   subtype double  is Standard.Long_Float;
+
+   --  <i>boolean array types:</i> boolean [], boolean [][], boolean [][][]
+
+   type boolean_Arr_Obj   is array (Natural range &lt;&gt;) of boolean;
+   type boolean_Arr       is access all boolean_Arr_Obj;
+
+   type boolean_Arr_2_Obj is array (Natural range &lt;&gt;) of boolean_Arr;
+   type boolean_Arr_2     is access all boolean_Arr_2_Obj;
+
+   type boolean_Arr_3_Obj is array (Natural range &lt;&gt;) of boolean_Arr_2;
+   type boolean_Arr_3     is access all boolean_Arr_3_Obj;
+
+   --  <i>char array types:</i> char [], char [][], char [][][]
+
+   type char_Arr_Obj   is array (Natural range &lt;&gt;) of char;
+   type char_Arr       is access all char_Arr_Obj;
+
+   type char_Arr_2_Obj is array (Natural range &lt;&gt;) of char_Arr;
+   type char_Arr_2     is access all char_Arr_2_Obj;
+
+   type char_Arr_3_Obj is array (Natural range &lt;&gt;) of char_Arr_2;
+   type char_Arr_3     is access all char_Arr_3_Obj;
+
+   --  <i>byte array types:</i> byte [], byte [][], byte [][][]
+
+   type byte_Arr_Obj   is array (Natural range &lt;&gt;) of byte;
+   type byte_Arr       is access all byte_Arr_Obj;
+
+   type byte_Arr_2_Obj is array (Natural range &lt;&gt;) of byte_Arr;
+   type byte_Arr_2     is access all byte_Arr_2_Obj;
+
+   type byte_Arr_3_Obj is array (Natural range &lt;&gt;) of byte_Arr_2;
+   type byte_Arr_3     is access all byte_Arr_3_Obj;
+
+   --  <i>short array types:</i> short [], short [][], short [][][]
+
+   type short_Arr_Obj   is array (Natural range &lt;&gt;) of short;
+   type short_Arr       is access all short_Arr_Obj;
+
+   type short_Arr_2_Obj is array (Natural range &lt;&gt;) of short_Arr;
+   type short_Arr_2     is access all short_Arr_2_Obj;
+
+   type short_Arr_3_Obj is array (Natural range &lt;&gt;) of short_Arr_2;
+   type short_Arr_3     is access all short_Arr_3_Obj;
+
+   --  <i>int array types:</i> int [], int [][], int [][][]
+
+   type int_Arr_Obj   is array (Natural range &lt;&gt;) of int;
+   type int_Arr       is access all int_Arr_Obj;
+
+   type int_Arr_2_Obj is array (Natural range &lt;&gt;) of int_Arr;
+   type int_Arr_2     is access all int_Arr_2_Obj;
+
+   type int_Arr_3_Obj is array (Natural range &lt;&gt;) of int_Arr_2;
+   type int_Arr_3     is access all int_Arr_3_Obj;
+
+   --  <i>long array types:</i> long [], long [][], long [][][]
+
+   type long_Arr_Obj   is array (Natural range &lt;&gt;) of long;
+   type long_Arr       is access all long_Arr_Obj;
+
+   type long_Arr_2_Obj is array (Natural range &lt;&gt;) of long_Arr;
+   type long_Arr_2     is access all long_Arr_2_Obj;
+
+   type long_Arr_3_Obj is array (Natural range &lt;&gt;) of long_Arr_2;
+   type long_Arr_3     is access all long_Arr_3_Obj;
+
+   --  <i>float array types:</i> float [], float [][], float [][][]
+
+   type float_Arr_Obj   is array (Natural range &lt;&gt;) of float;
+   type float_Arr       is access all float_Arr_Obj;
+
+   type float_Arr_2_Obj is array (Natural range &lt;&gt;) of float_Arr;
+   type float_Arr_2     is access all float_Arr_2_Obj;
+
+   type float_Arr_3_Obj is array (Natural range &lt;&gt;) of float_Arr_2;
+   type float_Arr_3     is access all float_Arr_3_Obj;
+
+   --  <i>double array types:</i> double [], double [][], double [][][]
+
+   type double_Arr_Obj   is array (Natural range &lt;&gt;) of double;
+   type double_Arr       is access all double_Arr_Obj;
+
+   type double_Arr_2_Obj is array (Natural range &lt;&gt;) of double_Arr;
+   type double_Arr_2     is access all double_Arr_2_Obj;
+
+   type double_Arr_3_Obj is array (Natural range &lt;&gt;) of double_Arr_2;
+   type double_Arr_3     is access all double_Arr_3_Obj;
+
+end java;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Java%20Packages">Java Packages</a>
+ | Previous: <a rel=previous href="#The%20Ada%20Package%20Java">The Ada Package Java</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Use%20of%20With-Type%20Clauses%20by%20jvm2ada">Use of With-Type Clauses by <code>jvm2ada</code></a></h2>
+
+<p>Consider the following
+
+<pre>
+public class C extends B implements I {
+   public D link;
+   ...
+}
+</pre>
+
+<p>When <code>jvm2ada</code> is invoked to process <code>C.class</code> to create an Ada
+spec for <code>C</code>, it is difficult to know whether reference type <code>D</code>
+is involved in a circular dependency with class <code>C</code>. First of all,
+<code>D.class</code> may not even be available yet.  Even if it were, classes
+<code>C</code> and <code>D</code> could be involved in a complex circular relationship
+with other classes, some of which may not be available. In addition, in the
+presence of circular dependencies there is no good reason for using a
+<code>with type</code> clause in one package spec and a regular <code>with</code> clause
+in another.
+
+<p>There are three cases in which a class <code>C</code> refers to another class
+<var>X</var>:
+
+<ol>
+</p><li><code>C</code> extends <var>X</var>.
+
+</p><li><code>C</code> implements <var>X</var>.
+
+</p><li><var>X</var> is used as a reference (e.g., a reference to an object or array of
+objects of type <var>X</var>).
+</ol>
+
+<p>In the first case, the Ada package spec corresponding to <code>C</code> needs to
+have a regular <code>with</code> clause for the package spec corresponding to
+<var>X</var>.  In all other cases a <code>with type</code> clause suffices.
+
+<p>As a result, <code>jvm2ada</code> will generate the following <code>with</code> and
+<code>with type</code> clauses for the class <code>C</code> above:
+
+<pre>
+with B;
+with type I.Ref is access;
+with type D.Ref is access;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Java%20Classes">Java Classes</a>
+ | Previous: <a rel=previous href="#Use%20of%20With-Type%20Clauses%20by%20jvm2ada">Use of With-Type Clauses by jvm2ada</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Java%20Packages">Java Packages</a></h2>
+
+<p>A Java package <var>pack</var> is mapped into an empty Ada package spec
+<var>pack</var>.  For instance, Java package <code>java.lang</code> is mapped into the
+following Ada spec:
+
+<pre>
+package java.lang is
+   pragma Preelaborate;
+end java.lang;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Abstract%20Classes">Abstract Classes</a>
+ | Previous: <a rel=previous href="#Java%20Packages">Java Packages</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Java%20Classes">Java Classes</a></h2>
+
+<p>A Java class <var>X.Y.D</var> extending a class <var>W.Z.B</var> is mapped into an Ada
+package <var>X.Y.D</var> containing a tagged type definition <code>Typ</code> that
+extends <var>W.Z.B</var><code>.Typ</code> and a reference type definition <code>Ref</code> as
+shown below:
+
+<pre>
+pragma Extensions_Allowed (On);
+--  <i>This pragma is generated to allow use of these packages without</i>
+--  <i>forcing the user to apply the -gnatX switch, which would normally</i>
+--  <i>be required since</i>
+--  with type <i>clauses are generated for this package.</i>
+
+with Java; use Java;
+
+package <var>X.Y.D</var> is
+   pragma Preelaborate;
+
+   -----------------------
+   -- Type Declarations --
+   -----------------------
+
+   type Typ;
+   type Ref is access all Typ'Class;
+
+   --  <i>Array type declarations for X.Y.D</i>
+
+   type Arr_Obj is array (Natural range &lt;&gt;) of Ref;
+   type Arr     is access all Arr_Obj;
+
+   type Arr_2_Obj is array (Natural range &lt;&gt;) of Arr;
+   type Arr_2     is access all Arr_2_Obj;
+
+   type Arr_3_Obj is array (Natural range &lt;&gt;) of Arr_2;
+   type Arr_3     is access all Arr_3_Obj;
+
+   --  <i>The actual type declaration for X.Y.D</i>
+
+   type Typ is new <var>W.Z.B</var>.Typ
+      with record
+
+         ------------------------
+         -- Field Declarations --
+         ------------------------
+         ...
+      end record;
+
+   ------------------------------
+   -- Constructor Declarations --
+   ------------------------------
+   ...
+
+   -------------------------
+   -- Method Declarations --
+   -------------------------
+   ...
+
+   ---------------------------
+   -- Variable Declarations --
+   ---------------------------
+   ...
+
+private
+   pragma Convention (Java, Typ);
+   ...  --  <i>other pragmas are generated here</i>
+end <var>X.Y.D</var>;
+pragma Import (Java, <var>X.Y.D</var>, "<var>W.Z.B</var>");
+pragma Extensions_Allowed (Off);
+</pre>
+
+<p>In addition, all of the static variables of <var>X.Y.D</var> are mapped
+into variables of the Ada package and all static methods of <var>X.Y.D</var> are
+mapped into nondispatching subprograms in the Ada package.
+
+<p>Each instance method of class <var>X.Y.D</var> is converted into a primitive
+operation of type <var>X.Y.D</var><code>.Typ</code> whose first parameter is of type
+"<code>access Typ</code>" and whose remaining parameters are as in the Java
+class.
+
+<p>Constructors in class <var>X.Y.D</var> are mapped into subprograms in package
+<var>X.Y.D</var> as described in a previous section (see [<a href="#The%20Java_Constructor%20Pragma">The Java_Constructor Pragma</a>]).
+
+<p><hr>[ Next: <a rel=next href="#Nested%20Classes">Nested Classes</a>
+ | Previous: <a rel=previous href="#Java%20Classes">Java Classes</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Abstract%20Classes">Abstract Classes</a></h2>
+
+<p>Java's abstract classes are exactly equivalent to Ada's abstract tagged
+types and are mapped into such types by <code>jvm2ada</code>.
+
+<p><hr>[ Next: <a rel=next href="#Java%20Interface">Java Interface</a>
+ | Previous: <a rel=previous href="#Abstract%20Classes">Abstract Classes</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Nested%20Classes">Nested Classes</a></h2>
+
+<p>A class <code>Inner</code> nested inside a class <code>Outer</code> is mapped into
+a child package named <br>
+<code>Outer.Inner</code>.
+
+<p><hr>[ Next: <a rel=next href="#Java%20Class%20Implementing%20Interfaces">Java Class Implementing Interfaces</a>
+ | Previous: <a rel=previous href="#Nested%20Classes">Nested Classes</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Java%20Interface">Java Interface</a></h2>
+
+<p>See [<a href="#Creating%20Java%20Interfaces%20with%20Pragma%20Java_Interface">Creating Java Interfaces with Pragma Java_Interface</a>].
+
+<p><hr>[ Next: <a rel=next href="#Java%20Exceptions">Java Exceptions</a>
+ | Previous: <a rel=previous href="#Java%20Interface">Java Interface</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Java%20Class%20Implementing%20Interfaces">Java Class Implementing Interfaces</a></h2>
+
+<p>See [<a href="#Using%20Java%20Interfaces">Using Java Interfaces</a>].
+
+<p><hr>[ Next: <a rel=next href="#Static%20Fields">Static Fields</a>
+ | Previous: <a rel=previous href="#Java%20Class%20Implementing%20Interfaces">Java Class Implementing Interfaces</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Java%20Exceptions">Java Exceptions</a></h2>
+
+<p>When processing a JVM class, <code>jvm2ada</code> must figure out whether this
+class is a Java exception, i.e. whether it derives, directly or
+indirectly from class <code>java.lang.Throwable</code>.
+
+<p>To determine this, <code>jvm2ada</code> traverses the inheritance tree and
+must locate the <code>.class</code> files of the ancestor classes
+(see [<a href="#Class%20File%20Search%20Paths">Class File Search Paths</a>]). If the class is indeed a Java
+exception, an Ada exception is added to the generated Ada spec as shown
+in the following example:
+
+<pre>
+package pack1.pack2;
+public class C extends java.lang.Throwable { ... }
+</pre>
+
+<p>is mapped into
+
+<pre>
+package pack1.pack2.C is
+   ...
+   Except : Exception;
+   ...
+end pack1.pack2.C;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Final%20Static%20Fields">Final Static Fields</a>
+ | Previous: <a rel=previous href="#Java%20Exceptions">Java Exceptions</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Static%20Fields">Static Fields</a></h2>
+
+<p>A static field in Java is equivalent to a regular variable in Ada and is
+mapped accordingly by <code>jvm2ada</code>.
+
+<p><hr>[ Next: <a rel=next href="#Instance%20Fields">Instance Fields</a>
+ | Previous: <a rel=previous href="#Static%20Fields">Static Fields</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Final%20Static%20Fields">Final Static Fields</a></h2>
+
+<p>A Java <code>final</code> static field is equivalent to an Ada constant. 
+When importing a final static field from Java, <code>jvm2ada</code>
+maps each such field to an Ada deferred constant with an associated
+pragma <code>Import</code> Java.
+
+<p><hr>[ Next: <a rel=next href="#Volatile%20and%20Transient%20Fields">Volatile and Transient Fields</a>
+ | Previous: <a rel=previous href="#Final%20Static%20Fields">Final Static Fields</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Instance%20Fields">Instance Fields</a></h2>
+
+<p>An instance field is mapped by <code>jvm2ada</code> into a field of its corresponding
+tagged type.
+
+<p><hr>[ Next: <a rel=next href="#Static%20Methods">Static Methods</a>
+ | Previous: <a rel=previous href="#Instance%20Fields">Instance Fields</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Volatile%20and%20Transient%20Fields">Volatile and Transient Fields</a></h2>
+
+<p>The JVM <code>volatile</code> and <code>transient</code> attributes are currently ignored
+by <code>jvm2ada</code>.
+
+<p><hr>[ Next: <a rel=next href="#Instance%20Methods">Instance Methods</a>
+ | Previous: <a rel=previous href="#Volatile%20and%20Transient%20Fields">Volatile and Transient Fields</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Static%20Methods">Static Methods</a></h2>
+
+<p>A Java static method is equivalent to a regular nondispatching subprogram
+in Ada and is mapped that way by <code>jvm2ada</code>.
+
+<p><hr>[ Next: <a rel=next href="#Abstract%20Methods">Abstract Methods</a>
+ | Previous: <a rel=previous href="#Static%20Methods">Static Methods</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Instance%20Methods">Instance Methods</a></h2>
+
+<p>Each instance method is converted into a primitive operation whose first
+parameter is of type "<code>access Typ</code>" and whose remaining parameters are
+as given for the Java method.
+
+<p><hr>[ Next: <a rel=next href="#Native%20Methods">Native Methods</a>
+ | Previous: <a rel=previous href="#Instance%20Methods">Instance Methods</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Abstract%20Methods">Abstract Methods</a></h2>
+
+<p>Java's abstract methods are exactly equivalent to Ada's abstract
+primitive operations and are mapped accordingly by <code>jvm2ada</code>.
+
+<p><hr>[ Next: <a rel=next href="#Final%20Classes%20and%20Final%20Methods">Final Classes and Final Methods</a>
+ | Previous: <a rel=previous href="#Abstract%20Methods">Abstract Methods</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Native%20Methods">Native Methods</a></h2>
+
+<p>In Java one can assert that a certain method is <code>native</code>, i.e., that
+its implementation is provided in some native language such as C or Ada,
+external to the JVM.  The <code>jvm2ada</code> tool ignores the <code>native</code>
+attribute when mapping JVM methods into Ada, since JVM methods are invoked
+in exactly the same way regardless of whether they have a <code>native</code>
+attribute.
+
+<p><hr>[ Next: <a rel=next href="#Visibility%20Issues">Visibility Issues</a>
+ | Previous: <a rel=previous href="#Native%20Methods">Native Methods</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Final%20Classes%20and%20Final%20Methods">Final Classes and Final Methods</a></h2>
+
+<p>Java has a way to restrict further derivation from a class type or further
+overriding of a primitive operation. For instance, given
+
+<pre>
+public class Base { ... }
+public final class Deriv extends Base { ... }
+</pre>
+
+<p>it is possible to create subclasses of <code>Base</code> but not of
+<code>Deriv</code>, since <code>Deriv</code> is marked <code>final</code>. Likewise, given
+
+<pre>
+public class Base {
+   public       int service_1 () { ... }
+   public final int service_2 () { ... }
+}
+</pre>
+
+<p>it is possible to override method <code>service_1</code> in every
+subclass of <code>Base</code>, whereas <code>service_2</code> cannot be overriden.
+
+<p>Limiting type derivation and primitive operation overriding is not directly
+possible in Ada. We have therefore chosen for the time being to ignore
+<code>final</code> classes and methods (a comment is emitted before them but nothing
+more). If a Java final class is extended or a final method overridden in Ada,
+an exception (or verifier error) will be emitted at execution time.
+
+<p><hr>[ Next: <a rel=next href="#Java%20Implicit%20Upcasting%20in%20Ada">Java Implicit Upcasting in Ada</a>
+ | Previous: <a rel=previous href="#Final%20Classes%20and%20Final%20Methods">Final Classes and Final Methods</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Visibility%20Issues">Visibility Issues</a></h2>
+<ul>
+</p><li>A <code>public</code> Java class is mapped into a public Ada package spec.
+
+</p><li>A non-public Java class containing <code>public</code> nested classes is
+mapped into an empty Ada package (much in the same way Java packages are
+mapped into Ada packages). This ensures that the parent Ada package is
+defined for the child classes.
+
+</p><li>A <code>public</code> Java member is mapped into an entity declared in the public
+part of the corresponding Ada package if all of its parameter and return
+types refer to a public Java class.
+
+</p><li>A <code>protected</code> Java member is mapped into an entity declared in the
+public part of the corresponding Ada package and treated like a <code>public</code>
+Java member as described in the above bullet point. Because in Ada there is
+no concept similar to the <code>protected</code> qualifier in Java, if you use a
+protected entity from Ada in a way that is forbidden by the JVM a run-time
+exception will occur.
+
+</p><li>A <code>private</code> Java member corresponds to an Ada entity declared in a
+package body. <code>jvm2ada</code> ignores all such entities.
+
+</p><li>Java entities declared as non-public (i.e. with no Java access qualifiers)
+are visible only to Java classes belonging to the same Java package and are
+intended to be accessed only from classes in the same API as <code>C</code>. 
+<code>jvm2ada</code> ignores all such entities. 
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Mixing%20Ada%20Strings%20and%20Java%20Strings">Mixing Ada Strings and Java Strings</a>
+ | Previous: <a rel=previous href="#Visibility%20Issues">Visibility Issues</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Java%20Implicit%20Upcasting%20in%20Ada">Java Implicit Upcasting in Ada</a></h2>
+
+<p>Given the following two class definitions:
+
+<pre>
+public class Base {
+   public static void proc (Base p, Base q) {...}
+}
+public class Derived extends Base {...}
+</pre>
+
+<p>Java allows the following code to be written (and Java programmers
+take advantage of the following):
+
+<pre>
+Base    obj1 = new Base ();
+Derived obj2 = new Derived ();
+proc (obj1, obj2);
+</pre>
+
+<p>The implicit conversion from the pointer to the <code>Derived</code> type to the
+<code>Base</code> type is completely safe and is allowed in Java much as Ada allows
+implicit conversion between similar anonymous access types (in Java when you
+write "<code>Derived obj2</code>" you are really saying that <code>obj2</code> is a
+pointer to an object of type <code>Derived</code> whose pointer type is anonymous). 
+If <code>jvm2ada</code> mapped class Base into:
+
+<pre>
+package Base is
+   type Typ;
+   type Ref is access all Typ'class;
+   ...
+   procedure proc (P1 : Base.Ref; P2 : Base.Ref);
+   ...
+end Base;
+</pre>
+
+<p>The call to <code>proc</code> in Ada would have to look like
+
+<pre>
+   obj1 : Base.Ref    := new_Base;
+   obj2 : Derived.Ref := new_Derived;
+   proc (obj1, Base.Ref (obj2));
+</pre>
+
+<p>which is verbose (especially when using real class names) without any
+fundamental reason (writing "<code>proc (obj1, obj2.all'access)</code>" would
+hardly be any terser). To address this inconvenience we have used access
+parameters when generating the Ada equivalent to <code>proc</code>:
+
+<pre>
+procedure proc (P1 : access Base.Typ'Class;
+                P2 : access Base.Typ'Class);
+</pre>
+
+<p>allowing us to write:
+
+<pre>
+   obj1 : Base.Ref    := new_Base;
+   obj2 : Derived.Ref := new_Derived;
+   proc (obj1, obj2);
+</pre>
+
+<p>The observant reader will notice that this new mapping into Ada of procedure
+<code>proc</code> is not equivalent to the first one since in the case of access
+parameters Ada checks that the parameters are not <code>null</code> (and an
+exception will be raised if they are).
+
+<p>This problem is worked around by disabling the <code>null</code>
+access check in package specs imported from Java. Note that this is a
+temporary expedient until a solution to this problem is agreed upon by
+the ISO WG9-sponsored Ada Rapporteur Group (ARG).
+
+<p><hr>[ Next: <a rel=next href="#An%20Example">An Example</a>
+ | Previous: <a rel=previous href="#Java%20Implicit%20Upcasting%20in%20Ada">Java Implicit Upcasting in Ada</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="Mixing%20Ada%20Strings%20and%20Java%20Strings">Mixing Ada Strings and Java Strings</a></h2>
+
+<p>To facilitate the use of regular Ada strings in Java routines we have added
+the following type definition and subprograms to the body of package
+<code>java.lang.String</code> generated by <code>jvm2ada</code>:
+
+<pre>
+---------------------------------------------------
+-- Java String to Ada String Conversion Routines --
+---------------------------------------------------
+
+type String_Access is access all Standard.String;
+function "+" (S : java.lang.String.Ref) return String_Access;
+function "+" (S : Standard.String) return java.lang.String.Ref;
+
+</pre>
+
+<p>With the above you can write:
+
+<pre>
+
+procedure P (JS : java.lang.String.Ref);
+function  F return java.lang.String.Ref;
+
+S_Ptr String_Access := +F;
+P (+"hello JGNAT");
+</pre>
+
+<p><hr>[ Previous: <a rel=previous href="#Mixing%20Ada%20Strings%20and%20Java%20Strings">Mixing Ada Strings and Java Strings</a>
+ | Up: <a rel=up href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ ]<p>
+
+<h2><a name="An%20Example">An Example</a></h2>
+
+<p>As an example consider the following Java class
+
+<pre>
+package A.B;
+
+public class Foo
+  extends    java.awt.event.ComponentAdapter
+  implements java.io.Serializable
+{
+   //  Instance Variables
+
+   public int   i_Field;
+   public float f_Filed;
+
+   //  Constructors
+
+   public Foo () {}
+   public Foo (java.lang.String s) {}
+
+   //  Instance Methods
+
+   public void first_op  (java.lang.Thread t) {}
+   public int  second_op () {return 1;}
+
+   //  Static Variables
+
+   public static int   i_Var;
+   public static float f_Var;
+
+   //  Static Methods
+
+   public static void proc  (Foo obj, int [] b) {}
+   public static int  funct (Foo [][] a, int l, int h) {return 1;}
+}
+</pre>
+
+<p>After processing this class using the following <code>jvm2ada</code> command
+(<var>java-dir</var> is the location of Sun's JDK 1.2 installation):
+
+<pre>
+jvm2ada -L<var>java-dir</var>/jdk1.2.2/jre/lib/rt.jar Foo.class
+</pre>
+
+<p>we obtain the following Ada spec (comments in italics have been added for
+explanatory purposes):
+
+<pre>
+pragma Extensions_Allowed (On);
+with Java; use Java;
+with java.awt.event.ComponentAdapter;
+with type java.awt.event.ComponentListener.Ref is access;
+with type java.io.Serializable.Ref is access;
+with type java.lang.String.Typ is tagged;
+with type java.lang.Thread.Typ is tagged;
+
+package A.B.Foo is
+   pragma Preelaborate;
+
+   -----------------------
+   -- Type Declarations --
+   -----------------------
+
+   type Typ;
+   type Ref is access all Typ'Class;
+
+   type Arr_Obj is array (Natural range &lt;&gt;) of Ref;
+   type Arr     is access all Arr_Obj;
+
+   type Arr_2_Obj is array (Natural range &lt;&gt;) of Arr;
+   type Arr_2     is access all Arr_2_Obj;
+
+   type Arr_3_Obj is array (Natural range &lt;&gt;) of Arr_2;
+   type Arr_3     is access all Arr_3_Obj;
+
+   type Typ
+      (ComponentListener_I : java.awt.event.ComponentListener.Ref;
+      --  <i>In the Ada mapping all implemented interfaces must appear</i>
+      --  <i>in the list of discriminants. The discriminats corresponding</i>
+      --  <i>to those inherited from the parent type (in this case</i>
+      --  Component_Listener<i>) must be used to constrain the parent</i>
+      --  <i>type in the Ada tagged type definition.</i>
+      Serializable_I : java.io.Serializable.Ref)
+      is new
+         java.awt.event.ComponentAdapter.Typ (ComponentListener_I)
+      with record
+
+         ------------------------
+         -- Field Declarations --
+         ------------------------
+
+         i_Field : java.Int;
+         pragma Import (Java, i_Field, "i_Field");
+
+         f_Filed : java.Float;
+         pragma Import (Java, f_Filed, "f_Filed");
+
+      end record;
+
+   ------------------------------
+   -- Constructor Declarations --
+   ------------------------------
+
+   function new_Foo (This : Ref := null)
+                     return Ref;
+
+   function new_Foo (P1 : access java.lang.String.Typ'Class;
+                     This : Ref := null)
+                     return Ref;
+
+   -------------------------
+   -- Method Declarations --
+   -------------------------
+
+   procedure first_op (This : access Typ;
+                       P1 : access java.lang.Thread.Typ'Class);
+
+   function funct (P1 : A.B.Foo.Arr_2;
+                   P2 : java.Int;
+                   P3 : java.Int)
+                   return java.Int;
+
+   procedure proc (P1 : access A.B.Foo.Typ'Class;
+                   P2 : java.Int_Arr);
+
+   function second_op (This : access Typ)
+                       return java.Int;
+
+   ---------------------------
+   -- Variable Declarations --
+   ---------------------------
+
+   i_Var : Java.Int;
+   f_Var : Java.Float;
+
+private
+
+   pragma Convention (Java, Typ);
+   pragma Java_Constructor (new_Foo);
+   pragma Import (Java, first_op, "first_op");
+   pragma Import (Java, funct, "funct");
+   pragma Import (Java, proc, "proc");
+   pragma Import (Java, second_op, "second_op");
+   pragma Import (Java, i_Var, "i_Var");
+   pragma Import (Java, f_Var, "f_Var");
+
+end A.B.Foo;
+pragma Import (Java, A.B.Foo, "A.B.Foo");
+pragma Extensions_Allowed (Off);
+
+</pre>
+
+<p>The following code shows you how to use <code>Foo</code>'s services in your code.
+
+<pre>
+
+with java.lang.String; use java.lang.String;
+with A.B.Foo; use A.B.Foo;
+use Java;
+
+procedure Client is
+   O  : Foo.Ref   := new_Foo (+"hello there");
+   AO : Foo.Arr_2 :=
+      new Foo.Arr_2_Obj
+        (0 .. 9 =&gt;
+           new Foo.Arr_Obj (0 .. 3 =&gt; new_Foo));
+   I  : int       := funct (A, A'Last, 7);
+   AI : Java.Int_Arr := new Java.Int_Arr_Obj (0 .. 5);
+begin
+   proc (O, AI);
+end Client;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ | Previous: <a rel=previous href="#Mapping%20Java%20into%20Ada">Mapping Java into Ada</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a></h1>
+
+<p>This chapter explains how you can use JGNAT to create
+a "gnapplet" (GNAT applet).
+
+<ul>
+<p>
+<li><a href="#Extending%20java.applet.Applet.Typ">Extending java.applet.Applet.Typ</a>:
+
+<p><li><a href="#Initializing%20and%20Finalizing%20the%20JGNAT%20Runtime">Initializing and Finalizing the JGNAT Runtime</a>: 
+<p>
+<li><a href="#Compiling%20the%20Gnapplet">Compiling the Gnapplet</a>:
+
+<p><li><a href="#Creating%20the%20HTML%20file">Creating the HTML file</a>:
+
+</ul>
+
+<p>The examples provided with your JGNAT installation contain a couple of
+gnapplet examples. This chapter explains the steps that you need to take
+to create your own gnapplets.
+
+<p><hr>[ Next: <a rel=next href="#Initializing%20and%20Finalizing%20the%20JGNAT%20Runtime">Initializing and Finalizing the JGNAT Runtime</a>
+ | Previous: <a rel=previous href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>
+ | Up: <a rel=up href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>
+ ]<p>
+
+<h2><a name="Extending%20java.applet.Applet.Typ">Extending <code>java.applet.Applet.Typ</code></a></h2>
+
+<p>The first thing you need to do to create an applet is to extend
+<code>java.Applet.Applet.Typ</code> as shown in the followng example:
+
+<pre>
+with java; use java;
+with java.applet.Applet;
+with java.awt.Graphics;
+
+package Animate is
+   --  Typ <i>implements the same interfaces as Applet.Typ and no</i>
+   --  <i>new interfaces, so we do not need to add discriminants to the</i>
+   --  <i>type definition below.</i>
+
+   type Typ is new java.applet.Applet.Typ with record
+      Count : Integer;
+   end record;
+   type Ref is access all Typ'Class;
+
+   procedure Init    (This : access Typ);
+   procedure Start   (This : access Typ);
+   procedure Stop    (This : access Typ);
+   procedure Destroy (This : access Typ);
+
+private
+   pragma Convention (Java, Typ);
+end Animate;
+</pre>
+
+<p>In addition to extending <code>java.applet.Applet.Typ</code>, some functions from <br>
+<code>java.applet.Applet</code> need to be overridden, namely:
+
+<pre>
+   procedure Init (This : access Typ);
+   --  <i>This function is called the first time the JVM initializes the</i>
+   --  <i>the applet. This is where you should put your own initializations</i>
+   --  <i>as well as the call to the elaboration code for the Ada runtime</i>
+   --  <i>library, as shown in the next section.</i>
+
+   procedure Start (This : access Typ):
+   procedure Stop  (This : access Typ);
+   --  <i>These routines are called when your applet starts or stops</i>
+   --  <i>running (e.g., when it becomes visible to the user,</i>
+   --  <i>or when the user moves to another page)</i>
+
+   procedure Destroy (This : access Typ);
+   --  <i>Called by the browser or applet viewer to inform this applet</i>
+   --  <i>that it is being reclaimed and that it should destroy any</i>
+   --  <i>resources that it has allocated. The</i> stop <i>method will always</i>
+   --  <i>be called before</i> destroy.
+   --  <i>A subclass of</i> Applet <i>should override this method if it has</i>
+   --  <i>any operation that it wants to perform before it is destroyed.</i>
+</pre>
+
+<p>In addition you may want to override the following two methods:
+
+<pre>
+  procedure Paint (This     : access Typ;
+                   Graphics : access Java.Awt.Graphics.Typ'Class);
+  --  <i>Called every time the applet needs to be repainted.</i>
+  --  <i>Every drawing should be done on Graphics. See the Java API</i>
+  --  <i>documentation for more info.</i>
+
+  procedure Update (This : access Typ;
+                    G    : access java.awt.Graphics.Typ'Class);
+  --  <i>The AWT calls this method in response to a call to</i>
+  --  repaintupdate <i>or</i> paint. <i>See the Java API</i>
+  --  <i>documentation for more info.</i>
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Compiling%20the%20Gnapplet">Compiling the Gnapplet</a>
+ | Previous: <a rel=previous href="#Extending%20java.applet.Applet.Typ">Extending java.applet.Applet.Typ</a>
+ | Up: <a rel=up href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>
+ ]<p>
+
+<h2><a name="Initializing%20and%20Finalizing%20the%20JGNAT%20Runtime">Initializing and Finalizing the JGNAT Runtime</a></h2>
+
+<p>When writing the code for your gnapplet you must remeber to initialize
+the JGNAT runtime upon startup of your applet. You must also remember to
+finalize the JGNAT runtime upon destruction of your applet. This is easy
+to do: you just need to call the routine <code>Adainit</code> in method
+<code>Init</code> and the routine <code>Adafinal</code> in method <code>Destroy</code>. 
+As usual <code>Adainit</code> and <code>Adafinal</code> have been generated by
+<code>jgnatbind</code> if switch <code>-n</code> is selected.
+
+<p>The only additional thing you need to know is the name of the class file
+where <code>jgnatbind</code> generates these routines. The name of this class
+file is <code>ada_</code><var>gnapplet-name</var>, where <var>gnapplet-name</var> is the
+name of the gnapplet package where <code>java.applet.Applet.Typ</code> was
+derived.
+
+<p>As an example here is the body of methods <code>Init</code> and <code>Destroy</code>
+of the <code>Animate</code> gnapplet example given in the previous section:
+
+<pre>
+package body Animate is
+   ...
+   procedure Init (This : access Typ) is
+      procedure Adainit;
+      pragma Import (Ada, Adainit, "ada_animate.adainit");
+   begin
+      Adainit;
+      --  <i>other initializations go here, after the call to</i> Adainit
+   end Init;
+
+   procedure Destroy (This : access Typ) is
+      procedure Adafinal;
+      pragma Import (Ada, Adafinal, "ada_animate.adafinal");
+   begin
+      --  <i>other finalizations go here, before the call to</i> Adafinal
+      Adafinal;
+   end Destroy;
+   ...
+end Animate
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Creating%20the%20HTML%20file">Creating the HTML file</a>
+ | Previous: <a rel=previous href="#Initializing%20and%20Finalizing%20the%20JGNAT%20Runtime">Initializing and Finalizing the JGNAT Runtime</a>
+ | Up: <a rel=up href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>
+ ]<p>
+
+<h2><a name="Compiling%20the%20Gnapplet">Compiling the Gnapplet</a></h2>
+
+<p>Once you have written your gnapplet, you need to compile it.  This is done in
+the usual fashion, except for the fact that because there is no main
+program you need to call the binder and the linker by hand. As an example, to
+compile the gnapplet given in package <code>Animate</code> given in the previous
+example you can type:
+
+<pre>
+    $ jgnatmake animate
+    $ jgnatbind -n animate.ali
+    $ jgnatlink animate.ali
+    $ jarmake -o animate.jar animate$typ.class
+</pre>
+
+<p>The <code>jarmake</code> command is particularly important for packaging all the
+<code>.class</code> files needed by your gnapplet in a single zip archive.
+
+<p><hr>[ Previous: <a rel=previous href="#Compiling%20the%20Gnapplet">Compiling the Gnapplet</a>
+ | Up: <a rel=up href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>
+ ]<p>
+
+<h2><a name="Creating%20the%20HTML%20file">Creating the HTML file</a></h2>
+
+<p>The last step before running your gnapplet is to create an HTML file that
+will be loaded into your viewer or browser. This HTML file should include a
+special tag that indicates where you want to run your applet, and what size
+its allotted window should be. The <code>WIDTH</code> and <code>HEIGHT</code> parameters
+below are mandatory.  The <code>ARCHIVE</code> parameter is only required when you
+created a zip archive (as you did above with <code>jarmake</code>). As an example,
+a minimal html file for the previous example could be:
+
+<pre>
+    &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;/head&gt;
+    &lt;body&gt;
+      &lt;APPLET CODE="animate$typ.class"
+       ARCHIVE="animate.jar"
+       WIDTH=200 HEIGHT=200&gt; &lt;/APPLET&gt;
+    &lt;/body&gt; &lt;/html&gt;
+</pre>
+
+<p><hr>[ Next: <a rel=next href="#Index">Index</a>
+ | Previous: <a rel=previous href="#Creating%20Gnapplets%20with%20JGNAT">Creating Gnapplets with JGNAT</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Debugging%20Ada%20Programs">Debugging Ada Programs</a></h1>
+
+<p>Because JGNAT generates class files that are fully compliant with Sun's JVM
+standard, you can use any JVM debugger, such as Sun's <code>jdb</code>, with JGNAT. 
+As a side note, there are several graphical interfaces to <code>jdb</code>. You can
+use GLIDE (the GNAT IDE), or you can use DDD.
+
+<p>The minor drawback of using a JVM debugger directly is that for those Ada
+constructs that are not directly available in the Java programming language
+(e.g. attributes), you need to know how JGNAT compiles these into bytecode in
+order to retrieve their value.
+
+<p>The purpose of this chapter is precisely to explain how the JGNAT compiler
+compiles Ada contructs into bytecode so that you can use any Java debugger on
+your Ada application.
+
+<p>Note that this chapter is not yet complete. If you need to understand what the
+JGNAT compiler generates for a particular Ada construct which is not documented
+below, we suggest running the command <code>jvmlist -g</code> on the generated JVM
+<code>.class</code> files.
+
+<ul>
+<p>
+<li><a href="#Ada%20Compilation%20Units%20and%20JVM%20Class%20Files">Ada Compilation Units and JVM Class Files</a>:
+
+<p><li><a href="#Lexical%20Elements">Lexical Elements</a>: 
+<p>
+<li><a href="#Enumeration%20Types">Enumeration Types</a>:
+
+<p><li><a href="#Integer%20Types">Integer Types</a>: 
+<p>
+<li><a href="#Floating%20Point%20Types">Floating Point Types</a>:
+
+</ul>
+
+<p><hr>[ Next: <a rel=next href="#Lexical%20Elements">Lexical Elements</a>
+ | Previous: <a rel=previous href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ | Up: <a rel=up href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ ]<p>
+
+<h2><a name="Ada%20Compilation%20Units%20and%20JVM%20Class%20Files">Ada Compilation Units and JVM Class Files</a></h2>
+
+<p>Unless pragma <code>Export</code> is used (see [<a href="#Pragma%20Export%20Java">Pragma Export Java</a>]), lower-case
+letters are used for the names of all JVM class files generated from the
+compilation of an Ada unit. Likewise, the names of all of the entities
+generated inside a class file are lower-case.
+
+<p>The compilation of a nongeneric Ada library unit <var>P</var> always generates
+a JVM class file (<code>p.class</code>). In addition to the class file
+<code>p.class</code>, separate class files are emitted for each nested
+exception, record type, and tagged type declared in unit <var>P</var>. 
+More specifically:
+
+<ul>
+</p><li>A subprogram library unit <code>P</code> is compiled into a JVM class file
+<code>p.class</code> containing all the objects and nondispatching operations
+defined inside <code>P</code>.
+
+</p><li>The specification and body of a library package <code>P</code> are compiled
+into a single JVM class file <code>p.class</code> containing all of the objects
+and nondispatching operations defined in the spec or body of <code>P</code>.
+
+</p><li>Any tagged or untagged record type <code>R</code> declared inside a package or
+subprogram <code>P</code> is treated like a static inner class in Java, that is,
+a new JVM class <code>p$r.class</code> is generated containing <code>R</code>'s fields
+as instance variables, and, if <code>R</code> is a tagged type, its associated
+dispatching operations.
+
+</p><li>A package <code>Q</code> nested inside an Ada unit <code>P</code> does not result
+in a separate class. Entities declared within the nested package
+will generally be associated as members of the containing library
+package's class (except in the case of exceptions or type declarations
+that, as usual, result in their own class). However, the names of the
+corresponding fields and methods resulting from the nested package will
+be given expanded names that include the name of the outermost
+library package followed by the names of any enclosing nested
+packages, and where adjacent pairs of simple names in the expanded
+are separated by dollar sign characters (e.g., <code>p$q$proc</code>).
+
+</p><li>A child unit <code>P.Q</code> is compiled into the JVM class file
+<code>p$q.class</code>. All the rules described here are applied recursively with
+respect to <code>Q</code>'s contents.
+
+</p><li>A generic package instantiation <code>R</code> nested inside an Ada unit <code>P</code> is
+treated exactly like a nested package.
+
+</p><li>A generic subprogram instantiation <code>S</code> nested inside an Ada unit <code>P</code>
+treated exacly like a nested subprogram.
+
+</p><li>An Ada exception <code>E</code> declared inside an Ada unit <code>P</code> is treated like
+a member class in Java and is compiled into JVM class <code>p$e.class</code>.
+
+</p><li>A task type or protected type <var>T</var> nested inside an Ada unit <code>P</code> is
+compiled into JVM class file <code>p$t.class</code>.
+
+</p><li>A subprogram <code>N</code> nested inside another subprogram <code>P</code> will
+be treated as a static method of the enclosing library unit's class
+and will be given an expanded name that includes the names of any
+enclosing subprograms (e.g., <code>pkg$p$n</code>). In addition, a special
+class will be generated for the nested subprogram's enclosing
+subprogram to contain fields for any objects of the enclosing subprogram
+that are referenced by the nested subprogram. The name of this
+special Activation Record class is constructed by appending the prefix
+<code>__AR_</code> to the name of the enclosing subprogram (e.g., <code>__AR_pkg$p</code>).
+
+</p><li>Any other Ada type or construct <code>X</code> occurring inside an Ada unit <code>P</code>
+that needs to generate a standalone JVM class will be compiled into
+<code>p$x.class</code>. 
+</ul>
+
+<p>As an example, the compilation of the following package:
+
+<pre>
+package Outer is
+   package Nested is
+      type Typ is tagged record
+         Field : Integer;
+      end record;
+
+      E : exception
+   end Nested;
+
+   type Rec is record
+     X : Float;
+   end record;
+end Outer;
+</pre>
+
+<p>yields the following JVM class files: <code>outer.class</code>,
+<code>outer$nested$typ.class</code>, <br>
+<code>outer$nested$e.class</code>, <code>outer$rec.class</code>.
+
+<p><hr>[ Next: <a rel=next href="#Enumeration%20Types">Enumeration Types</a>
+ | Previous: <a rel=previous href="#Ada%20Compilation%20Units%20and%20JVM%20Class%20Files">Ada Compilation Units and JVM Class Files</a>
+ | Up: <a rel=up href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ ]<p>
+
+<h2><a name="Lexical%20Elements">Lexical Elements</a></h2>
+
+<p>All Ada identifiers are mapped into the corresponding lower case identifiers
+when generating symbolic references for the JVM, unless <code>pragma Export</code> is
+used (but note that certain names corresponding to internal entities generated
+by the GNAT front end may inlude upper-case letters).
+
+<p><hr>[ Next: <a rel=next href="#Integer%20Types">Integer Types</a>
+ | Previous: <a rel=previous href="#Lexical%20Elements">Lexical Elements</a>
+ | Up: <a rel=up href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ ]<p>
+
+<h2><a name="Enumeration%20Types">Enumeration Types</a></h2>
+
+<p>An Ada enumeration type is converted into a Java 1-byte, 2-byte, 4-byte or
+8-byte integer whose size best matches the value of the largest enumeration
+literal.
+
+<p>Character types are treated like regular Ada enumeration types. More
+specifically, an Ada <code>Character</code> type is mapped into a Java <code>byte</code>,
+whereas an Ada <code>Wide_Character</code> type is mapped onto the equivalent
+2-byte Java <code>char</code> type.
+
+<p>An Ada boolean type is treated like a standard Ada enumeration type with 2
+values and is consequently mapped into a Java <code>byte</code>.
+
+<p><hr>[ Next: <a rel=next href="#Floating%20Point%20Types">Floating Point Types</a>
+ | Previous: <a rel=previous href="#Enumeration%20Types">Enumeration Types</a>
+ | Up: <a rel=up href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ ]<p>
+
+<h2><a name="Integer%20Types">Integer Types</a></h2>
+
+<p>Each signed integer type is mapped into the smallest corresponding JVM integer
+type whose size is able to represent all required integer values:
+
+<pre>
+      Short_Short_Integer  <i>is mapped into</i>  byte  <i>(1 byte)</i>
+      Short_Integer        <i> "    "     " </i>  short <i>(2 bytes)</i>
+      Integer              <i> "    "     " </i>  int   <i>(4 bytes)</i>
+      Long_Integer         <i> "    "     " </i>  long  <i>(8 bytes)</i>
+      Long_Long_Integer    <i> "    "     " </i>  long  <i>(8 bytes)</i>
+</pre>
+
+<p>Each modular type is also mapped into the smallest corresponding Java integer
+type whose size is able to represent all required modular values.
+
+<p><hr>[ Previous: <a rel=previous href="#Integer%20Types">Integer Types</a>
+ | Up: <a rel=up href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ ]<p>
+
+<h2><a name="Floating%20Point%20Types">Floating Point Types</a></h2>
+
+<p>The Ada predefined floating point types map very naturally onto Java's
+IEEE 32-bit float and IEEE 64-bit double:
+
+<pre>
+      Short_Float     <i>is mapped into</i>  float  <i>(4 bytes)</i>
+      Float           <i> "    "     " </i>  float  <i>(4 bytes)</i>
+      Long_Float      <i> "    "     " </i>  double <i>(8 bytes)</i>
+      Long_Long_Float <i> "    "     " </i>  double <i>(8 bytes)</i>
+</pre>
+
+<p>User-defined floating point types are mapped into <code>Float</code> where
+possible, and <code>Long_Float</code> otherwise.
+
+<p><hr>[ Previous: <a rel=previous href="#Debugging%20Ada%20Programs">Debugging Ada Programs</a>
+ | Up: <a rel=up href="#(dir)">(dir)</a>
+ ]<p>
+
+<h1><a name="Index">Index</a></h1>
+
+<h4>Menu</h4>
+<ul compact>
+<li><code>-c</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvmlist">Switches for jvmlist</a>
+<li><code>-I</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li><code>-j</code> (<code>jarmake</code>): <a href="#Switches%20for%20jarmake">Switches for jarmake</a>
+<li><code>-k</code> (<code>jarmake</code>): <a href="#Switches%20for%20jarmake">Switches for jarmake</a>
+<li><code>-k</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li><code>-L</code> (<code>jarmake</code>): <a href="#Switches%20for%20jarmake">Switches for jarmake</a>
+<li><code>-L</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li><code>-n</code> (<code>jarmake</code>): <a href="#Switches%20for%20jarmake">Switches for jarmake</a>
+<li><code>-o</code> (<code>jarmake</code>): <a href="#Switches%20for%20jarmake">Switches for jarmake</a>
+<li><code>-o</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li><code>-q</code> (<code>jarmake</code>): <a href="#Switches%20for%20jarmake">Switches for jarmake</a>
+<li><code>-q</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvmlist">Switches for jvmlist</a>
+<li><code>-q</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li><code>-q</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvmstrip">Switches for jvmstrip</a>
+<li><code>-q</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvmlist">Switches for jvmlist</a>
+<li><code>-s</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li><code>-v</code> (<code>jarmake</code>): <a href="#Switches%20for%20jarmake">Switches for jarmake</a>
+<li><code>-v</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li><code>-w</code> (<code>jvm2ada</code>): <a href="#Switches%20for%20jvm2ada">Switches for jvm2ada</a>
+<li>Conventions: <a href="#Conventions">Conventions</a>
+<li>jarmake: <a href="#Building%20Archives%20with%20jarmake">Building Archives with jarmake</a>
+<li>jvm2ada: <a href="#Using%20the%20Java%20API%20with%20jvm2ada">Using the Java API with jvm2ada</a>
+<li>jvmlist: <a href="#Viewing%20Class%20Files%20with%20jvmlist">Viewing Class Files with jvmlist</a>
+<li>jvmstrip: <a href="#Stripping%20Debug%20Info%20with%20jvmstrip">Stripping Debug Info with jvmstrip</a>
+<li>Typographical conventions: <a href="#Conventions">Conventions</a>
+</ul>
+
+</body></html>
+

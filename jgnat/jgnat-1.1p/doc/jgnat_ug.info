@@ -1,0 +1,107 @@
+This is jgnat_ug.info, produced by Makeinfo version 3.12d from
+jgnat_ug.texi.
+
+
+Indirect:
+jgnat_ug.info-1: 79
+jgnat_ug.info-2: 49007
+jgnat_ug.info-3: 98785
+
+Tag Table:
+(Indirect)
+Node: Top79
+Node: About This Guide3121
+Node: What This Guide Contains4201
+Node: What you should know before reading this guide6566
+Node: Related Information6967
+Node: Conventions7782
+Node: Getting Started with JGNAT8607
+Node: Overview8934
+Node: JGNAT Tools10658
+Node: Java Development Kits that you can use with JGNAT14302
+Node: Compiling Your First Application with JGNAT14774
+Node: Ada & Java Interoperability15894
+Node: Importing Java Services to Ada17135
+Node: Exporting Ada Services to Java18359
+Node: Viewing Class Files with jvmlist19087
+Node: Running jvmlist19815
+Node: Switches for jvmlist21150
+Node: Stripping Debug Info with jvmstrip22606
+Node: Running jvmstrip23217
+Node: Switches for jvmstrip24012
+Node: Building Archives with jarmake24263
+Node: Running jarmake25465
+Node: Switches for jarmake26137
+Node: Using the Java API with jvm2ada27523
+Node: Running jvm2ada28077
+Node: Switches for jvm2ada29473
+Node: Running jvm2ada on the Java API31299
+Node: Parameter Names and Source Search Paths32963
+Node: Class File Search Paths35842
+Node: Identifier Mangling36785
+Node: Java-Specific Pragmas38600
+Node: Handling Circularities using With-Type Clauses39802
+Node: Introduction40272
+Node: The With-Type Clause41506
+Node: Semantics of the With-Type Clause43171
+Node: With-Type and the -gnatX Compiler Switch44549
+Node: With-Type Example45300
+Node: A Word of Caution48303
+Node: Creating Java Interfaces with Pragma Java_Interface49007
+Node: Using Java Interfaces51249
+Node: The Java_Constructor Pragma58129
+Node: Background on Java Constructors58456
+Node: Using Java Constructors in Ada61730
+Node: Java Constructors and Ada Allocators65282
+Node: Pragma Import Java66143
+Node: Importing Packages67006
+Node: Importing Exceptions70278
+Node: Importing Record Components71498
+Node: Importing Dispatching Subprograms72060
+Node: Importing Objects72622
+Node: Importing Non-Dispatching Subprograms73506
+Node: Pragma Export Java74493
+Node: Exporting Objects Subprograms and Record Components75752
+Node: Exporting Exceptions77309
+Node: Exporting Packages or Record Types78307
+Node: Mapping Java into Ada80468
+Node: Identifiers81457
+Node: Scalar Types81634
+Node: Java References and java.lang.Object83328
+Node: Array Types87314
+Node: The Ada Package Java89236
+Node: Use of With-Type Clauses by jvm2ada93696
+Node: Java Packages95184
+Node: Java Classes95574
+Node: Abstract Classes98254
+Node: Nested Classes98533
+Node: Java Interface98785
+Node: Java Class Implementing Interfaces99018
+Node: Java Exceptions99262
+Node: Static Fields100106
+Node: Final Static Fields100367
+Node: Instance Fields100744
+Node: Volatile and Transient Fields101007
+Node: Static Methods101287
+Node: Instance Methods101574
+Node: Abstract Methods101908
+Node: Native Methods102195
+Node: Final Classes and Final Methods102723
+Node: Visibility Issues103873
+Node: Java Implicit Upcasting in Ada105409
+Node: Mixing Ada Strings and Java Strings107750
+Node: An Example108722
+Node: Creating Gnapplets with JGNAT113984
+Node: Extending java.applet.Applet.Typ114588
+Node: Initializing and Finalizing the JGNAT Runtime117509
+Node: Compiling the Gnapplet119239
+Node: Creating the HTML file120065
+Node: Debugging Ada Programs120926
+Node: Ada Compilation Units and JVM Class Files122196
+Node: Lexical Elements126350
+Node: Enumeration Types126824
+Node: Integer Types127513
+Node: Floating Point Types128282
+Node: Index128886
+
+End Tag Table

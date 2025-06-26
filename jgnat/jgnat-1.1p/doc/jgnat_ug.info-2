@@ -1,0 +1,1347 @@
+This is jgnat_ug.info, produced by Makeinfo version 3.12d from
+jgnat_ug.texi.
+
+
+File: jgnat_ug.info,  Node: Creating Java Interfaces with Pragma Java_Interface,  Next: Using Java Interfaces,  Prev: Handling Circularities using With-Type Clauses,  Up: Java-Specific Pragmas
+
+Creating Java Interfaces: Pragma `Java_Interface'
+=================================================
+
+Java offers a special kind of class called an interface. Interfaces
+provide a limited but useful form of multiple inheritance. A Java
+interface is basically an abstract class with no fields and whose
+methods are all abstract. Instead of inheriting from an interface, a
+Java class `C' is said to implement the interface, which means that `C'
+must provide an implementation for all of the abstract methods declared
+in the interface.
+
+   The key point to note about interfaces is that a class `C' can
+implement several interfaces at the same time, and this mechanism is
+orthogonal to the fact that `C' may be extending some other class.
+
+   To make a Java interface available to an Ada program we have
+provided the pragma `Java_Interface'. Its syntax is:
+
+     pragma Java_Interface (TYPE-NAME);
+
+where TYPE-NAME is the name of a type T declared earlier, immediately
+within the same declarative part where the pragma occurs, and where the
+type has the following characteristics that reflect the restrictions on
+Java interfaces:
+
+  1. T must be an abstract tagged type with a null record extension.
+
+  2. T must be derived from `java.lang.Object.Typ' (*note Java
+     References and java.lang.Object::.).
+
+  3. T must have an access discriminant named `Self' with
+     `java.lang.Object.Typ'Class' as its designated type.
+
+  4. All of T's primitive operations must be abstract.
+
+  5. T must have Java `Convention'.
+
+Here is an example of using pragma `Java_Interface':
+
+     with java.lang.Object;
+     package Foo is
+        type Typ (Self : access java.lang.Object.Typ'Class)
+          is abstract new java.lang.Object.Typ with null record;
+        pragma Java_Interface (Typ);
+     
+        type Ref is access all Typ'Class;
+     
+        procedure Proc (This : access Typ; Val : Integer) is abstract;
+        function  Func (This : access Typ) return Integer is abstract;
+     
+     private
+        pragma Convention (Java, Typ);
+     end Foo;
+
+
+File: jgnat_ug.info,  Node: Using Java Interfaces,  Next: The Java_Constructor Pragma,  Prev: Creating Java Interfaces with Pragma Java_Interface,  Up: Java-Specific Pragmas
+
+Using Java Interfaces
+=====================
+
+In order to declare an Ada type that implements one or more Java
+interfaces it is necessary to use a simple programming idiom that is
+specially recognized by the compiler. This mechanism is not restricted
+for use only with types imported from Java, but can be applied to any
+Ada tagged type T.
+
+   The idiom consists in specifying a discriminant D for each Java
+interface INTERF that type T implements. The type of D must be some
+access type whose designated type is INTERF.  Discriminants such as D
+are not represented by an actual field in the object, but rather serve
+as a symbolic shorthand to indicate the special characteristics of type
+T to the compiler.
+
+   As an example, the following package spec declares a type `Bar.Typ'
+which implements interface `Foo.Typ':
+
+     with Foo;
+     package Bar is
+        type Typ (Foo_I : Foo.Ref) is tagged record
+           Field : Integer;
+        end record;
+        --  Discriminant Foo_I above signals that Bar.Typ implements the
+        --  Foo.Typ interface (Foo_I stands for Foo Interface). The
+        --  compiler does not create a field for Foo_I but marks the
+        --  generated .class file as implementing interface Foo.Typ.
+     
+        procedure Proc (This : access Typ; Val : Integer);
+        function  Func (This : access Typ) return Integer;
+        --  Unless Bar.Typ is itself marked abstract, Bar.Typ must
+        --  provide an implementation for subprograms Proc and Func.
+        --  Right now if you omit these subprograms the JGNAT compiler will not
+        --  complain, but when loading the .class file corresponding to Bar.Typ
+        --  the JVM will halt execution with a verifier error.
+     end Bar;
+
+As mentioned in the example, unless T is abstract, T must provide an
+implementation for each of the abstract operations of the INTERF
+interface (currently this check is not done by the JGNAT compiler but
+is caght later on by the JVM).
+
+   A second use of these special interface discriminants is to enable
+conversions between pointers to type T and pointers of its implemented
+interface types as the example below demostrates.
+
+     with Foo;
+     with Bar;
+     package Client is
+        X : Bar.Ref := new Bar.Typ (null);
+        --  Create an object of type Bar.Typ. To satisfy Ada's semantic rules
+        --  we must provide a value for Foo_I, but this value is ignored.
+     
+        Y : Foo.Ref := X.Foo_I;
+        --  OK, upward conversion allowed, no checks.
+        --  Referencing discriminant Foo_I is a convenient way to convert X
+        --  to a Foo.Ref. The compiler transorms all references to Foo_I
+        --  into references to the selector itself, in this case X.
+     
+        Val : Integer := Foo.Func (Y);
+        --  Dispatching call
+     end Client;
+
+   A conversion can also be made from an object of the class-wide
+interface reference type to an implementing reference type, by
+selecting the `Self' field (which is of type
+`java.lang.Object.Typ'Class'), and then applying a downward tagged type
+conversion (assuming that T derives directly or indirectly from
+`java.lang.Object'). Such a downward conversion will involve a run-time
+check, to ensure that the source object belongs to the target type's
+class. The package spec below illustrates one such downward conversion.
+
+     with Foo;
+     with java.lang.Object;
+     package Zar is
+        type Typ (Foo_I : Foo.Ref) is new java.lang.Object.Typ with record
+           Field : Integer;
+        end record;
+     
+        type Ref is access all Typ'Class;
+     
+        procedure Proc (This : access Typ; Val : Integer);
+        function  Func (This : access Typ) return Integer;
+     
+        X : Zar.Ref := new Zar.Typ (null);
+        Y : Foo.Ref := X.Foo_I;
+     
+        Z : Zar.Ref := Zar.Ref (Y.Self);
+        --  OK, downward conversion, run-time check that Y designates an
+        --  object in Zar.Obj'Class.
+        --  Again the compiler ignores the special discriminant Self and
+        --  returns the selector itself, in this case Y.
+     end Zar;
+
+In both of the cases shown above, the compiler recognizes the special
+idiom of selecting the interface or `Self' discriminant as meaning a
+reference to the object itself, reinterpreting the type of the object
+appropriately.
+
+   The above mechanism can also be used within another `Java_Interface'
+type as illustrated by the following example:
+
+     with java.lang.Object;
+     package Zoo is
+        type Typ (Self : access java.lang.Object.Typ'Class) is
+          new abstract java.lang.Object.Typ with null record;
+        pragma Java_Interface (Typ);
+     
+        type Ref is access all Typ'Class;
+     
+        procedure Interface_Op (This : access Typ) is abstract;
+     private
+        pragma Convention (Java, Typ);
+     end Zoo;
+     
+     with java.lang.Object; use java.lang.Object;
+     with Foo;
+     with Zoo;
+     package Woo is
+        type Typ (Foo_I : Foo.Ref;
+                  Zoo_I : Zoo.Ref)
+          is new abstract java.lang.Object.Typ with null record;
+        pragma Java_Interface (Typ);
+     
+        type Ref is access all Typ'Class;
+     
+        --  Woo must list all of the abstract operations of interfaces
+        --  Foo and Zoo.
+     
+        procedure Proc (This : access Typ; Val : Integer) is abstract;
+        function  Func (This : access Typ) return Integer is abstract;
+        procedure Interface_Op (This : access Typ) is abstract;
+     
+        procedure New_Op (This : access Typ) is abstract;
+        --  A new operation of the interface
+     private
+        pragma Convention (Java, Typ);
+     end Woo;
+
+Another interesting example is the declaration of a type `Bar.Child.Typ'
+that derives from `Bar.Typ' and implements interface `Woo.Typ', as
+shown below:
+
+     with Foo;
+     with Woo;
+     package Bar.Child is
+        type Typ (Foo_I : Foo.Ref;
+                  Woo_I : Woo.ref)
+          is new Bar.Typ (Foo_I) with null record;
+        --  Note how Foo_I is used to constrain Bar.Typ. This is just to
+        --  satisfy Ada semantics requirements and has no other implications.
+     
+        type Ref is access all Typ'Class;
+     
+        procedure Proc (This : access Typ; Val : Integer);
+        function  Func (This : access Typ) return Integer;
+        procedure Interface_Op (This : access Typ);
+        procedure New_Op (This : access Typ);
+     end Woo;
+
+An interesting point to note is when an Ada tagged type `Deriv' derives
+from an Ada tagged type `Base' which implements a number of interfaces.
+If `Deriv' does not implement any additional interface there is no need
+to specify interface discriminants for `Deriv', since it can simply
+inherit those of `Base'.
+
+
+File: jgnat_ug.info,  Node: The Java_Constructor Pragma,  Next: Pragma Import Java,  Prev: Using Java Interfaces,  Up: Java-Specific Pragmas
+
+The `Java_Constructor' Pragma
+=============================
+
+* Menu:
+
+* Background on Java Constructors::
+* Using Java Constructors in Ada::
+* Java Constructors and Ada Allocators::
+
+
+File: jgnat_ug.info,  Node: Background on Java Constructors,  Next: Using Java Constructors in Ada,  Prev: The Java_Constructor Pragma,  Up: The Java_Constructor Pragma
+
+Background on Java Constructors
+-------------------------------
+
+A Java constructor is a special method that must be invoked immediately
+after allocating an object, in order to initialize the object. Given
+the following Java class:
+
+     public class C {
+        public int field;
+        public C ()      { field = 3; }
+        public C (int i) { field = i; }
+     }
+
+then the statement `C obj = new C (3)' accomplishes two things:
+
+  1. It allocates a new instance of class `C' in the Java heap and sets
+     `obj' to point to this object;
+
+  2. It then calls the constructor that takes an `int' parameter,
+     passing `obj' to it as a hidden parameter and the value 3 for its
+     `int' parameter.
+
+If no constructor is provided, as in the following class:
+
+     class D extends C {
+        float f;
+     }
+
+then a default constructor
+
+     public D () {
+        super ();
+     }
+
+is automatically generated for class `D'. The call of `super()' inside
+this default constructor (known as a _no-arg_ constructor) invokes the
+no-arg constructor of the superclass of `D', that is, the constructor
+of class `C'.
+
+   Generally speaking, the first statement of every constructor must
+either be a call to another constructor of the class, or a call to a
+constructor of the superclass. For instance, given a constructor
+
+     public C (int i, int j) { this (i + j); }
+
+The call `this (...)' invokes another constructor in the same class
+whose profile matches the parameters specified in `(...)'. As another
+example, consider:
+
+     public D (int k) { super (k); }
+
+where again `super (...)' invokes a constructor in the superclass whose
+profile matches the parameters specified in `(...)'.
+
+   The observant reader will note that in both of the original
+constructors of class C, there are no calls to either `this (...)' or
+`super (...)'. When no such call is explicitly given, the Java compiler
+automatically inserts calls to the no-arg constructor in the
+superclass. If the superclass does not have a no-arg constructor (more
+on this below), then you must explicitly insert calls to `super (...)'
+or `this (...)'.
+
+   As noted above, a class might not have a no-arg constructor. This
+can occur only when explicit constructors are defined in the class.  In
+this case, the no-arg constructor is not automatically generated for
+the class, and if a no-arg constructor is desired, you must add it
+yourself. For instance, in the following class:
+
+     public class A {
+        int ival;
+        public A (int i) { ival = i; }
+     }
+     
+     public class B extends A {
+        float fval;
+        public B (float f) { fval = f; }
+     }
+
+the Java compiler will issue a compile-time error reporting that no
+constructor matching `A ()' was found in class `A', because the
+compiler tries to insert such a call at the beginning of `B'. To
+correct this problem the Java programmer must either add a no-arg
+constructor `A ()' in class `A', or else change the definition of `B''s
+constructor to contain an explicit constructor, e.g., as follows:
+
+     public B (float f) {
+       super (0);
+       fval = f;
+     }
+
+
+File: jgnat_ug.info,  Node: Using Java Constructors in Ada,  Next: Java Constructors and Ada Allocators,  Prev: Background on Java Constructors,  Up: The Java_Constructor Pragma
+
+Using Java Constructors in Ada
+------------------------------
+
+To assert that an Ada function FUNCTION-NAME should be mapped to a Java
+constructor of some Ada TAGGED-TYPE, we have introduced the
+`Java_Constructor' pragma. Its syntax is as follows:
+
+     pragma Java_Constructor (FUNCTION-NAME);
+
+where FUNCTION-NAME is the name of a function declared immediately
+within the same declarative part where the pragma occurs, and the
+function must have the following characteristics:
+
+  1. The function's result type must be an access type designating a
+     class-wide type declared at the same declarative level as the
+     function (`access TAGGED-TYPE'Class');
+
+  2. The last function parameter should be named `This', its type must
+     be a named access type designating TAGGED-TYPE`'Class', and it
+     should have a `null' default value;
+
+  3. The very first declaration in the function body should contain an
+     object declaration with a default initial expression of the form
+     `CONSTRUCTOR-FUNC (..., This)', where the CONSTRUCTOR-FUNC is a
+     `Java_Constructor' function which belongs either to TAGGED-TYPE or
+     to the parent type of TAGGED-TYPE;
+
+The effect of a `Java_Constructor' pragma is to compile FUNCTION-NAME
+into a constructor for the class corresponding to TAGGED-TYPE.  In
+addition, whenever FUNCTION-NAME is invoked with a `null' value for
+parameter `This', the compiler calls the `tagged-type' object allocator
+and passes in the pointer to the newly allocated object in lieu of the
+value `null'.
+
+   A `Java_Constructor' pragma is a program unit pragma. It can appear
+in the same places where an `Inline' pragma for FUNCTION-NAME can
+appear. The `Java_Constructor' pragma applies to all the overloaded
+FUNCTION-NAME subprograms declared immediately within the declarative
+region containing the pragma.
+
+   As an example, the following Java code:
+
+     public class C {
+        public int field;
+        public C ()             { field = 3; }
+        public C (int i)        { field = i; }
+        public C (int i, int j) { this (i + j); }
+     }
+
+is equivalent to the following Ada:
+
+     with java.lang.Object;  --  more on this package in the coming sections
+     use  java.lang.Object;
+     package C is
+        use java.lang;
+     
+        type Typ is new java.lang.Object.Typ with record
+           Field : Integer;
+        end record;
+     
+        type Ref is access all Typ'Class;
+     
+        function new_C (This : Ref := null) return Ref;
+        function new_C (I : Integer; This : Ref := null) return Ref;
+        function new_C (I, J : Integer; This : Ref := null) return Ref;
+     
+     private
+        pragma Java_Constructor (new_C);
+     end C;
+     
+     package body C is
+        function new_C (This : Ref := null) return Ref is
+           Super : Object.Ref := Object.new_Object (Object.Ref (This));
+        begin
+           This.Field := 3;
+           return This;
+        end new_C;
+     
+        function new_C (I : Integer; This : Ref := null) return Ref is
+           Super : Object.Ref := Object.new_Object (Object.Ref (This));
+        begin
+           This.Field := I;
+           return This;
+        end new_C;
+     
+        function new_C (I, J : Integer; This : Ref := null) return Ref is
+           Ignore : Ref := new_C (I + J, This);
+        begin
+           return This;
+        end new_C;
+     end C;
+
+
+File: jgnat_ug.info,  Node: Java Constructors and Ada Allocators,  Prev: Using Java Constructors in Ada,  Up: The Java_Constructor Pragma
+
+Java Constructors and Ada Allocators
+------------------------------------
+
+An interesting question raised by the `Java_Constructor' pragma is the
+interaction between Ada allocators and constructors.  For instance a
+client of package `C' given in the previous section could write:
+
+     with C;
+     procedure Client is
+        Obj_1 : C.Ref := new_C;
+        Obj_2 : C.Ref := new C.Typ;  -- what happens here ???
+
+What JGNAT does in the allocator case is to call the no-arg constructor
+if present (in the example `new_C (This : Ref := null)'). If there is no
+no-arg constructor then an error is emitted by the JGNAT compiler (this
+last check is currently not yet supported, and there will be an
+exception at run time).
+
+
+File: jgnat_ug.info,  Node: Pragma Import Java,  Next: Pragma Export Java,  Prev: The Java_Constructor Pragma,  Up: Java-Specific Pragmas
+
+Pragma Import Java
+==================
+
+For convention Java, pragma `Import' has the following syntax:
+
+     pragma Import ([Convention    =>] Java,
+                    [Entity        =>] LOCAL_NAME
+                  [,[External_Name =>] STRING_EXPRESSION]);
+
+where LOCAL_NAME is the name of an object, subprogram, record
+component, exception, or package, while STRING_EXPRESSION is a string
+giving the Java name of the imported entity. If STRING_EXPRESSION is
+missing it is taken to be the LOCAL_NAME, all in lower-case letters.
+
+* Menu:
+
+* Importing Packages::
+* Importing Exceptions::
+* Importing Record Components::
+* Importing Dispatching Subprograms::
+* Importing Objects::
+* Importing Non-Dispatching Subprograms::
+
+
+File: jgnat_ug.info,  Node: Importing Packages,  Next: Importing Exceptions,  Prev: Pragma Import Java,  Up: Pragma Import Java
+
+Importing Packages
+------------------
+
+If the LOCAL_NAME of an `Import' pragma is the name of a package spec
+P, then all the entities declared in P must be explicitly imported from
+Java. The STRING_EXPRESSION of such an `Import' pragma gives the name
+of the Java class corresponding to P and can be a simple class name or
+it can have the form JAVA_PACKAGE_NAME`.'CLASS_NAME, which indicates
+that the class CLASS_NAME corresponding to P belongs to Java package
+JAVA_PACKAGE_NAME. If JAVA_PACKAGE_NAME is missing, the class belongs
+to the anonymous Java package.
+
+   The precise rules when importing a package P are:
+
+   * All the entities declared inside P must be imported either by means
+     of the `Import' pragma or by using other Java-specific pragmas.
+
+   * P should contain at most one tagged or untagged record type whose
+     name must be `Typ'. `Typ' models the record part of the class
+     corresponding to P.
+
+   * P can contain at most one exception, whose `Import' pragma must
+     have exactly the same STRING_EXPRESSION as for P. (In `jvm2ada'
+     such an exception is present only if the class corresponing to P
+     derives, directly or indirectly, from class `java.lang.Throwable'.
+     The name we have selected for such an exception is `Except'.)
+
+   * P should not contain task types or protected types.
+
+   * The STRING_EXPRESSION of the `Import' pragma for an object,
+     subprogram, or record component declared in P must be a simple
+     name (it cannot contain any "`.'" characters).
+
+   * If P contains nested packages, these must themselves contain an
+     `Import' pragma (and the above rules apply recursively).
+
+As a first example consider the following package:
+
+     with java.lang.Object; --  more on this package in the coming sections
+     package root.outer.Child is
+        type Typ is new java.lang.Object.Typ with record
+           x : Integer;
+           pragma Import (Java, x, "x");
+     
+           Y : Integer;
+           pragma Import (Java, Y, "Y");
+        end record;
+     
+        type Ref is access all Typ'Class;
+     
+        procedure Dispatching_Op (This : access Typ; I : Integer);
+        function Non_Dispatching_Op (F : Float) return Integer;
+     
+        function New_Child (This : Ref := null) return Ref;
+        Global : Integer;
+     
+     private
+        pragma Import (Java, Dispatching_Op, "someProcedure");
+        pragma Import (Java, Non_Dispatching_Op, "someFunction");
+        pragma Java_Constructor (New_Child);
+        pragma Import (Java, Global);
+     end root.outer.Child;
+     pragma Import (Java, Outer.Child, "root.outer.CHILD");
+
+This package imports into Ada the services of a class whose spec in
+Java looks like:
+
+
+     package root.outer;
+     public class CHILD extends java.lang.Object {
+        public int x;
+        public int Y;
+     
+        public void someProcedure (int i);
+        public static int someFunction (float f);
+     
+        public CHILD ();
+     
+        public static int global;
+     }
+
+Note that in the Ada spec, the Java methods `someProcedure' and
+`someFunction' have been named `Dispatching_Op' and
+`Non_Dispatching_Op'.
+
+
+File: jgnat_ug.info,  Node: Importing Exceptions,  Next: Importing Record Components,  Prev: Importing Packages,  Up: Pragma Import Java
+
+Importing Exceptions
+--------------------
+
+If the LOCAL_NAME of an `Import' pragma is the name of an exception E,
+the STRING_EXPRESSION of such an `Import' pragma gives the name of the
+JVM class corresponding to E and can be a simple class name or it can
+have the form JAVA_PACKAGE_NAME`.'CLASS_NAME which says that the JVM
+class CLASS_NAME corresponding to E belongs to Java package
+JAVA_PACKAGE_NAME. If JAVA_PACKAGE_NAME is missing, the JVM class
+belongs to the anonymous Java package.
+
+   When importing an exception you should make sure that the imported
+JVM class is indeed a Java exception, i.e. it derives from
+`java.lang.Throwable'.
+
+   As an example here is an excerpt of the spec of class
+`java.lang.Throwable' generated by `jvm2ada':
+
+     package java.lang.Throwable is
+        type Typ ...;
+        type Ref is access all Typ'Class;
+     
+        Except : Exception;
+        ...
+     private
+        pragma Import (Java, Except, "java.lang.Throwable);
+        ...
+     end java.lang.Throwable;
+     pragma Import (Java, java.lang.Throwable, "java.lang.Throwable");
+
+
+File: jgnat_ug.info,  Node: Importing Record Components,  Next: Importing Dispatching Subprograms,  Prev: Importing Exceptions,  Up: Pragma Import Java
+
+Importing Record Components
+---------------------------
+
+If the LOCAL_NAME of an `Import' pragma is the name of a record field,
+then the record field must be declared in a record whose convention is
+Java and the record must be declared in a package specification which is
+itself imported.  In this case STRING_EXPRESSION must be a simple name
+(i.e. contains no dots) giving the name of the imported field.
+
+
+File: jgnat_ug.info,  Node: Importing Dispatching Subprograms,  Next: Importing Objects,  Prev: Importing Record Components,  Up: Pragma Import Java
+
+Importing Dispatching Subprograms
+---------------------------------
+
+If the LOCAL_NAME of an `Import' pragma is the name of a dispatching
+subprogram (i.e., a primitive operation of a tagged type), then the
+subprogram must be declared in a package specification which is itself
+imported.  In this case STRING_EXPRESSION must be a simple name (i.e.
+contains no dots) giving the name of the imported subprogram.
+
+
+File: jgnat_ug.info,  Node: Importing Objects,  Next: Importing Non-Dispatching Subprograms,  Prev: Importing Dispatching Subprograms,  Up: Pragma Import Java
+
+Importing Objects
+-----------------
+
+If the LOCAL_NAME of an `Import' pragma is the name of an object and
+the object is declared in a package specification which is itself
+imported the STRING_EXPRESSION must be a simple name (i.e. contains no
+dots) giving the name of the imported Java static field.
+
+   An `Import' pragma for an object can be given even though such an
+entity does not occur in a package spec with an `Import' pragma. In
+this case the STRING_EXPRESSION of the `Import' pragma must give the
+complete Java name of the imported as shown in the following example:
+
+     procedure Foo is
+        Var : Integer;
+        pragma Import (Java, Var, "pack.Foo.the_var");
+     begin
+        Var := 3;
+     end Foo;
+
+
+File: jgnat_ug.info,  Node: Importing Non-Dispatching Subprograms,  Prev: Importing Objects,  Up: Pragma Import Java
+
+Importing Non-Dispatching Subprograms
+-------------------------------------
+
+If the LOCAL_NAME of an `Import' pragma is the name of a
+non-dispatching subprogram and the subprogram is declared in a package
+specification which is itself imported the STRING_EXPRESSION must be a
+simple name (i.e. contains no dots) giving the name of the imported Java
+static method.
+
+   An `Import' pragma for a non-dispatching subprogram can be given even
+though such an entity does not occur in a package spec with an `Import'
+pragma. In this case the STRING_EXPRESSION of the `Import' pragma must
+give the complete Java name of the imported as shown in the following
+example:
+
+     procedure Foo is
+        X : Integer;
+        function Compute (I : Integer) return Integer;
+        pragma Import (Java, Compute, "pack.Bar.calc");
+     begin
+        X := Compute (3);
+     end Foo;
+
+
+File: jgnat_ug.info,  Node: Pragma Export Java,  Prev: Pragma Import Java,  Up: Java-Specific Pragmas
+
+Pragma Export Java
+==================
+
+In the absence of pragma `Export', the name of any Ada object, field,
+or subprogram compiled into a class file is the name of the
+corresponding Ada entity in lower-case letters.
+
+   For exceptions, record types and packages, the names of the
+generated class files are all in lower case.
+
+   By using pragma `Export' the user can change the default name that
+is generated by the JGNAT compiler. In addition, for Ada packages it
+can also specify which Java package they belong to. For convention
+Java, the pragma `Export' has the following syntax:
+
+     pragma Export ([Convention    =>] Java,
+                    [Entity        =>] LOCAL_NAME
+                  [,[External_Name =>] STRING_EXPRESSION]);
+
+where LOCAL_NAME is the name of an object, subprogram, record
+component, record type, exception, or package, and STRING_EXPRESSION is
+a string giving the Java name of the exported entity. If
+STRING_EXPRESSION is missing it is taken to be the LOCAL_NAME, all in
+lower-case letters.
+
+* Menu:
+
+* Exporting Objects Subprograms and Record Components::
+* Exporting Exceptions::
+* Exporting Packages or Record Types::
+
+
+File: jgnat_ug.info,  Node: Exporting Objects Subprograms and Record Components,  Next: Exporting Exceptions,  Prev: Pragma Export Java,  Up: Pragma Export Java
+
+Exporting Objects, Subprograms, and Record Components
+-----------------------------------------------------
+
+NOTE: Exporting of record components is not yet supported.
+If the LOCAL_NAME of an `Export' pragma is the name of an object,
+record component, or subprogram (but not a top-level subprogram),
+STRING_EXPRESSION must be a simple name (i.e., it contains no `.'
+characters), giving the name of the corresponding entity at the JVM
+level. As an example, when compiling the following package
+specification:
+
+     package C is
+        type Typ is tagged record
+           Field : Integer;
+           pragma Export(Java, Field, "THE_FIELD");
+        end record;
+     
+        function Instance_Op (This : access Typ; I : Integer) return Integer;
+     
+        Var : Integer;
+        function Op (J : Integer) return Integer;
+     
+     private
+        pragma Export (Java, Instance_Op, "dispatch_op");
+        pragma Export (Java, Var, "the_var");
+     end C;
+
+this is interpreted as the following two class specification at the JVM
+level:
+
+     public class c {
+        public static int the_var;
+        public static int op (int j);
+     }
+     public class c$typ {
+        public int THE_FIELD;
+        public int dispatch_op (int i) {...}
+     }
+
+Note that when exporting an object, subprogram, or record component you
+cannot specify its JVM class, as this is determined by the compiler.
+
+
+File: jgnat_ug.info,  Node: Exporting Exceptions,  Next: Exporting Packages or Record Types,  Prev: Exporting Objects Subprograms and Record Components,  Up: Pragma Export Java
+
+Exporting Exceptions
+--------------------
+
+If the LOCAL_NAME of an `Export' pragma is the name of an exception E,
+then the STRING_EXPRESSION of such an `Export' pragma gives the name of
+the generated JVM class for the Ada exception, overriding the name that
+would have been given by the compiler. STRING_EXPRESSION can be a
+simple class name, or it can have the form
+
+     JAVA_PACKAGE_NAME`.'CLASS_NAME
+
+indicating that the generated class belongs to Java package
+JAVA_PACKAGE_NAME.  If the name JAVA_PACKAGE_NAME is missing, the class
+is defined to belong to the anonymous Java package.
+
+   Care must be taken not to use the same class name for two Ada
+exceptions, packages or record types when they belong to different
+source files located in the same directory, since one `.class' file
+would overwrite the other.
+
+
+File: jgnat_ug.info,  Node: Exporting Packages or Record Types,  Prev: Exporting Exceptions,  Up: Pragma Export Java
+
+Exporting Packages or Record Types
+----------------------------------
+
+NOTE: Exporting of packages is not yet supported.
+If the LOCAL_NAME of an `Export' pragma is the name of a package spec
+or record type P, then the STRING_EXPRESSION of such an `Export' pragma
+gives the name of the generated JVM class, overriding the name that
+would have been given by the compiler. STRING_EXPRESSION can be a
+simple class name, or it can have the form
+JAVA_PACKAGE_NAME`.'CLASS_NAME indicating that the generated JVM class
+belongs to Java package JAVA_PACKAGE_NAME. If JAVA_PACKAGE_NAME is
+missing, the JVM class belongs to the anonymous Java package.
+
+   Care must be taken not to use the same class name for two Ada
+exceptions, packages or record types when they belong to different
+source files located in the same directory, since one `.class' file
+would overwrite the other.
+
+   If the same `Export' pragma is specified for a package spec and a
+record type contained inside it, then the JGNAT compiler will map both
+of these in the same JVM class. For instance without `Export' pragmas
+the following code generates 2 JVM `.class' files: `outer$child.class'
+and `outer$child$rec.class'.
+
+     package Outer.Child is
+        type Rec is tagged record
+          F : Float;
+        end record;
+        procedure Proc (This : Rec);
+        --  This always goes in the same .class file as type Rec
+     
+        function Global (I : Integer) return Rec;
+        --  This always goes in the same .class file as the package
+     end Outer.Child;
+
+If the same `Export' pragma is used a single class file is generated
+(`CHILD.class' in JVM package `root.outer').
+
+     package Outer.Child is
+        type Rec is record
+          X : Float;
+        end record;
+        pragma Export (Java, Rec, "root.outer.CHILD");
+     
+        procedure Proc (This : Rec);
+        function Global (I : Integer) return Rec;
+        --  Both subprograms are generated in the same .class file
+     end Outer.Child;
+     pragma Export (Java, Outer.Child, "root.outer.CHILD");
+
+
+File: jgnat_ug.info,  Node: Mapping Java into Ada,  Next: Creating Gnapplets with JGNAT,  Prev: Java-Specific Pragmas,  Up: (dir)
+
+Mapping Java into Ada
+*********************
+
+This chapter details the mapping used by `jvm2ada' to map Java `.class'
+files into Ada package specs. It is assumed that the reader is familiar
+with the Java language.
+
+* Menu:
+
+* Identifiers::
+* Scalar Types::
+* Java References and java.lang.Object::
+* Array Types::
+* The Ada Package Java::
+* Use of With-Type Clauses by jvm2ada::
+* Java Packages::
+* Java Classes::
+* Abstract Classes::
+* Final Classes and Final Methods::
+* Nested Classes::
+* Java Interface::
+* Java Class Implementing Interfaces::
+* Java Exceptions::
+* Static Fields::
+* Final Static Fields::
+* Instance Fields::
+* Volatile and Transient Fields::
+* Static Methods::
+* Instance Methods::
+* Abstract Methods::
+* Native Methods::
+* Visibility Issues::
+* Java Implicit Upcasting in Ada::
+* Mixing Ada Strings and Java Strings::
+* An Example::
+
+
+File: jgnat_ug.info,  Node: Identifiers,  Next: Scalar Types,  Prev: Mapping Java into Ada,  Up: Mapping Java into Ada
+
+Identifiers
+===========
+
+*Note Identifier Mangling::.
+
+
+File: jgnat_ug.info,  Node: Scalar Types,  Next: Java References and java.lang.Object,  Prev: Identifiers,  Up: Mapping Java into Ada
+
+Scalar Types
+============
+
+Java scalar tpes are mapped into Ada scalar types as follows:
+
+               boolean (1 byte)  maps into Standard.Boolean
+               char    (2 bytes)  "    "   Standard.Wide_Character
+     
+               byte    (1 byte)   "    "   Standard.Short_Short_Integer
+               short   (2 bytes)  "    "   Standard.Short_Integer
+               int     (4 bytes)  "    "   Standard.Integer
+               long    (8 bytes)  "    "   Standard.Long_Integer
+     
+               float   (4 bytes)  "    "   Standard.Float
+               double  (8 bytes)  "    "   Standard.Long_Float
+
+As a convenience for the Ada programmer subtypes are used to express the
+correspondence between primitive numeric Java types and the Ada scalar
+types defined in package `Standard'.
+
+   We have chosen to place these subtypes at the root of the Ada
+version of the Java API, i.e., in package `Java'. Thus these subtypes
+are directly available in the Ada version of the API and at hand for
+users of the API.  The code excerpt below gives the beginning of package
+`java':
+
+     package java is
+        pragma Preelaborate;
+     
+        subtype boolean is Standard.Boolean;
+        subtype char    is Standard.Wide_Character;
+        subtype byte    is Standard.Short_Short_Integer;
+        subtype short   is Standard.Short_Integer;
+        subtype int     is Standard.Integer;
+        subtype long    is Standard.Long_Integer;
+        subtype float   is Standard.Float;
+        subtype double  is Standard.Long_Float;
+        ...
+     end java;
+
+
+File: jgnat_ug.info,  Node: Java References and java.lang.Object,  Next: Array Types,  Prev: Scalar Types,  Up: Mapping Java into Ada
+
+Java References and `java.lang.Object'
+======================================
+
+When it comes to composite objects such as arrays and records, Java
+differs from Ada in the fact that it only has reference semantics. More
+precisely, in Java you can only allocate an object in the
+garbage-collected heap and obtain a reference to such object. All
+object reads and writes are done via this reference.  In addition, you
+cannot copy an object as a whole into another object: there is no
+default deep-copy operation in Java.
+
+   In mapping Java services to Ada, we have preserved its reference
+semantics, as shown in the code excerpt below which shows the salient
+part of how class `java.lang.Object' is mapped into Ada:
+
+     package java.lang.Object is
+        pragma Preelaborate;
+     
+        type Typ is tagged limited private;
+        type Ref is access all Typ'Class;
+     
+        function new_Object (This : Ref := null) return Ref;
+        --  The constructor
+        ...
+     private
+     
+        type Typ is tagged limited null record;
+        ...
+     end java.lang.Object;
+
+As a first remark, tagged types imported from Java should be limited
+since, as mentioned before, no object assignment operation exists on
+the JVM.  Second, unlike Java, in Ada we need to define two types: one
+for the actual tagged type (type `Typ') and one for the actual
+refernces (type `Ref'). This means that while in Java you can write
+something like:
+
+     import java.lang.Object;
+     class client {
+        void foo () {
+           Object obj = new Object ();
+        }
+     }
+
+in Ada you have to write:
+
+     with java.lang.Object; use java.lang.Object;
+     procedure Foo is
+        obj : Object.Ref = new_Object;
+     begin
+        null;
+     end Foo;
+
+Furthermore, for now we impose some restrictions on types that extend
+types that are declared in packages imported from Java.
+
+   Since the parent type of such a type extension has convention Java,
+the extended type inherits convention Java (even though declared within
+a normal Ada package). This means that the extended type should not
+contain any component declarations that would not be appropriate in an
+equivalent Java class.
+
+   In particular, a type that extends from a Java-convention parent
+type should not have any components of the following kinds:
+
+   * components with default initialization (excepting access components
+     that are initialized by null)
+
+   * components of composite types (arrays, records, tasks, protected
+     types)
+
+   * components of private types whose full type is a composite type
+
+The reason for these restrictions is that each of the above formsu of
+components requires some kind of run-time initialization at the time an
+object of the containing type is created. Such initialization needs to
+happen before any user code can reference the components.  However, in
+the presence of user-defined constructors, which are executed
+immediately after object creation (as required by the JVM), this is
+difficult for the compiler to support.
+
+   The workaround for cases where composite components are desired is
+instead to declare components of access types that designate the types
+you want to use. The allocation and initialization of those access
+components can then be performed as part of the actions of your own
+user-defined constructor function (*note The Java_Constructor
+Pragma::.).
+
+   If we were to allow such components, the consequences of failing to
+heed the above restrictions would include the creation of objects that
+are not fully allocated or initialized, with the potential for crashing
+the program.
+
+   The JGNAT compiler will reject the attempt to declare a
+Java-convention record type with any of the restricted forms of
+components by flagging each offending component. We plan to try
+relaxing these restrictions in a future release of JGNAT.
+
+
+File: jgnat_ug.info,  Node: Array Types,  Next: The Ada Package Java,  Prev: Java References and java.lang.Object,  Up: Mapping Java into Ada
+
+Array Types
+===========
+
+Let's illustrate the mapping with an example. Assume you would like to
+map a Java array of `int' into Ada. For instance, in Java you might
+write:
+
+     int[] obj;
+     //  obj is a reference to an array of int
+     
+     obj = new int [3];
+     //  Allocate an array-of-int object with 3 elements.
+     //  The index of the first element is zero.
+
+The above is mapped into the following Ada declarations:
+
+     type int_Arr_Obj is array (Natural range <>) of int;
+     type int_Arr     is access all int_Arr_Obj;
+     
+     obj : int_Arr;
+     --  int[] obj;
+     
+     obj := new int_Array_Obj (0 .. 2);
+     --  obj = new int [3];
+
+Java does not have multidimensional arrays, it only has arrays of
+arrays. As a result
+
+     int[][] obj2 = new int [3][2];
+
+is mapped into
+
+     type int_Arr_2_Obj is array (Natural range <>) of int_Arr;
+     type int_Arr_2     is access all int_Arr_2_Obj;
+     
+     Obj2 : int_Arr_2 := new int_Arr_2_Obj (0 .. 2, 0 .. 1);
+     --  obj2 = new int [3][2];
+
+The final question that remains to answer is where are the various
+array type definitions located. Scalar array types have been placed in
+package `Java', while array types associated with a given JVM class are
+placed in the Ada package spec for that class. Indeed when processing a
+JVM class C, `jvm2ada' generates the following at the beginning of the
+Ada package spec coresponding to C:
+
+     package C is
+        pragma Preelaborate;
+     
+        type Typ is ...;
+        type Ref is access all Typ'Class;
+     
+        type Arr_Obj is array (Natural range <>) of Ref;
+        type Arr     is access all Arr_Obj;
+     
+        type Arr_2_Obj is array (Natural range <>) of Arr;
+        type Arr_2     is access all Arr_2_Obj;
+     
+        ...
+     end C;
+
+
+File: jgnat_ug.info,  Node: The Ada Package Java,  Next: Use of With-Type Clauses by jvm2ada,  Prev: Array Types,  Up: Mapping Java into Ada
+
+The Ada Package `Java'
+======================
+
+     package java is
+        pragma Preelaborate;
+     
+        subtype boolean is Standard.Boolean;
+        subtype char    is Standard.Wide_Character;
+        subtype byte    is Standard.Short_Short_Integer;
+        subtype short   is Standard.Short_Integer;
+        subtype int     is Standard.Integer;
+        subtype long    is Standard.Long_Integer;
+        subtype float   is Standard.Float;
+        subtype double  is Standard.Long_Float;
+     
+        --  boolean array types: boolean [], boolean [][], boolean [][][]
+     
+        type boolean_Arr_Obj   is array (Natural range <>) of boolean;
+        type boolean_Arr       is access all boolean_Arr_Obj;
+     
+        type boolean_Arr_2_Obj is array (Natural range <>) of boolean_Arr;
+        type boolean_Arr_2     is access all boolean_Arr_2_Obj;
+     
+        type boolean_Arr_3_Obj is array (Natural range <>) of boolean_Arr_2;
+        type boolean_Arr_3     is access all boolean_Arr_3_Obj;
+     
+        --  char array types: char [], char [][], char [][][]
+     
+        type char_Arr_Obj   is array (Natural range <>) of char;
+        type char_Arr       is access all char_Arr_Obj;
+     
+        type char_Arr_2_Obj is array (Natural range <>) of char_Arr;
+        type char_Arr_2     is access all char_Arr_2_Obj;
+     
+        type char_Arr_3_Obj is array (Natural range <>) of char_Arr_2;
+        type char_Arr_3     is access all char_Arr_3_Obj;
+     
+        --  byte array types: byte [], byte [][], byte [][][]
+     
+        type byte_Arr_Obj   is array (Natural range <>) of byte;
+        type byte_Arr       is access all byte_Arr_Obj;
+     
+        type byte_Arr_2_Obj is array (Natural range <>) of byte_Arr;
+        type byte_Arr_2     is access all byte_Arr_2_Obj;
+     
+        type byte_Arr_3_Obj is array (Natural range <>) of byte_Arr_2;
+        type byte_Arr_3     is access all byte_Arr_3_Obj;
+     
+        --  short array types: short [], short [][], short [][][]
+     
+        type short_Arr_Obj   is array (Natural range <>) of short;
+        type short_Arr       is access all short_Arr_Obj;
+     
+        type short_Arr_2_Obj is array (Natural range <>) of short_Arr;
+        type short_Arr_2     is access all short_Arr_2_Obj;
+     
+        type short_Arr_3_Obj is array (Natural range <>) of short_Arr_2;
+        type short_Arr_3     is access all short_Arr_3_Obj;
+     
+        --  int array types: int [], int [][], int [][][]
+     
+        type int_Arr_Obj   is array (Natural range <>) of int;
+        type int_Arr       is access all int_Arr_Obj;
+     
+        type int_Arr_2_Obj is array (Natural range <>) of int_Arr;
+        type int_Arr_2     is access all int_Arr_2_Obj;
+     
+        type int_Arr_3_Obj is array (Natural range <>) of int_Arr_2;
+        type int_Arr_3     is access all int_Arr_3_Obj;
+     
+        --  long array types: long [], long [][], long [][][]
+     
+        type long_Arr_Obj   is array (Natural range <>) of long;
+        type long_Arr       is access all long_Arr_Obj;
+     
+        type long_Arr_2_Obj is array (Natural range <>) of long_Arr;
+        type long_Arr_2     is access all long_Arr_2_Obj;
+     
+        type long_Arr_3_Obj is array (Natural range <>) of long_Arr_2;
+        type long_Arr_3     is access all long_Arr_3_Obj;
+     
+        --  float array types: float [], float [][], float [][][]
+     
+        type float_Arr_Obj   is array (Natural range <>) of float;
+        type float_Arr       is access all float_Arr_Obj;
+     
+        type float_Arr_2_Obj is array (Natural range <>) of float_Arr;
+        type float_Arr_2     is access all float_Arr_2_Obj;
+     
+        type float_Arr_3_Obj is array (Natural range <>) of float_Arr_2;
+        type float_Arr_3     is access all float_Arr_3_Obj;
+     
+        --  double array types: double [], double [][], double [][][]
+     
+        type double_Arr_Obj   is array (Natural range <>) of double;
+        type double_Arr       is access all double_Arr_Obj;
+     
+        type double_Arr_2_Obj is array (Natural range <>) of double_Arr;
+        type double_Arr_2     is access all double_Arr_2_Obj;
+     
+        type double_Arr_3_Obj is array (Natural range <>) of double_Arr_2;
+        type double_Arr_3     is access all double_Arr_3_Obj;
+     
+     end java;
+
+
+File: jgnat_ug.info,  Node: Use of With-Type Clauses by jvm2ada,  Next: Java Packages,  Prev: The Ada Package Java,  Up: Mapping Java into Ada
+
+Use of With-Type Clauses by `jvm2ada'
+=====================================
+
+Consider the following
+
+     public class C extends B implements I {
+        public D link;
+        ...
+     }
+
+When `jvm2ada' is invoked to process `C.class' to create an Ada spec
+for `C', it is difficult to know whether reference type `D' is involved
+in a circular dependency with class `C'. First of all, `D.class' may
+not even be available yet.  Even if it were, classes `C' and `D' could
+be involved in a complex circular relationship with other classes, some
+of which may not be available. In addition, in the presence of circular
+dependencies there is no good reason for using a `with type' clause in
+one package spec and a regular `with' clause in another.
+
+   There are three cases in which a class `C' refers to another class X:
+
+  1. `C' extends X.
+
+  2. `C' implements X.
+
+  3. X is used as a reference (e.g., a reference to an object or array
+     of objects of type X).
+
+In the first case, the Ada package spec corresponding to `C' needs to
+have a regular `with' clause for the package spec corresponding to X.
+In all other cases a `with type' clause suffices.
+
+   As a result, `jvm2ada' will generate the following `with' and `with
+type' clauses for the class `C' above:
+
+     with B;
+     with type I.Ref is access;
+     with type D.Ref is access;
+
+
+File: jgnat_ug.info,  Node: Java Packages,  Next: Java Classes,  Prev: Use of With-Type Clauses by jvm2ada,  Up: Mapping Java into Ada
+
+Java Packages
+=============
+
+A Java package PACK is mapped into an empty Ada package spec PACK.  For
+instance, Java package `java.lang' is mapped into the following Ada
+spec:
+
+     package java.lang is
+        pragma Preelaborate;
+     end java.lang;
+
+
+File: jgnat_ug.info,  Node: Java Classes,  Next: Abstract Classes,  Prev: Java Packages,  Up: Mapping Java into Ada
+
+Java Classes
+============
+
+A Java class X.Y.D extending a class W.Z.B is mapped into an Ada
+package X.Y.D containing a tagged type definition `Typ' that extends
+W.Z.B`.Typ' and a reference type definition `Ref' as shown below:
+
+     pragma Extensions_Allowed (On);
+     --  This pragma is generated to allow use of these packages without
+     --  forcing the user to apply the -gnatX switch, which would normally
+     --  be required since
+     --  with type clauses are generated for this package.
+     
+     with Java; use Java;
+     
+     package X.Y.D is
+        pragma Preelaborate;
+     
+        -----------------------
+        -- Type Declarations --
+        -----------------------
+     
+        type Typ;
+        type Ref is access all Typ'Class;
+     
+        --  Array type declarations for X.Y.D
+     
+        type Arr_Obj is array (Natural range <>) of Ref;
+        type Arr     is access all Arr_Obj;
+     
+        type Arr_2_Obj is array (Natural range <>) of Arr;
+        type Arr_2     is access all Arr_2_Obj;
+     
+        type Arr_3_Obj is array (Natural range <>) of Arr_2;
+        type Arr_3     is access all Arr_3_Obj;
+     
+        --  The actual type declaration for X.Y.D
+     
+        type Typ is new W.Z.B.Typ
+           with record
+     
+              ------------------------
+              -- Field Declarations --
+              ------------------------
+              ...
+           end record;
+     
+        ------------------------------
+        -- Constructor Declarations --
+        ------------------------------
+        ...
+     
+        -------------------------
+        -- Method Declarations --
+        -------------------------
+        ...
+     
+        ---------------------------
+        -- Variable Declarations --
+        ---------------------------
+        ...
+     
+     private
+        pragma Convention (Java, Typ);
+        ...  --  other pragmas are generated here
+     end X.Y.D;
+     pragma Import (Java, X.Y.D, "W.Z.B");
+     pragma Extensions_Allowed (Off);
+
+In addition, all of the static variables of X.Y.D are mapped into
+variables of the Ada package and all static methods of X.Y.D are mapped
+into nondispatching subprograms in the Ada package.
+
+   Each instance method of class X.Y.D is converted into a primitive
+operation of type X.Y.D`.Typ' whose first parameter is of type "`access
+Typ'" and whose remaining parameters are as in the Java class.
+
+   Constructors in class X.Y.D are mapped into subprograms in package
+X.Y.D as described in a previous section (*note The Java_Constructor
+Pragma::.).
+
+
+File: jgnat_ug.info,  Node: Abstract Classes,  Next: Nested Classes,  Prev: Java Classes,  Up: Mapping Java into Ada
+
+Abstract Classes
+================
+
+Java's abstract classes are exactly equivalent to Ada's abstract tagged
+types and are mapped into such types by `jvm2ada'.
+
+
+File: jgnat_ug.info,  Node: Nested Classes,  Next: Java Interface,  Prev: Abstract Classes,  Up: Mapping Java into Ada
+
+Nested Classes
+==============
+
+A class `Inner' nested inside a class `Outer' is mapped into a child
+package named
+`Outer.Inner'.
+
