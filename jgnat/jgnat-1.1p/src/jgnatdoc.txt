@@ -1,0 +1,608 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                             JGNAT DOCUMENTS                              --
+--                                                                          --
+--                          J G N A T D O C . T X T                         --
+--                                                                          --
+--                             $Revision: 1.32 $                            --
+--                                                                          --
+--           Copyright (C) 1998-2000 Ada Core Technologies, Inc.            --
+--                                                                          --
+-- JGNAT is free software; you can  redistribute it  and/or modify it under --
+-- terms of the  GNU General Public License as published  by the Free Soft- --
+-- ware  Foundation;  either version 2,  or (at your option) any later ver- --
+-- sion. JGNAT is distributed in the hope that it will be useful, but WITH- --
+-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+-- or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License --
+-- for  more details.  You should have  received  a copy of the GNU General --
+-- Public License  distributed with JGNAT; see file COPYING.  If not, write --
+-- to  the Free Software Foundation,  59 Temple Place - Suite 330,  Boston, --
+-- MA 02111-1307, USA.                                                      --
+--                                                                          --
+-- JGNAT - The GNAT Ada 95 toolchain for the Java Virtual Machine is        --
+--         maintained by Ada Core Technologies, Incorporated.               --
+--         http://www.gnat.com & http://www.act-europe.fr                   --
+--                                                                          --
+------------------------------------------------------------------------------
+
+                                  README
+
+                          JGNAT Release <version>
+
+
+Contents
+--------
+
+ 1. Overview
+ 2. System Requirements
+ 3. JGNAT Release Files
+ 4. Uncompressing the JGNAT Release
+ 5. Installing JGNAT
+ 6. Symbolic Links & the JGNAT Installation
+ 7. Structure of the JGNAT Release
+ 8. Installing JGNAT on Top of Your GNAT Installation
+ 9. Building the JGNAT Release from Sources
+10. JGNAT Tools
+11. How to Use This Version of JGNAT
+12. Java Development Kits to Use with JGNAT
+13. JGNAT Debuggers
+14. Additional Documentation
+15. JGNAT Examples
+16. FAQ (Frequently Asked Questions)
+17. Suggestions for Interesting Tools and Enhancements
+18. Contact Information
+19. Problem Reports
+---------------------------------------------------------------------------
+
+
+1. Overview
+   --------
+
+JGNAT is the Ada 95 development environment that targets the Java Virtual
+Machine (JVM). JGNAT comes with complete sources.
+
+Please note that, unless you are using GLIDE (the GNAT IDE), all JGNAT tools
+are command-line tools. This means that they must be invoked from the shell
+(UNIX) or DOS window (Microsoft Windows).
+
+See the section "Contact Information" for details on how to obtain the
+supported version of JGNAT or for information on GLIDE.
+
+See the section "Problem Reports" for details on how to report problems that
+you may find in JGNAT.
+
+
+2. System Requirements
+   -------------------
+
+The minimal system requirements for the host computer where you intend to run
+the JGNAT tools are:
+
+   o At least 8 megabytes of available RAM not used by your operating system
+   o 40 megabytes of free disk space
+
+The binary versions available for this release of JGNAT are:
+
+   o Compaq Tru64 Unix
+   o GNU/Linux
+   o Sun/Solaris
+   o Windows 95, 98, NT 4.0
+
+See the section "Building the JGNAT Release from Sources" if you would like
+to build JGNAT on a host other than the ones listed above or if you would
+like to rebuild the release yourself (this is straight-forward).
+
+You can use any Java Virtual Machine (JVM) to run the Ada programs compiled
+with JGNAT. Likewise, you can use any JVM debugger to debug the Ada programs
+compiled with JGNAT.
+
+
+3. JGNAT Release Files
+   -------------------
+
+The JGNAT release is packaged in several files:
+
+   o jgnat-<version>-README.txt      [This file is in UNIX ASCII format]
+   o jgnat-<version>-<HOST>.tgz      [One for each UNIX host for which
+                                      a complete binary release was built]
+
+   o jgnat-<version>-README-dos.txt  [This file in DOS ASCII format]
+   o jgnat-<version>-nt.exe          [Self-extracting MS Windows NT release]
+
+where:
+
+   - <version> is the version of this JGNAT release. 
+
+   - <HOST> gives the designation of the host computer on which the executables
+     contained in the compressed file were built. Specifically, <HOST> is the
+     string returned by the command gcc -dumpmachine (with the exception of
+     the Windows release where <HOST> is simply the string "nt").
+
+In addition to the above files the release includes a subdirectory
+"split-<version>" containing each of the host independent components of the
+JGNAT release in a separate compressed file, specifically:
+
+   o jgnat-<version>-doc.tgz         [JGNAT documentation]
+   o jgnat-<version>-src.tgz         [JGNAT sources]
+   o jgnat-<version>-examples.tgz    [JGNAT examples]
+
+The ASCII format used for text files in the "split-<version>" directory is
+UNIX ASCII (that is, a line is terminated with a 0x0A character only rather
+than with the two characters 0x0D 0x0A as on Microsoft Windows systems). 
+
+
+4. Uncompressing the JGNAT Release
+   -------------------------------
+
+Download the JGNAT release that corresponds to your host computer.
+Let <install-dir> denote the directory under which you would like to unpack
+the JGNAT release. When upacked, the JGNAT release will consist of a single
+subdirectory "jgnat-<version>" under <install-dir>. See the section
+"Structure of the JGNAT Release" for more information on the contents of
+directory "jgnat-<version>".
+
+To unpack the release under Windows, just run the self-extracting executable.
+When prompted for the directory where you would like to unzip JGNAT, just
+type in <install-dir> and click the "Unzip" button. After everything has
+been unzipped the "notepad" program will be run displaying this file.
+
+If you are not on Windows, then copy the appropriate JGNAT release file
+jgnat-<version>-<HOST>.tgz to <install-dir> and proceed as follows (assuming
+$ is your prompt):
+
+   $ cd  <install-dir>
+   $ gunzip -c jgnat-<version>-<HOST>.tgz | tar xf -
+
+
+5. Installing JGNAT
+   -----------------
+
+Before proceeding with the installation of JGNAT make sure that:
+
+   o The environment variable ADA_INCLUDE_PATH does not include the
+     GNAT Ada library source directory (something ending in "adainclude")
+
+   o The environment variable ADA_OBJECTS_PATH does not include the
+     GNAT Ada library object directory (something ending in "adalib")
+
+otherwise JGNAT will use the wrong version of the Ada library. In fact,
+normally you want the above environment variables to be set to empty when
+using JGNAT, unless you're using them to indicate your own set of
+source/object directories. If using both GNAT and JGNAT in the same session,
+then you need to make sure that the variables are set appropriately when
+running each compiler (you may want to use scripts to facilitate
+this). Another approach is simply to use separate windows and shell sessions
+to avoid interference.
+
+After having checked the above and having uncompressed JGNAT in <install-dir>,
+add the directory:
+
+   o <install-dir>/jgnat-<version>/bin  [on UNIX]
+   o <install-dir>\jgnat-<version>\bin  [on Windows] 
+
+to your PATH environment variable (this is not just a convenience, it is
+necessary to ensure that JGNAT will work). To make sure you set the PATH
+variable properly, open a new shell (UNIX) or DOS window (Windows) and
+just type "jgnat". The JGNAT compiler usage instructions should be displayed
+on your screen.
+
+Finally, you have to tell your JVM where to find the .class files that are
+part of the JGNAT library. If you are using the JVM that comes with Sun's JDK
+1.1.* or later see below, otherwise please consult the documentation of your
+JVM.
+
+To tell Sun's JVM (JDK 1.1.* or later) where to find the JGNAT .class files,
+you must set the CLASSPATH environment variable to the following value:
+
+   o .:<install-dir>/jgnat-<version>/lib/jgnat.jar  [on UNIX]
+   o .;<install-dir>\jgnat-<version>\lib\jgnat.jar  [on Windows]
+
+This will tell the JVM to look for class files in your current directory (".")
+first and then in the JAR file <install-dir>/jgnat-<version>/lib/jgnat.jar.
+Note the difference in separators (":" is used on UNIX and ";" is used on
+Windows).
+
+To test that your CLASSPATH variable is set correctly, put the following Ada
+program in a file named hello.adb:
+
+     with Ada.Text_IO; use Ada.Text_IO;
+     procedure Hello is
+     begin
+        Put_Line ("hello JGNAT");
+     end Hello;
+
+and compile it with the following command:
+
+   $ jgnatmake hello
+
+After that, invoke the JVM on hello.class by typing 
+
+   $ java hello
+
+and it should output the message: 
+
+     hello JGNAT
+
+If you get an error, exception, or any other message then there is an
+installation problem.
+
+If all of the above worked successfully then JGNAT is ready to use.
+
+
+6. Symbolic Links & the JGNAT Installation
+   ---------------------------------------
+
+You cannot use symbolic links to point to your JGNAT executables. 
+You really need to make sure the JGNAT executables are on your PATH. 
+
+This is because the JGNAT tools locate the Ada library relative to the
+directory where the JGNAT executables are found (which also means that
+you must keep all JGNAT executables together).
+
+
+7. Structure of the JGNAT Release
+   ------------------------------
+
+After you have uncompressed the JGNAT release in <install-dir>, <install-dir>
+will contain the subdirectory jgnat-<version>, which is structured as follows: 
+
+     jgnat-<version>
+          |
+          +--> bin [contains the JGNAT executables: jgnat, jgnatmake, etc.]
+          |
+          +--> lib [contains the JGNAT Ada 95 library]
+          |     |
+          |     +--> jgnat.jar [JAR containing all *.class of the JGNAT lib]
+          |     |
+          |     +--> jgnat
+          |           |
+          |           +--> adainclude [Ada library sources: spec and bodies]
+          |           |
+          |           +--> adalib     [.ali files of the Ada library]
+          |
+          +--> doc [contains the JGNAT documentation in various formats]
+          |
+          +--> src [contains all JGNAT sources]
+          |
+          +--> examples [contains all JGNAT examples]
+
+
+8. Installing JGNAT on Top of Your GNAT Installation
+   -------------------------------------------------
+
+It is possible to install JGNAT on top of your GNAT installation. To do that
+you need to:
+
+(a) Move the JGNAT executables contained in jgnat-<version>/bin into directory
+    <gnat-dir>/bin, where <gnat-dir> denotes the directory where you have
+    installed GNAT:
+
+    o cp   <install-dir>/jgnat-<version>/bin/* <gnat-dir>/bin     [on UNIX]
+    o copy <install-dir>\jgnat-<version>\bin\*.exe <gnat-dir>/bin [on Windows]
+
+(b) Move the JGNAT library contained in jgnat-<version>/lib into directory
+    <gnat-dir>/lib:
+
+    o cp   <install-dir>/jgnat-<version>/lib/* <gnat-dir>/lib     [on UNIX]
+    o copy <install-dir>\jgnat-<version>\lib\* <gnat-dir>/lib     [on Windows]
+
+(c) Follow the instructions given in the section "Installing JGNAT" replacing
+    every instance of:
+
+    o <install-dir>/jgnat-<version>/  [on Unix]
+    o <install-dir>\jgnat-<version>\  [on Windows]
+
+    with
+
+    o <gnat-dir>/  [on UNIX]
+    o <gnat-dir>\  [on Windows]
+
+
+9. Building the JGNAT Release from Sources
+   ---------------------------------------
+
+Most of JGNAT is written in Ada, apart from a few C modules. JGNAT is easily
+made available for any platform where GNAT is available.  If you plan to
+build JGNAT from sources, the system requirements are as follows:
+
+   o GNAT 3.13 or later must be installed on your system.
+   o SUN JDK 1.2 or later must be installed on your system.
+   o You must use GNU make.
+   o You must have GNU tar (this is not necessary if you are only building a
+     release for yourself and are not going to package it for others).
+   o On Windows systems you will need all the standard UNIX utilities
+     such as: sh, cd, cp, rm, mv, sed, touch, chmod, echo, test, etc.
+
+Let <install-dir> denote the directory under which you would like to build and
+install the JGNAT release.  When completed, the JGNAT release will consist of a
+single file:
+
+   o jgnat-<version>-<HOST>.tgz
+
+which will be located in directory <install-dir> and whose structure is exactly
+identical to other JGNAT release and <HOST> gives the designation of the host
+computer for which this release was built. To actually build the release
+proceed as follows:
+
+(a) Go to the "split-<version>" directory and download into <install-dir>:
+
+       o jgnat-<version>-src.tgz       [JGNAT sources]
+       o jgnat-<version>-doc.tgz       [JGNAT documentation]
+       o jgnat-<version>-examples.tgz  [JGNAT examples]
+
+(b) Decompress the sources as shown below (assuming $ is your prompt):
+
+       $ cd  <install-dir>
+       $ gunzip -c jgnat-<version>-src.tgz      | tar xf -
+       $ gunzip -c jgnat-<version>-doc.tgz      | tar xf -
+       $ gunzip -c jgnat-<version>-examples.tgz | tar xf -
+
+(c) The above will create directory <install-dir>/jgnat-<version>/src, from
+    which you will launch the build process, as follows:
+
+       $ cd <install-dir>/jgnat-<version>/src
+       $ make release     [you **must** use GNU make]
+
+As a side note the above make command will generate the JGNAT executables and
+JGNAT library for your host computer and will place them in directories
+
+     <install-dir>/jgnat-<version>/bin  [JGNAT executables]
+     <install-dir>/jgnat-<version>/lib  [JGNAT library]
+
+the build for the JGNAT binaries will take place in directories
+
+     <install-dir>/jgnat-<version>/obj   (for the compilation tools)
+     <install-dir>/jgnat-<version>/objs  (for the other JGNAT tools)
+
+For more information on the release or build process see the JGNAT makefile
+(in <install-dir>/jgnat-<version>/src/Makefile), it is well documented.
+
+
+10. JGNAT Tools
+    -----------
+
+This version of JGNAT contains the following executables:
+
+   o jgnat     - The JGNAT compiler.
+   o jgnatbind - The JGNAT binder (used by jgnatmake).
+   o jgnatlink - The JGNAT linker (used by jgnatmake).
+   o jgnatmake - The JGNAT automatic Ada make tool.
+   o jgnatls   - The JGNAT Ada library browser, a tool that provides various
+                 information about compiled units.
+   o jgnatfind - The JGNAT tool for locating definitions and uses of an Ada
+                 entity or a set of Ada entities in a given set of Ada sources.
+   o jgnatxref - The JGNAT cross-referencing tool, which gives cross-reference
+                 information for a set of Ada units.
+   o jgnatpsta - Prints the version of package Standard used by JGNAT.
+
+   o jvmlist   - A tool to disassemble a JVM class file and list its contents
+                 with embedded source file information.
+   o jarmake   - A tool to make a single JAR file for an application built
+                 with JGNAT. This is useful when you want to ship a self
+                 contained application built with JGNAT to someone who does not
+                 have JGNAT installed. This tool is very useful useful when
+                 creating "gnapplets" (GNAT applets).
+   o jvm2ada   - A tool to generate the Ada spec corresponding to a JVM class
+                 file, supporting automatic interfacing of Ada and Java code.
+   o jvmstrip  - A tool to strip debugging information from a class file.
+
+Typing the name of the tool without any parameters displays a short message
+on each tool's usage. 
+
+The tools which have been specifically developed for JGNAT are:
+
+   o jvmlist
+   o jarmake
+   o jvm2ada
+   o jvmstrip
+
+All other tools are regular GNAT tools that have been slightly adapted for use
+with JGNAT. They are used in the same fashion as their corresponding GNAT
+equivalent. 
+
+The GNAT tools:
+
+   o gnatls
+   o gnatfind
+   o gnatxref
+   o gnatpsta
+
+had to be adapted for JGNAT since they need to know where the Ada library is
+located. If we had used the default GNAT tools instead of building JGNAT
+specific ones the wrong version of the Ada library would have been used.
+
+The GNAT tools which are completely target independent (gnatchop, gnatprep,
+gnatelim, etc.) have not been provided with JGNAT. They are available in the
+regular GNAT installation and you should use those directly.
+
+Please consult the section "Additional Documentation" for more information on
+JGNAT and its tools.
+
+
+11. How to Use This Version of JGNAT
+    --------------------------------
+
+Before running JGNAT you must *carefully* follow the instructions detailed
+in section "Installing JGNAT" (in particular read how to set the PATH and
+CLASSPATH variables). Then, to compile an Ada unit in a source file
+my_unit.adb type:
+
+   $ jgnat my_unit.adb
+
+This will produce one or more JVM class files and an .ali file (Ada library
+information file).
+
+You can also compile all the required units of an Ada program by running
+jgnatmake on the main unit of your program:
+
+   $ jgnatmake my_main_program   [or my_main_program.adb]
+
+To run your program (assuming you are using Sun's JDK), simply type:
+
+   $ java my_main_program
+
+If you want to find out about available options on jgnatmake, jgnat, or the
+other tools (e.g., jvmlist), simply execute the tool with no arguments and a
+description of the valid command syntax and options will be printed.
+
+
+12. Java Development Kits to Use with JGNAT
+    ---------------------------------------
+
+Because JGNAT generates class files that are fully compliant with Sun's JVM
+standard, you can use any Java Virtual Machine and bytecode tools that meet
+the Sun "Java Platform" standard.
+
+
+13. JGNAT Debuggers
+    ---------------
+
+Because JGNAT generates class files that are fully compliant with Sun's JVM
+standard, you can use any JVM debugger, such as Sun's jdb, with JGNAT.  As a
+side note, there are several graphical interfaces to jdb. You can use DDD or
+you can use GLIDE, the GNAT IDE.
+
+The minor drawback of using a JVM debugger directly is that for those Ada
+constructs not directly available in the Java programming language
+(e.g., attributes), you need to know how JGNAT compiles these into bytecode
+in order to retrieve their value. The JGNAT documentation (jgnat_ug) contains
+a section that explains how to debug your Ada code with a JVM debugger.
+
+Please note that certain simple-minded JVM debuggers expect all source
+files to end with a ".java" extension (but this is not the case for jdb).
+
+
+14. Additional Documentation
+    ------------------------
+
+The directory
+
+     <install-dir>/gnat-<version>/doc 
+
+contains a copy of the JGNAT User Guide (in various formats). This user guide
+will eventually be integrated in the GNAT User's Guide. The GNAT User's Guide
+is particularly useful when trying to understand the meaning of switches used
+by the JGNAT tools whose names start with the prefix "jgnat" (just look at
+the description of the switches of the corresponding command without a "j"
+in the GNAT User's Guide).
+
+
+15. JGNAT Examples
+    --------------
+
+The directory
+
+     <install-dir>/gnat-<version>/examples
+
+contains a number of interesting JGNAT applications and gnapplets (GNAT
+applets). Be sure to check out the "animate" and "tictactoe" gnapplets and
+Prof. Carlisle's exciting Rapid GUI builder. The directory "examples"
+contains a README-EXAMPLES.txt file giving more details about all the JGNAT
+examples.
+
+
+16. FAQ (Frequently Asked Questions)
+    --------------------------------
+
+Q: Can I create applets with JGNAT ?
+
+A: You sure can. We actually call them "gnapplets" (for GNAT Applets). The
+   chapter "Creating Gnapplets with JGNAT" explains how this can be done.
+
+
+Q: I would like to use the Java Graphical API (AWT, Swing components) from my
+   Ada application that runs natively. How can I do that?
+
+A: If your Ada code does not have to run natively, you can compile it into
+   JVM bytecode using JGNAT and then use the Java API (see the JGNAT
+   documentation for information on how to do this).
+
+   If your Ada code must run natively (e.g. for performance reasons or
+   because you are doing low-level memory operations whose semantics violates
+   the JVM security model), then you should really use the GTK/Ada graphical
+   toolkit. GTK (Gimp Toolkit) is a platform-independent graphical toolkit
+   which will run natively and is available for both UNIX and Windows
+   platforms. GTK/Ada comes with a GUI builder and a comprehensive graphics
+   library whose breadth and performance are superior to that of the Java
+   API. As a side note, GTK is the GUI toolkit used in the GNOME project. For
+   more information on GTK/Ada and how to obtain it please refer to the
+   Contact Information section.
+
+   If you really want to use the Java API from native Ada, you should use
+   the JNI (Java Native Interface) library. JNI is a C API that allows you
+   to create Java classes and objects and call Java methods from a native
+   application. To use the JNI API from Ada, you need to specify pragma
+   Import for the needed C routines and map the needed C types to Ada
+   (see the section Suggestions for Interesting Tools and Enhancements).
+
+
+17. Suggestions for Interesting Tools and Enhancements
+    --------------------------------------------------
+
+   o Send us some fun gnapplets to add to distribute with the release in the
+     examples directory.
+
+   o The feature in jvm2ada that retrieves the original parameter names from a
+     .class file if debugging info is present or from the original java source
+     is not implemented (see section "Parameter Names and Source Search Paths"
+     in the JGNAT User's Guide). A good chunk of ths functionality is already
+     implemented in file j_parser.ads. It would be nice to complete that work
+     and integrated it into jvm2ada.
+
+   o Make a thin Ada binding to the JNI (Java Native Interface) API (a C API).
+     Make sure this Ada binding is portable across platforms (especially
+     between UNIX and Widnows).
+
+   o Make a *thick* Ada binding to the JNI (Java Native Interface) API
+     (a C API). Make sure this Ada binding is portable across platforms
+     (especially between UNIX and Windows).
+
+
+18. Contact Information
+    -------------------
+
+For all inquiries concerning the GNAT technology (including JGNAT) please
+send e-mail to sales@gnat.com or sales@act-europe.fr.
+
+
+19. Problem Reports
+    ---------------
+
+For technical questions or if you would like to report problems, send an
+e-mail to report@gnat.com with a subject line starting with:
+
+    Subject: JGNAT: <...subject to summarize query....>
+
+Submitting bug reports is a vital part of the process of the continuing
+improvement of JGNAT. You will help us greatly if you follow these guidelines.
+
+Please report each problem in a separate message, and add a short but specific
+subject (a general subject like "JGNAT bug" is not very useful, a title like
+"bug in handling of extension aggregates" is more useful).
+
+Please include full sources. We can't duplicate errors without the full
+sources. Include all sources in the single e-mail message with appropriate
+indications in the multiple file case, see below. Also say exactly what you
+saw, do not assume that we can guess what you saw, or duplicate the behavior
+you encountered.
+
+All sources must be sent in plain ASCII form.
+
+To be maximally helpful, for a report that contains multiple separate
+compilation units, and hence multiple files, submit them in the form of a
+single file that is acceptable input to gnatchop (i.e., contains no non-Ada
+text). If you use banners to separate the files, make sure they are composed
+entirely of blank lines or Ada comments. The first line of sources should be
+marked with an Ada comment line, and the sources should extend to the end of
+the message. If you must include a signature, make it look like an Ada
+comment.
+
+Also, it is helpful if you try to reduce your example to a simple one.
+
+If a bug involves incorrect operation of the generated code, then the first
+thing the program should do is to output a line indicating the expected
+output or behavior. If at all possible, do a test later on that prints out
+"passed" or "failed" depending on the behavior. Of course it may not always
+be possible to structure a test this way, but that's the most convenient
+form.
+

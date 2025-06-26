@@ -1,0 +1,714 @@
+************************************************************
+*
+*  BUILD_DIR          = /tmp/jgnat/jgnat-1.1p/src/..
+*  GNAT_DIR           = /tmp/jgnat/jgnat-1.1p/src
+*
+*  JGNAT_DIR          = /tmp/jgnat/jgnat-1.1p/src
+*  INSTALL_BASE       = /tmp/jgnat/jgnat-1.1p/src/../..
+*
+*  DEBUG_JGNAT        =
+*  JDK11_LIB          =
+*
+*  VERSION            = 1.1p
+*  HOST               = sparc-sun-solaris2.5.1
+*  TGZ                = tgz
+*  ACT_ICON           =
+*  CHECKOUT_EXAMPLES  =
+*
+*  EXE                =
+*
+************************************************************
+test -d /tmp/jgnat/jgnat-1.1p/src/../bin  || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../bin
+test -d /tmp/jgnat/jgnat-1.1p/src/../obj  || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../obj
+test -d /tmp/jgnat/jgnat-1.1p/src/../objs || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../objs
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/xtreeprs.adb /tmp/jgnat/jgnat-1.1a/src/treeprs.adt /tmp/jgnat/jgnat-1.1a/src/sinfo.ads /tmp/jgnat/jgnat-1.1a/src/../obj; cd /tmp/jgnat/jgnat-1.1a/src/../obj; gnatmake xtreeprs; ./xtreeprs
+gcc -c xtreeprs.adb
+gnatbind -x xtreeprs.ali
+gnatlink xtreeprs.ali
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/xnmake.adb /tmp/jgnat/jgnat-1.1a/src/nmake.adt /tmp/jgnat/jgnat-1.1a/src/sinfo.ads /tmp/jgnat/jgnat-1.1a/src/../obj; cd /tmp/jgnat/jgnat-1.1a/src/../obj; gnatmake xnmake; ./xnmake
+gcc -c xnmake.adb
+gnatbind -x xnmake.ali
+gnatlink xnmake.ali
+sed -e "s/gcc/jgnat/" /tmp/jgnat/jgnat-1.1p/src/ali.adb > /tmp/jgnat/jgnat-1.1a/src/../obj/ali.adb
+sed -e "s/gcc/jgnat/" \
+       -e "s/README.GNATPRO/the JGNAT readme/" /tmp/jgnat/jgnat-1.1p/src/comperr.adb > /tmp/jgnat/jgnat-1.1a/src/../obj/comperr.adb
+sed -e "s/Java_VM :.*;/Java_VM : constant Boolean := True;/" /tmp/jgnat/jgnat-1.1p/src/hostparm.ads > /tmp/jgnat/jgnat-1.1a/src/../obj/hostparm.ads
+sed -e "s/(C, save_argv);/(C, save_argv, \"gnat_argv\");/" \
+       -e "s/(C, save_argc);/(C, save_argc, \"gnat_argc\");/" /tmp/jgnat/jgnat-1.1p/src/lib-writ.adb > /tmp/jgnat/jgnat-1.1a/src/../obj/lib-writ.adb
+sed -e "s/gcc/jgnat/" /tmp/jgnat/jgnat-1.1p/src/makeusg.adb > /tmp/jgnat/jgnat-1.1a/src/../obj/makeusg.adb
+sed -e "s/\"Get_Libraries_From_Registry\");/\
+          \"JGNAT_Get_Libraries_From_Registry\");/" /tmp/jgnat/jgnat-1.1p/src/osint.adb > /tmp/jgnat/jgnat-1.1a/src/../obj/osint.adb
+sed -e "s/gcc/jgnat/" /tmp/jgnat/jgnat-1.1p/src/par-ch10.adb > /tmp/jgnat/jgnat-1.1a/src/../obj/par-ch10.adb
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/jbackend.adb /tmp/jgnat/jgnat-1.1a/src/../obj/back_end.adb
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/jgettarg.ads /tmp/jgnat/jgnat-1.1a/src/../obj/get_targ.ads
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/jdefault.adb /tmp/jgnat/jgnat-1.1a/src/../obj/sdefault.adb
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/jconfig.h /tmp/jgnat/jgnat-1.1a/src/../obj/config.h
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/jpatch.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/jmissing.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-adaint.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-argv.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-cio.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-cstrea.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-exit.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-final.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-init.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-link.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-raise.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-sysdep.c
+cd /tmp/jgnat/jgnat-1.1p/src/../obj; gcc -c -O2 -I. -I/tmp/jgnat/jgnat-1.1a/src/ /tmp/jgnat/jgnat-1.1a/src/a-traceb.c
+( cd /tmp/jgnat/jgnat-1.1p/src/../obj;                                      \
+  gnatmake -O2 -gnatgp -gnata -I- -a -nostdinc -nostdlib -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnat gnat1drv    \
+		      -largs -s -largs jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o   )
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnat1drv.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/atree.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./back_end.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./comperr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/csets.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/debug.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/elists.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/errout.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/fname.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/frontend.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatvsn.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./hostparm.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/inline.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/lib.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./lib-writ.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/namet.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/nlists.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/opt.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./osint.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/output.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/repinfo.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_warn.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sinfo.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sinput.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sinput-l.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/snames.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sprint.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/stringt.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/system.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-assert.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-soflin.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/targparm.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/tree_gen.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/treepr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/types.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/uintp.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/uname.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/urealp.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/usage.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/tree_io.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-except.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/alloc.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/einfo.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/table.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_drive.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/ada.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./sdefault.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-secsta.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-wchcon.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/casing.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/expander.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/scans.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_util.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/stand.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/style.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnat.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-htable.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/krunch.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/widechar.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/checks.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/cstand.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch11.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_dbug.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/lib-load.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/live.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/par.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/rtsfind.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/scn.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch8.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_elab.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_prag.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch7.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_tss.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch10.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch12.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-hesora.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./ali.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/lib-util.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/lib-xref.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/restrict.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-stoele.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-os_lib.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/switch.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/debug_a.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/hlo.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_attr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch11.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch13.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch2.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch3.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch4.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch5.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch6.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch7.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_ch9.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-exctab.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-stalib.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-parame.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-stache.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_mech.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./treeprs.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-except.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-mastop.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-traceb.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_string.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm-api.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm-dbg.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm-map.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch11.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch12.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch3.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch5.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch6.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch7.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch8.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_decl.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-casuti.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-strops.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-sopco3.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-sopco4.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_aggr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_attr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch12.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch13.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch2.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch3.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch4.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch5.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch6.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch8.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_ch9.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_prag.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_util.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/freeze.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./nmake.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_eval.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_res.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_type.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/tbuild.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/ttypes.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/stylesw.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-wchcnv.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/ttypef.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-unstyp.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-speche.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sinfo-cn.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_cat.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_dist.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_disp.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_elim.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_intr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_vfpt.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_dist.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_aggr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/butil.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/rident.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-charac.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-chlat1.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/eval_fat.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/itypes.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_case.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/sem_smem.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_disp.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_types.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm-code.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm-emit.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm-info.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm-pool.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_file.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-imgint.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_basics.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_ch4.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_swtch.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jx_uplev.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_stack.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_pakd.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_strm.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_smem.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_vfpt.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_fixd.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_intr.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/get_targ.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/interfac.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-wchjis.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-imglli.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-imgllu.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-imguns.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-exnllf.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_walk.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_table.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/exp_code.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-exngen.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_test.adb
+gnatbind -nostdinc -nostdlib -aO. -I- -x ./gnat1drv.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -s jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o ./gnat1drv.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../obj;                                      \
+  gnatmake -O2 -gnatgp -gnata -I- -a -nostdinc -nostdlib -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnatmake gnatmake \
+		      -largs -s -largs jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o   )
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatmake.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/make.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-comlin.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/ali-util.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./makeusg.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/binderr.adb
+gnatbind -nostdinc -nostdlib -aO. -I- -x ./gnatmake.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnatmake -s jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o ./gnatmake.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../obj;                                      \
+  gnatmake -O2 -gnatgp -gnata -I- -a -nostdinc -nostdlib -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnatbind gnatbind \
+		      -largs -s -largs jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o   )
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatbind.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/bcheck.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/binde.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/bindgen.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/bindusg.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/i-c.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/i-cstrin.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-sopco5.adb
+gnatbind -nostdinc -nostdlib -aO. -I- -x ./gnatbind.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnatbind -s jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o ./gnatbind.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../obj;                                      \
+  gnatmake -O2 -gnatgp -gnata -I- -a -nostdinc -nostdlib -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnatlink gnatlink \
+		      -largs -s -largs jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o   )
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatlink.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/i-cstrea.adb
+gnatbind -nostdinc -nostdlib -aO. -I- -x ./gnatlink.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnatlink -s jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o ./gnatlink.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../obj;                                      \
+  gnatmake -O2 -gnatgp -gnata -I- -a -nostdinc -nostdlib -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnatls gnatls \
+		      -largs -s -largs jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o   )
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatls.adb
+gnatbind -nostdinc -nostdlib -aO. -I- -x ./gnatls.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnatls -s jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o ./gnatls.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../obj;                                      \
+  gnatmake -O2 -gnatgp -gnata -I- -a -nostdinc -nostdlib -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnatfind gnatfind \
+		      -largs -s -largs jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o   )
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatfind.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-string.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-strfix.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-textio.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-comlin.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-finimp.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-finroo.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/xr_tabls.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/xref_lib.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-strmap.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-strsea.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-stream.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-fileio.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-ioexce.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-tags.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-ficobl.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-filico.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-dirope.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-regexp.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-stratt.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-chahan.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-strunb.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-io_aux.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-valint.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-bitops.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-finali.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/a-stmaco.ads
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-valuns.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- -gnatpg /tmp/jgnat/jgnat-1.1a/src/s-valuti.adb
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/g-except.ads
+gnatbind -nostdinc -nostdlib -aO. -I- -x ./gnatfind.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnatfind -s jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o ./gnatfind.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../obj;                                      \
+  gnatmake -O2 -gnatgp -gnata -I- -a -nostdinc -nostdlib -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnatxref gnatxref \
+		      -largs -s -largs jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o   )
+gcc -c -O2 -gnatgp -gnata -nostdinc -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatxref.adb
+gnatbind -nostdinc -nostdlib -aO. -I- -x ./gnatxref.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnatxref -s jpatch.o jmissing.o a-adaint.o a-argv.o a-cio.o a-cstrea.o a-exit.o a-final.o a-init.o a-link.o a-raise.o a-sysdep.o a-traceb.o ./gnatxref.ali
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/jgettarg.ads /tmp/jgnat/jgnat-1.1a/src/../objs/get_targ.ads
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/jdefault.adb /tmp/jgnat/jgnat-1.1a/src/../objs/sdefault.adb
+( cd /tmp/jgnat/jgnat-1.1p/src/../objs;                                                 \
+  gnatmake -O2 -gnatgp -gnata -I- -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aI/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jgnatpsta gnatpsta -largs -s )
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatpsta.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/gnatvsn.ads
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/ttypef.ads
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/ttypes.ads
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/types.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/get_targ.adb
+gnatbind -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aO. -I- -x ./gnatpsta.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jgnatpsta -s ./gnatpsta.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../objs;                                                 \
+  gnatmake -O2 -gnatgp -gnata -I- -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aI/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jvmlist jvmlist -largs -s )
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvmlist.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_basics.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_types.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_utils.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_file.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_view.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/osint.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/output.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_zip.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_walk.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_table.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/hostparm.ads
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/namet.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/opt.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- ./sdefault.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/switch.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/tree_io.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/table.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_test.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/debug.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/widechar.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/alloc.ads
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/stylesw.adb
+gnatbind -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aO. -I- -x ./jvmlist.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jvmlist -s ./jvmlist.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../objs;                                                 \
+  gnatmake -O2 -gnatgp -gnata -I- -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aI/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jvmstrip jvmstrip -largs -s )
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvmstrip.adb
+gnatbind -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aO. -I- -x ./jvmstrip.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jvmstrip -s ./jvmstrip.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../objs;                                                 \
+  gnatmake -O2 -gnatgp -gnata -I- -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aI/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jvm2ada jvm2ada -largs -s )
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm2ada.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jvm_ada.adb
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/j_list.adb
+gnatbind -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aO. -I- -x ./jvm2ada.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jvm2ada -s ./jvm2ada.ali
+( cd /tmp/jgnat/jgnat-1.1p/src/../objs;                                                 \
+  gnatmake -O2 -gnatgp -gnata -I- -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aI/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -aO. -aI. -aI/tmp/jgnat/jgnat-1.1p/src/ -aI/tmp/jgnat/jgnat-1.1a/src/ -o /tmp/jgnat/jgnat-1.1a/src/../bin/jarmake jarmake -largs -s )
+gcc -c -O2 -gnatgp -gnata -I/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adainclude/ -I. -I/tmp/jgnat/jgnat-1.1p/src/ -I/tmp/jgnat/jgnat-1.1a/src/ -I- /tmp/jgnat/jgnat-1.1a/src/jarmake.adb
+gnatbind -aO/opt/gnu/gnat/lib/gcc-lib/sparc-sun-solaris2.5.1/2.8.1/adalib/ -aO. -I- -x ./jarmake.ali
+gnatlink -o /tmp/jgnat/jgnat-1.1p/src/../bin/jarmake -s ./jarmake.ali
+test -d /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adainclude || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude
+test -d /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adalib     || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adalib
+rm -f /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adalib/*
+rm -f /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adainclude/*
+rm -f /tmp/jgnat/jgnat-1.1p/src/../lib/*.jar
+cd /tmp/jgnat/jgnat-1.1p/src;   cp -p -f a-direio.ads a-direio.adb a-ngcefu.ads a-ngcefu.adb a-ngcoty.ads a-ngcoty.adb a-ngelfu.ads a-ngelfu.adb a-nudira.ads a-nudira.adb a-sequio.ads a-sequio.adb a-ticoio.ads a-ticoio.adb a-tideio.ads a-tideio.adb a-tienio.ads a-tienio.adb a-tifiio.ads a-tifiio.adb a-tiflio.ads a-tiflio.adb a-tiinio.ads a-tiinio.adb a-timoio.ads a-timoio.adb a-wtcoio.ads a-wtcoio.adb a-wtdeio.ads a-wtdeio.adb a-unccon.ads a-uncdea.ads a-wtcoio.ads a-wtcoio.adb a-wtenio.ads a-wtenio.adb a-wtfiio.ads a-wtfiio.adb a-wtflio.ads a-wtflio.adb a-wtinio.ads a-wtinio.adb a-wtmoio.ads a-wtmoio.adb directio.ads sequenio.ads g-busorg.ads g-busorg.adb g-hesorg.ads g-hesorg.adb i-cstrea.ads s-atacco.ads s-atacco.adb s-fatgen.ads s-fatgen.adb unchconv.ads unchdeal.ads /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude
+( cd /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adainclude;                                              \
+  for src in 3jexcept.ads; do                               \
+     cp -p -f /tmp/jgnat/jgnat-1.1p/src/$src `echo $src | sed 's/^3j/g-/'`; \
+  done;                                                             \
+  for src in 4jexcept.ads 4jexcept.adb 4jststio.adb 4jtags.ads   4jtags.adb; do                               \
+     cp -p -f /tmp/jgnat/jgnat-1.1p/src/$src `echo $src | sed 's/^4j/a-/'`; \
+  done;                                                             \
+  for src in 4jdireio.adb 4jsequio.adb; do                    \
+     cp -p -f /tmp/jgnat/jgnat-1.1p/src/$src `echo $src | sed 's/^4j/a-/'`; \
+  done;                                                             \
+  for src in 5jaddima.adb 5jfinimp.ads 5jfinimp.adb 5josinte.ads 5josprim.adb 5jparame.ads 5jpooglo.adb 5jpooloc.adb 5jpoosiz.adb 5jsecsta.ads 5jsecsta.adb 5jstache.adb 5jstalib.ads 5jstoele.adb 5jstratt.adb 5jtaprop.adb 5jtasdeb.adb 5jtaspri.ads 5jtataat.adb ; do                               \
+     cp -p -f /tmp/jgnat/jgnat-1.1p/src/$src `echo $src | sed 's/^5j/s-/'`; \
+  done;                                                             \
+  for src in 6jcstrea.adb; do                               \
+     cp -p -f /tmp/jgnat/jgnat-1.1p/src/$src `echo $src | sed 's/^6j/i-/'`; \
+  done;                                                             \
+)
+( cd /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adainclude;                                              \
+  for src in 4wexcpol.adb; do                                 \
+    cp -p -f /tmp/jgnat/jgnat-1.1p/src/$src  `echo $src | sed 's/^4./a-/'`;  \
+  done;                                                             \
+)
+cd /tmp/jgnat/jgnat-1.1p/src;  cp -p -f i-jalaob.ads i-jalasy.ads i-jalath.ads i-java.ads i-javlan.ads java.ads /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude
+cd /tmp/jgnat/jgnat-1.1p/src;   cp -p -f ada.ads a-caldel.ads a-caldel.adb a-calend.ads a-calend.adb a-chahan.ads a-chahan.adb a-charac.ads a-chlat1.ads a-colire.ads a-colire.adb a-comlin.ads a-comlin.adb a-cwila1.ads a-decima.ads a-decima.adb a-dynpri.ads a-dynpri.adb a-filico.ads a-filico.adb a-finali.ads a-finali.adb a-flteio.ads a-fwteio.ads a-inteio.ads a-ioexce.ads a-iwteio.ads a-lfteio.ads a-lfwtio.ads a-liteio.ads a-liwtio.ads a-llftio.ads a-llfwti.ads a-llitio.ads a-lliwti.ads a-ncelfu.ads a-nlcefu.ads a-nlcoty.ads a-nlelfu.ads a-nllcef.ads a-nllcty.ads a-nllefu.ads a-nscefu.ads a-nscoty.ads a-nselfu.ads a-nucoty.ads a-nuelfu.ads a-nuflra.ads a-nuflra.adb a-numaux.ads a-numeri.ads a-reatim.ads a-reatim.adb a-retide.ads a-retide.adb a-sfteio.ads a-sfwtio.ads a-siteio.ads a-siwtio.ads a-ssicst.ads a-ssicst.adb a-ssitio.ads a-ssiwti.ads a-stmaco.ads a-strbou.ads a-strbou.adb a-stream.ads a-strfix.ads a-strfix.adb a-string.ads a-strmap.ads a-strmap.adb a-strsea.ads a-strsea.adb a-strunb.ads a-strunb.adb a-ststio.ads a-stunau.ads a-stunau.adb a-stwibo.ads a-stwibo.adb a-stwifi.ads a-stwifi.adb a-stwima.ads a-stwima.adb a-stwise.ads a-stwise.adb a-stwiun.ads a-stwiun.adb a-suteio.ads a-suteio.adb a-swmwco.ads a-swuwti.ads a-swuwti.adb a-sytaco.ads a-sytaco.adb a-taside.ads a-taside.adb a-teioed.ads a-teioed.adb a-textio.ads a-textio.adb a-ticoau.ads a-ticoau.adb a-tideau.ads a-tideau.adb a-tienau.ads a-tienau.adb a-tiflau.ads a-tiflau.adb a-tigeau.ads a-tigeau.adb a-tiinau.ads a-tiinau.adb a-timoau.ads a-timoau.adb a-titest.ads a-titest.adb a-witeio.ads a-witeio.adb a-wtcoau.ads a-wtcoau.adb a-wtdeau.ads a-wtdeau.adb a-wtedit.ads a-wtedit.adb a-wtenau.ads a-wtenau.adb a-wtflau.ads a-wtflau.adb a-wtgeau.ads a-wtgeau.adb a-wtinau.ads a-wtinau.adb a-wtmoau.ads a-wtmoau.adb a-wttest.ads a-wttest.adb calendar.ads gnat.ads g-busora.ads g-busora.adb g-casuti.ads g-casuti.adb g-hesora.ads g-hesora.adb g-htable.ads g-htable.adb g-io_aux.ads g-io_aux.adb g-regexp.ads g-regexp.adb g-regpat.ads g-regpat.adb g-speche.ads g-speche.adb g-tasloc.ads g-tasloc.adb interfac.ads i-c.ads      i-c.adb ioexcept.ads system.ads s-addima.ads s-arit64.ads s-arit64.adb s-assert.ads s-assert.adb s-bitops.ads s-bitops.adb s-chepoo.ads s-direio.ads s-direio.adb s-exnflt.ads s-exngen.ads s-exngen.adb s-exnint.ads s-exnlfl.ads s-exnlin.ads s-exnllf.ads s-exnlli.ads s-exnsfl.ads s-exnsin.ads s-exnssi.ads s-expflt.ads s-expgen.ads s-expgen.adb s-expint.ads s-explfl.ads s-explin.ads s-expllf.ads s-explli.ads s-expllu.ads s-expllu.adb s-expmod.ads s-expmod.adb s-expsfl.ads s-expsin.ads s-expssi.ads s-expuns.ads s-expuns.adb s-fatflt.ads s-fatlfl.ads s-fatllf.ads s-fatsfl.ads s-ficobl.ads s-fileio.ads s-fileio.adb s-finroo.ads s-finroo.adb s-fore.ads   s-fore.adb s-imgbiu.ads s-imgbiu.adb s-imgboo.ads s-imgboo.adb s-imgcha.ads s-imgcha.adb s-imgdec.ads s-imgdec.adb s-imgint.ads s-imgint.adb s-imgllb.ads s-imgllb.adb s-imglld.ads s-imglld.adb s-imglli.ads s-imglli.adb s-imgllu.ads s-imgllu.adb s-imgllw.ads s-imgllw.adb s-imgrea.ads s-imgrea.adb s-imguns.ads s-imguns.adb s-imgwch.ads s-imgwch.adb s-imgwiu.ads s-imgwiu.adb s-io.ads     s-io.adb s-mantis.ads s-mantis.adb s-osprim.ads s-parame.adb s-pooglo.ads s-pooloc.ads s-poosiz.ads s-powtab.ads s-proinf.ads s-proinf.adb s-rpc.ads    s-rpc.adb s-sequio.ads s-sequio.adb s-soflin.ads s-soflin.adb s-sopco3.ads s-sopco3.adb s-sopco4.ads s-sopco4.adb s-sopco5.ads s-sopco5.adb s-stache.ads s-stalib.adb s-stoele.ads s-stopoo.ads s-stratt.ads s-strops.ads s-strops.adb s-taasde.ads s-taasde.adb s-tadeca.ads s-tadeca.adb s-tadert.ads s-tadert.adb s-taenca.ads s-taenca.adb s-taprob.ads s-taprob.adb s-taprop.ads s-tarest.ads s-tarest.adb s-tasdeb.ads s-tasinf.ads s-tasinf.adb s-tasini.ads s-tasini.adb s-taskin.ads s-taskin.adb s-tasque.ads s-tasque.adb s-tasren.ads s-tasren.adb s-tasres.ads s-tassta.ads s-tassta.adb s-tasuti.ads s-tasuti.adb s-tataat.ads s-tpoben.ads s-tpoben.adb s-tpobop.ads s-tpobop.adb s-tposen.ads s-tposen.adb s-unstyp.ads s-valboo.ads s-valboo.adb s-valcha.ads s-valcha.adb s-valdec.ads s-valdec.adb s-valenu.ads s-valenu.adb s-valint.ads s-valint.adb s-vallld.ads s-vallld.adb s-vallli.ads s-vallli.adb s-valllu.ads s-valllu.adb s-valrea.ads s-valrea.adb s-valuns.ads s-valuns.adb s-valuti.ads s-valuti.adb s-valwch.ads s-valwch.adb s-vercon.ads s-vercon.adb s-wchcnv.ads s-wchcnv.adb s-wchcon.ads s-wchjis.ads s-wchjis.adb s-wchstw.ads s-wchstw.adb s-wchwts.ads s-wchwts.adb s-widboo.ads s-widboo.adb s-widcha.ads s-widcha.adb s-widenu.ads s-widenu.adb s-widlli.ads s-widlli.adb s-widllu.ads s-widllu.adb s-widwch.ads s-widwch.adb s-wwdcha.ads s-wwdcha.adb s-wwdenu.ads s-wwdenu.adb s-wwdwch.ads s-wwdwch.adb text_io.ads           /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude
+cp -p -f /tmp/jgnat/jgnat-1.1p/src/jMakefile /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adalib/Makefile
+make -C /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adalib BUILD_DIR=/tmp/jgnat/jgnat-1.1a/src/.. GNAT_DIR=/tmp/jgnat/jgnat-1.1a/src alis
+make[1]: Entering directory `/tmp/jgnat/jgnat-1.1p/lib/jgnat/adalib'
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-caldel.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-calend.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-chahan.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-charac.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-chlat1.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-colire.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-comlin.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-cwila1.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-decima.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-dynpri.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-except.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-filico.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-finali.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-flteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-fwteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-inteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-ioexce.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-iwteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-lfteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-lfwtio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-liteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-liwtio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-llftio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-llfwti.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-llitio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-lliwti.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-ncelfu.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nlcefu.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nlcoty.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nlelfu.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nllcef.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nllcty.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nllefu.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nscefu.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nscoty.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nselfu.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nucoty.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nuelfu.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-nuflra.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-numaux.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-numeri.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-reatim.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-retide.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-sfteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-sfwtio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-siteio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-siwtio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-ssicst.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-ssitio.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-ssiwti.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stmaco.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-strbou.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stream.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-strfix.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-string.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-strmap.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-strsea.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-strunb.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-ststio.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stunau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stwibo.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stwifi.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stwima.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stwise.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-stwiun.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-suteio.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-swmwco.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-swuwti.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-sytaco.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-tags.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-taside.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-teioed.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-textio.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-ticoau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-tideau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-tienau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-tiflau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-tigeau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-tiinau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-timoau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-titest.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-witeio.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtcoau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtdeau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtedit.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtenau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtflau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtgeau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtinau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wtmoau.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/a-wttest.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/ada.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/calendar.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-busora.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-casuti.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-except.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-hesora.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-htable.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-io_aux.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-regexp.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-regpat.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-speche.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/g-tasloc.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/gnat.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/i-c.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/i-cstrea.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/i-jalaob.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/i-jalasy.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/i-jalath.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/i-java.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/i-javlan.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/interfac.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/ioexcept.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/java.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-addima.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-arit64.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-assert.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-bitops.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-chepoo.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-direio.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnflt.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exngen.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnint.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnlfl.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnlin.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnllf.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnlli.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnsfl.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnsin.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-exnssi.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expflt.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expgen.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expint.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-explfl.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-explin.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expllf.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-explli.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expllu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expmod.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expsfl.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expsin.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expssi.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-expuns.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-fatflt.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-fatlfl.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-fatllf.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-fatsfl.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-ficobl.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-fileio.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-finimp.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-finroo.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-fore.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgbiu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgboo.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgcha.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgdec.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgint.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgllb.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imglld.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imglli.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgllu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgllw.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgrea.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imguns.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgwch.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-imgwiu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-io.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-mantis.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-osinte.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-osprim.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-parame.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-pooglo.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-pooloc.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-poosiz.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-powtab.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-proinf.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-rpc.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-secsta.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-sequio.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-soflin.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-sopco3.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-sopco4.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-sopco5.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-stache.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-stalib.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-stoele.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-stopoo.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-stratt.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-strops.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-taasde.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tadeca.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tadert.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-taenca.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-taprob.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-taprop.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tarest.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tasdeb.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tasinf.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tasini.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-taskin.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-taspri.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tasque.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tasren.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tasres.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tassta.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tasuti.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tataat.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tpoben.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tpobop.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-tposen.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-unstyp.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valboo.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valcha.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valdec.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valenu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valint.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-vallld.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-vallli.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valllu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valrea.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valuns.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valuti.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-valwch.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-vercon.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wchcnv.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wchcon.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wchjis.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wchstw.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wchwts.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-widboo.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-widcha.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-widenu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-widlli.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-widllu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-widwch.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wwdcha.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wwdenu.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/s-wwdwch.adb
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/system.ads
+/tmp/jgnat/jgnat-1.1p/src/../bin/jgnat -O  -gnatgp -gnata -I/tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude /tmp/jgnat/jgnat-1.1a/src/../lib/jgnat/adainclude/text_io.ads
+make[1]: Leaving directory `/tmp/jgnat/jgnat-1.1p/lib/jgnat/adalib'
+rm -f /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adalib/Makefile
+chmod a-wx /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adalib/*.ali
+cd /tmp/jgnat/jgnat-1.1p/src; javac -deprecation -classpath /tmp/jgnat/jgnat-1.1a/src/../lib -d /tmp/jgnat/jgnat-1.1a/src/../lib Acc.java Dbl.java Flt.java Int.java Lng.java _abort_signal.java constraint_error.java program_error.java storage_error.java tasking_error.java standard\$access_string.java Ada_AR.java Object_File.java Prim_Input_Stream.java Prim_Output_Stream.java Prim_Conversions.java ada_wrapper.java GNAT_libc.java
+cd /tmp/jgnat/jgnat-1.1p/src/../lib; jar c0f jgnat.jar jgnat/adalib/*.class
+rm -f /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adalib/*.class
+test -d /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/bin        || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/bin
+test -d /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/lib/jgnat/adainclude || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/lib/jgnat/adainclude
+test -d /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/lib/jgnat/adalib     || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/lib/jgnat/adalib
+test -d /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src        || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/src
+if [ "/tmp/jgnat/jgnat-1.1p/bin" != "/tmp/jgnat/jgnat-1.1a/bin" ]; then        \
+   cd /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/bin; rm -f jgnat jgnatmake jgnatbind jgnatlink jgnatls jgnatfind jgnatxref jgnatpsta jvmlist jvmstrip jvm2ada jarmake;                \
+   cd /tmp/jgnat/jgnat-1.1p/src/../bin;         cp -p -f jgnat jgnatmake jgnatbind jgnatlink jgnatls jgnatfind jgnatxref jgnatpsta jvmlist jvmstrip jvm2ada jarmake /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/bin; \
+fi
+if [ "/tmp/jgnat/jgnat-1.1p/lib" != "/tmp/jgnat/jgnat-1.1a/lib" ]; then \
+   rm -f /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/lib/jgnat/adainclude/*;                         \
+   rm -f /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/lib/jgnat/adalib/*;                             \
+   rm -f /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/lib/*.jar;                            \
+   cp -p -f /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adainclude/*        /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/lib/jgnat/adainclude;    \
+   cp -p -f /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat/adalib/*            /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/lib/jgnat/adalib;        \
+   cp -p -f /tmp/jgnat/jgnat-1.1p/src/../lib/jgnat.jar    /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a/lib;           \
+fi
+sed -e "s/<version>/1.1p/"  /tmp/jgnat/jgnat-1.1a/src/jgnatdoc.txt > /tmp/jgnat/jgnat-1.1a/src/../../jgnat-1.1a-README.txt
+if [ "/tmp/jgnat/jgnat-1.1p/src" != "/tmp/jgnat/jgnat-1.1a/src" ]; then \
+   rm -f /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src/*;                                     \
+   ( cd /tmp/jgnat/jgnat-1.1p/src;                                        \
+     cp -p -f COPYING                    /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f sinfo.ads nmake.adt treeprs.adt xtreeprs.adb xnmake.adb ali.adb comperr.adb hostparm.ads lib-writ.adb makeusg.adb osint.adb par-ch10.adb a-chahan.adb a-chahan.ads a-charac.ads a-chlat1.ads a-comlin.adb a-comlin.ads a-except.adb a-except.ads a-excpol.adb a-filico.adb a-filico.ads a-finali.adb a-finali.ads a-ioexce.ads a-stmaco.ads a-stream.ads a-strfix.adb a-strfix.ads a-string.ads a-strmap.adb a-strmap.ads a-strsea.adb a-strsea.ads a-strunb.adb a-strunb.ads a-tags.adb a-tags.ads a-textio.adb a-textio.ads a-unccon.ads a-uncdea.ads ada.ads ali-util.adb ali-util.ads ali.ads alloc.ads atree.adb atree.ads back_end.ads bcheck.adb bcheck.ads binde.adb binde.ads binderr.adb binderr.ads bindgen.adb bindgen.ads bindusg.adb bindusg.ads butil.adb butil.ads casing.adb casing.ads checks.adb checks.ads comperr.ads csets.adb csets.ads cstand.adb cstand.ads debug.adb debug.ads debug_a.adb debug_a.ads einfo.adb einfo.ads elists.adb elists.ads errout.adb errout.ads eval_fat.adb eval_fat.ads exp_aggr.adb exp_aggr.ads exp_attr.adb exp_attr.ads exp_ch11.adb exp_ch11.ads exp_ch12.adb exp_ch12.ads exp_ch13.adb exp_ch13.ads exp_ch2.adb exp_ch2.ads exp_ch3.adb exp_ch3.ads exp_ch4.adb exp_ch4.ads exp_ch5.adb exp_ch5.ads exp_ch6.adb exp_ch6.ads exp_ch7.adb exp_ch7.ads exp_ch8.adb exp_ch8.ads exp_ch9.adb exp_ch9.ads exp_code.adb exp_code.ads exp_dbug.adb exp_dbug.ads exp_disp.adb exp_disp.ads exp_dist.adb exp_dist.ads exp_fixd.adb exp_fixd.ads exp_intr.adb exp_intr.ads exp_pakd.adb exp_pakd.ads exp_prag.adb exp_prag.ads exp_smem.adb exp_smem.ads exp_strm.adb exp_strm.ads exp_tss.adb exp_tss.ads exp_util.adb exp_util.ads exp_vfpt.adb exp_vfpt.ads expander.adb expander.ads fname.adb fname.ads freeze.adb freeze.ads frontend.adb frontend.ads g-casuti.adb g-casuti.ads g-comlin.adb g-comlin.ads g-dirope.adb g-dirope.ads g-except.ads g-hesora.adb g-hesora.ads g-htable.adb g-htable.ads g-io_aux.adb g-io_aux.ads g-os_lib.adb g-os_lib.ads g-regexp.adb g-regexp.ads g-speche.adb g-speche.ads g-table.adb g-table.ads get_targ.adb gnat.ads gnat1drv.adb gnat1drv.ads gnatbind.adb gnatbind.ads gnatfind.adb gnatlink.adb gnatlink.ads gnatls.adb gnatls.ads gnatmake.adb gnatmake.ads gnatpsta.adb gnatvsn.ads gnatxref.adb hlo.adb hlo.ads hostparm.ads i-c.adb i-c.ads i-cstrea.adb i-cstrea.ads i-cstrin.adb i-cstrin.ads inline.adb inline.ads interfac.ads itypes.adb itypes.ads krunch.adb krunch.ads lib-list.adb lib-load.adb lib-load.ads lib-sort.adb lib-util.adb lib-util.ads lib-writ.ads lib-xref.adb lib-xref.ads lib.adb lib.ads live.adb live.ads make.adb make.ads makeusg.ads namet.adb namet.ads nlists.adb nlists.ads opt.adb opt.ads osint.adb osint.ads output.adb output.ads par-ch11.adb par-ch12.adb par-ch13.adb par-ch2.adb par-ch3.adb par-ch4.adb par-ch5.adb par-ch6.adb par-ch7.adb par-ch8.adb par-ch9.adb par-endh.adb par-labl.adb par-load.adb par-prag.adb par-sync.adb par-tchk.adb par-util.adb par.adb par.ads repinfo.adb repinfo.ads restrict.adb restrict.ads rident.ads rtsfind.adb rtsfind.ads s-assert.adb s-assert.ads s-atacco.adb s-atacco.ads s-bitops.adb s-bitops.ads s-except.ads s-exctab.adb s-exctab.ads s-exngen.adb s-exngen.ads s-exnllf.ads s-ficobl.ads s-fileio.adb s-fileio.ads s-finimp.adb s-finimp.ads s-finroo.adb s-finroo.ads s-imgint.adb s-imgint.ads s-imglli.adb s-imglli.ads s-imgllu.adb s-imgllu.ads s-imguns.adb s-imguns.ads s-mastop.adb s-mastop.ads s-parame.adb s-parame.ads s-secsta.adb s-secsta.ads s-soflin.adb s-soflin.ads s-sopco3.adb s-sopco3.ads s-sopco4.adb s-sopco4.ads s-sopco5.adb s-sopco5.ads s-stache.adb s-stache.ads s-stalib.adb s-stalib.ads s-stoele.adb s-stoele.ads s-stratt.adb s-stratt.ads s-strops.adb s-strops.ads s-traceb.adb s-traceb.ads s-unstyp.ads s-valint.adb s-valint.ads s-valuns.adb s-valuns.ads s-valuti.adb s-valuti.ads s-wchcnv.adb s-wchcnv.ads s-wchcon.ads s-wchjis.adb s-wchjis.ads scans.adb scans.ads scn-nlit.adb scn-slit.adb scn.adb scn.ads sdefault.ads sem.adb sem.ads sem_aggr.adb sem_aggr.ads sem_attr.adb sem_attr.ads sem_case.adb sem_case.ads sem_cat.adb sem_cat.ads sem_ch10.adb sem_ch10.ads sem_ch11.adb sem_ch11.ads sem_ch12.adb sem_ch12.ads sem_ch13.adb sem_ch13.ads sem_ch2.adb sem_ch2.ads sem_ch3.adb sem_ch3.ads sem_ch4.adb sem_ch4.ads sem_ch5.adb sem_ch5.ads sem_ch6.adb sem_ch6.ads sem_ch7.adb sem_ch7.ads sem_ch8.adb sem_ch8.ads sem_ch9.adb sem_ch9.ads sem_disp.adb sem_disp.ads sem_dist.adb sem_dist.ads sem_elab.adb sem_elab.ads sem_elim.adb sem_elim.ads sem_eval.adb sem_eval.ads sem_intr.adb sem_intr.ads sem_mech.adb sem_mech.ads sem_prag.adb sem_prag.ads sem_res.adb sem_res.ads sem_smem.adb sem_smem.ads sem_type.adb sem_type.ads sem_util.adb sem_util.ads sem_vfpt.adb sem_vfpt.ads sem_warn.adb sem_warn.ads sinfo-cn.adb sinfo-cn.ads sinfo.adb sinput-l.adb sinput-l.ads sinput.adb sinput.ads snames.adb snames.ads sprint.adb sprint.ads stand.adb stand.ads stringt.adb stringt.ads style.adb style.ads stylesw.adb stylesw.ads switch.adb switch.ads system.ads table.adb table.ads targparm.adb targparm.ads tbuild.adb tbuild.ads tree_gen.adb tree_gen.ads tree_io.adb tree_io.ads treepr.adb treepr.ads ttypef.ads ttypes.ads types.adb types.ads uintp.adb uintp.ads uname.adb uname.ads unchconv.ads unchdeal.ads urealp.adb urealp.ads usage.adb usage.ads widechar.adb widechar.ads xr_tabls.adb xr_tabls.ads xref_lib.adb xref_lib.ads               /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f a-ada.h a-adaint.h a-raise.h a-types.h          /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f a-adaint.c a-argv.c a-cio.c a-cstrea.c a-exit.c a-final.c a-init.c a-link.c a-raise.c a-sysdep.c a-traceb.c             /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f a-direio.ads a-direio.adb a-ngcefu.ads a-ngcefu.adb a-ngcoty.ads a-ngcoty.adb a-ngelfu.ads a-ngelfu.adb a-nudira.ads a-nudira.adb a-sequio.ads a-sequio.adb a-ticoio.ads a-ticoio.adb a-tideio.ads a-tideio.adb a-tienio.ads a-tienio.adb a-tifiio.ads a-tifiio.adb a-tiflio.ads a-tiflio.adb a-tiinio.ads a-tiinio.adb a-timoio.ads a-timoio.adb a-wtcoio.ads a-wtcoio.adb a-wtdeio.ads a-wtdeio.adb a-unccon.ads a-uncdea.ads a-wtcoio.ads a-wtcoio.adb a-wtenio.ads a-wtenio.adb a-wtfiio.ads a-wtfiio.adb a-wtflio.ads a-wtflio.adb a-wtinio.ads a-wtinio.adb a-wtmoio.ads a-wtmoio.adb directio.ads sequenio.ads g-busorg.ads g-busorg.adb g-hesorg.ads g-hesorg.adb i-cstrea.ads s-atacco.ads s-atacco.adb s-fatgen.ads s-fatgen.adb unchconv.ads unchdeal.ads /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f ada.ads a-caldel.ads a-caldel.adb a-calend.ads a-calend.adb a-chahan.ads a-chahan.adb a-charac.ads a-chlat1.ads a-colire.ads a-colire.adb a-comlin.ads a-comlin.adb a-cwila1.ads a-decima.ads a-decima.adb a-dynpri.ads a-dynpri.adb a-filico.ads a-filico.adb a-finali.ads a-finali.adb a-flteio.ads a-fwteio.ads a-inteio.ads a-ioexce.ads a-iwteio.ads a-lfteio.ads a-lfwtio.ads a-liteio.ads a-liwtio.ads a-llftio.ads a-llfwti.ads a-llitio.ads a-lliwti.ads a-ncelfu.ads a-nlcefu.ads a-nlcoty.ads a-nlelfu.ads a-nllcef.ads a-nllcty.ads a-nllefu.ads a-nscefu.ads a-nscoty.ads a-nselfu.ads a-nucoty.ads a-nuelfu.ads a-nuflra.ads a-nuflra.adb a-numaux.ads a-numeri.ads a-reatim.ads a-reatim.adb a-retide.ads a-retide.adb a-sfteio.ads a-sfwtio.ads a-siteio.ads a-siwtio.ads a-ssicst.ads a-ssicst.adb a-ssitio.ads a-ssiwti.ads a-stmaco.ads a-strbou.ads a-strbou.adb a-stream.ads a-strfix.ads a-strfix.adb a-string.ads a-strmap.ads a-strmap.adb a-strsea.ads a-strsea.adb a-strunb.ads a-strunb.adb a-ststio.ads a-stunau.ads a-stunau.adb a-stwibo.ads a-stwibo.adb a-stwifi.ads a-stwifi.adb a-stwima.ads a-stwima.adb a-stwise.ads a-stwise.adb a-stwiun.ads a-stwiun.adb a-suteio.ads a-suteio.adb a-swmwco.ads a-swuwti.ads a-swuwti.adb a-sytaco.ads a-sytaco.adb a-taside.ads a-taside.adb a-teioed.ads a-teioed.adb a-textio.ads a-textio.adb a-ticoau.ads a-ticoau.adb a-tideau.ads a-tideau.adb a-tienau.ads a-tienau.adb a-tiflau.ads a-tiflau.adb a-tigeau.ads a-tigeau.adb a-tiinau.ads a-tiinau.adb a-timoau.ads a-timoau.adb a-titest.ads a-titest.adb a-witeio.ads a-witeio.adb a-wtcoau.ads a-wtcoau.adb a-wtdeau.ads a-wtdeau.adb a-wtedit.ads a-wtedit.adb a-wtenau.ads a-wtenau.adb a-wtflau.ads a-wtflau.adb a-wtgeau.ads a-wtgeau.adb a-wtinau.ads a-wtinau.adb a-wtmoau.ads a-wtmoau.adb a-wttest.ads a-wttest.adb calendar.ads gnat.ads g-busora.ads g-busora.adb g-casuti.ads g-casuti.adb g-hesora.ads g-hesora.adb g-htable.ads g-htable.adb g-io_aux.ads g-io_aux.adb g-regexp.ads g-regexp.adb g-regpat.ads g-regpat.adb g-speche.ads g-speche.adb g-tasloc.ads g-tasloc.adb interfac.ads i-c.ads      i-c.adb ioexcept.ads system.ads s-addima.ads s-arit64.ads s-arit64.adb s-assert.ads s-assert.adb s-bitops.ads s-bitops.adb s-chepoo.ads s-direio.ads s-direio.adb s-exnflt.ads s-exngen.ads s-exngen.adb s-exnint.ads s-exnlfl.ads s-exnlin.ads s-exnllf.ads s-exnlli.ads s-exnsfl.ads s-exnsin.ads s-exnssi.ads s-expflt.ads s-expgen.ads s-expgen.adb s-expint.ads s-explfl.ads s-explin.ads s-expllf.ads s-explli.ads s-expllu.ads s-expllu.adb s-expmod.ads s-expmod.adb s-expsfl.ads s-expsin.ads s-expssi.ads s-expuns.ads s-expuns.adb s-fatflt.ads s-fatlfl.ads s-fatllf.ads s-fatsfl.ads s-ficobl.ads s-fileio.ads s-fileio.adb s-finroo.ads s-finroo.adb s-fore.ads   s-fore.adb s-imgbiu.ads s-imgbiu.adb s-imgboo.ads s-imgboo.adb s-imgcha.ads s-imgcha.adb s-imgdec.ads s-imgdec.adb s-imgint.ads s-imgint.adb s-imgllb.ads s-imgllb.adb s-imglld.ads s-imglld.adb s-imglli.ads s-imglli.adb s-imgllu.ads s-imgllu.adb s-imgllw.ads s-imgllw.adb s-imgrea.ads s-imgrea.adb s-imguns.ads s-imguns.adb s-imgwch.ads s-imgwch.adb s-imgwiu.ads s-imgwiu.adb s-io.ads     s-io.adb s-mantis.ads s-mantis.adb s-osprim.ads s-parame.adb s-pooglo.ads s-pooloc.ads s-poosiz.ads s-powtab.ads s-proinf.ads s-proinf.adb s-rpc.ads    s-rpc.adb s-sequio.ads s-sequio.adb s-soflin.ads s-soflin.adb s-sopco3.ads s-sopco3.adb s-sopco4.ads s-sopco4.adb s-sopco5.ads s-sopco5.adb s-stache.ads s-stalib.adb s-stoele.ads s-stopoo.ads s-stratt.ads s-strops.ads s-strops.adb s-taasde.ads s-taasde.adb s-tadeca.ads s-tadeca.adb s-tadert.ads s-tadert.adb s-taenca.ads s-taenca.adb s-taprob.ads s-taprob.adb s-taprop.ads s-tarest.ads s-tarest.adb s-tasdeb.ads s-tasinf.ads s-tasinf.adb s-tasini.ads s-tasini.adb s-taskin.ads s-taskin.adb s-tasque.ads s-tasque.adb s-tasren.ads s-tasren.adb s-tasres.ads s-tassta.ads s-tassta.adb s-tasuti.ads s-tasuti.adb s-tataat.ads s-tpoben.ads s-tpoben.adb s-tpobop.ads s-tpobop.adb s-tposen.ads s-tposen.adb s-unstyp.ads s-valboo.ads s-valboo.adb s-valcha.ads s-valcha.adb s-valdec.ads s-valdec.adb s-valenu.ads s-valenu.adb s-valint.ads s-valint.adb s-vallld.ads s-vallld.adb s-vallli.ads s-vallli.adb s-valllu.ads s-valllu.adb s-valrea.ads s-valrea.adb s-valuns.ads s-valuns.adb s-valuti.ads s-valuti.adb s-valwch.ads s-valwch.adb s-vercon.ads s-vercon.adb s-wchcnv.ads s-wchcnv.adb s-wchcon.ads s-wchjis.ads s-wchjis.adb s-wchstw.ads s-wchstw.adb s-wchwts.ads s-wchwts.adb s-widboo.ads s-widboo.adb s-widcha.ads s-widcha.adb s-widenu.ads s-widenu.adb s-widlli.ads s-widlli.adb s-widllu.ads s-widllu.adb s-widwch.ads s-widwch.adb s-wwdcha.ads s-wwdcha.adb s-wwdenu.ads s-wwdenu.adb s-wwdwch.ads s-wwdwch.adb text_io.ads           /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+   );                                                          \
+   ( cd /tmp/jgnat/jgnat-1.1p/src;                                       \
+     cp -p -f jconfig.h            /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f jpatch.c jmissing.c            /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f jbackend.adb jdefault.adb jgettarg.ads j_basics.ads j_basics.adb j_types.ads  j_types.adb j_stack.ads  j_stack.adb j_string.ads j_string.adb j_table.ads  j_table.adb jx_drive.ads jx_drive.adb jx_decl.ads  jx_decl.adb jx_uplev.ads jx_uplev.adb jx_swtch.ads jx_swtch.adb jx_ch3.ads   jx_ch3.adb jx_ch4.ads   jx_ch4.adb jx_ch5.ads   jx_ch5.adb jx_ch6.ads   jx_ch6.adb jx_ch7.ads   jx_ch7.adb jx_ch8.ads   jx_ch8.adb jx_ch11.ads jx_ch11.adb jx_ch12.ads jx_ch12.adb jvm.ads      jvm.adb jvm-api.ads  jvm-api.adb jvm-code.ads jvm-code.adb jvm-dbg.ads  jvm-dbg.adb jvm-emit.ads jvm-emit.adb jvm-info.ads jvm-info.adb jvm-map.ads  jvm-map.adb jvm-pool.ads jvm-pool.adb jvm_file.ads jvm_file.adb jvm_test.ads jvm_test.adb jvm_walk.ads jvm_walk.adb j_utils.ads  j_utils.adb j_zip.ads    j_zip.adb jvm2ada.ads  jvm2ada.adb j_parser.ads j_parser.adb j_list.ads   j_list.adb jvm_ada.ads  jvm_ada.adb jvm_view.ads jvm_view.adb jvmlist.ads  jvmlist.adb jvmstrip.ads jvmstrip.adb jarmake.ads jarmake.adb          /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f Acc.java Dbl.java Flt.java Int.java Lng.java _abort_signal.java constraint_error.java program_error.java storage_error.java tasking_error.java standard\$access_string.java Ada_AR.java Object_File.java Prim_Input_Stream.java Prim_Output_Stream.java Prim_Conversions.java ada_wrapper.java GNAT_libc.java     /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f 3jexcept.ads 4jexcept.ads 4jexcept.adb 4jststio.adb 4jtags.ads   4jtags.adb 4jdireio.adb 4jsequio.adb 4wexcpol.adb 5jaddima.adb 5jfinimp.ads 5jfinimp.adb 5josinte.ads 5josprim.adb 5jparame.ads 5jpooglo.adb 5jpooloc.adb 5jpoosiz.adb 5jsecsta.ads 5jsecsta.adb 5jstache.adb 5jstalib.ads 5jstoele.adb 5jstratt.adb 5jtaprop.adb 5jtasdeb.adb 5jtaspri.ads 5jtataat.adb  6jcstrea.adb i-jalaob.ads i-jalasy.ads i-jalath.ads i-java.ads i-javlan.ads java.ads      /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f jMakefile                  /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+     cp -p -f jgnat_ug.texi jgnatdoc.txt              /tmp/jgnat/jgnat-1.1p/src/../../jgnat-1.1a/src;          \
+   )                                                           \
+fi
+test -d /tmp/jgnat/jgnat-1.1p/src/../../split-1.1a || mkdir -p /tmp/jgnat/jgnat-1.1a/src/../../split-1.1a
+( cd   /tmp/jgnat/jgnat-1.1p/src/../../;                           \
+  tar cf  jgnat-1.1p-src.tar jgnat-1.1a/src;  \
+  gzip -9 jgnat-1.1p-src.tar;                     \
+  mv -f   jgnat-1.1p-src.tar.gz                   \
+	  /tmp/jgnat/jgnat-1.1p/src/../../split-1.1a/jgnat-1.1a-src.tgz     )
